@@ -33,29 +33,56 @@ CREATE TABLE checkboxes (
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- Habilitar Row Level Security (segurança)
+-- Criar tabela para armazenar campos de texto (Responsável e Observações)
+CREATE TABLE text_fields (
+  id TEXT PRIMARY KEY,
+  value TEXT NOT NULL DEFAULT '',
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Habilitar Row Level Security (segurança) para checkboxes
 ALTER TABLE checkboxes ENABLE ROW LEVEL SECURITY;
 
--- Criar política para permitir leitura pública
+-- Criar política para permitir leitura pública em checkboxes
 CREATE POLICY "Permitir leitura pública" 
 ON checkboxes FOR SELECT 
 USING (true);
 
--- Criar política para permitir escrita pública
+-- Criar política para permitir escrita pública em checkboxes
 CREATE POLICY "Permitir escrita pública" 
 ON checkboxes FOR INSERT 
 WITH CHECK (true);
 
--- Criar política para permitir atualização pública
+-- Criar política para permitir atualização pública em checkboxes
 CREATE POLICY "Permitir atualização pública" 
 ON checkboxes FOR UPDATE 
 USING (true);
 
--- Criar índice para melhor performance
+-- Habilitar Row Level Security para text_fields
+ALTER TABLE text_fields ENABLE ROW LEVEL SECURITY;
+
+-- Criar política para permitir leitura pública em text_fields
+CREATE POLICY "Permitir leitura pública text" 
+ON text_fields FOR SELECT 
+USING (true);
+
+-- Criar política para permitir escrita pública em text_fields
+CREATE POLICY "Permitir escrita pública text" 
+ON text_fields FOR INSERT 
+WITH CHECK (true);
+
+-- Criar política para permitir atualização pública em text_fields
+CREATE POLICY "Permitir atualização pública text" 
+ON text_fields FOR UPDATE 
+USING (true);
+
+-- Criar índices para melhor performance
 CREATE INDEX idx_checkboxes_updated_at ON checkboxes(updated_at DESC);
+CREATE INDEX idx_text_fields_updated_at ON text_fields(updated_at DESC);
 
 -- Habilitar Realtime (sincronização em tempo real)
 ALTER PUBLICATION supabase_realtime ADD TABLE checkboxes;
+ALTER PUBLICATION supabase_realtime ADD TABLE text_fields;
 ```
 
 4. Clique em **"Run"** ou pressione `Ctrl+Enter`
@@ -160,8 +187,9 @@ Se tiver problemas de CORS:
 Para ver os dados salvos no Supabase:
 
 1. Vá em **"Table Editor"** no menu lateral
-2. Selecione a tabela **"checkboxes"**
-3. Você verá todos os checkboxes e seus estados
+2. Selecione a tabela **"checkboxes"** para ver os estados dos checkboxes
+3. Selecione a tabela **"text_fields"** para ver os campos de Responsável e Observações
+4. Você verá todos os dados e seus estados
 
 ## 🔒 Segurança (Opcional)
 

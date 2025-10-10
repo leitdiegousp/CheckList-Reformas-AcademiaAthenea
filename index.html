@@ -55,6 +55,10 @@
         
         .checkbox-cell {
             text-align: center;
+            width: 10%;
+        }
+        
+        .text-cell {
             width: 15%;
         }
         
@@ -62,6 +66,23 @@
             width: 20px;
             height: 20px;
             cursor: pointer;
+        }
+        
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            resize: vertical;
+            min-height: 30px;
+        }
+        
+        input[type="text"]:focus, textarea:focus {
+            outline: none;
+            border-color: #4CAF50;
+            box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
         }
         
         .action-cell {
@@ -101,12 +122,16 @@
                     <th>Ação</th>
                     <th class="checkbox-cell">Urgente</th>
                     <th class="checkbox-cell">Não Urgente</th>
+                    <th class="text-cell">Responsável</th>
+                    <th class="text-cell">Observações</th>
                 </tr>
             </thead>
             <tbody>
                 <!-- Fossa -->
                 <tr>
                     <td class="section-header">Fossa</td>
+                    <td></td>
+                    <td></td>
                     <td></td>
                     <td></td>
                 </tr>
@@ -117,6 +142,8 @@
                     </td>
                     <td class="checkbox-cell"><input type="checkbox" checked></td>
                     <td class="checkbox-cell"><input type="checkbox"></td>
+                    <td class="text-cell"><input type="text" id="fossa1-responsavel" placeholder="Nome do responsável"></td>
+                    <td class="text-cell"><textarea id="fossa1-observacoes" placeholder="Observações" rows="1"></textarea></td>
                 </tr>
                 <tr>
                     <td class="action-cell">
@@ -125,11 +152,15 @@
                     </td>
                     <td class="checkbox-cell"><input type="checkbox" checked></td>
                     <td class="checkbox-cell"><input type="checkbox"></td>
+                    <td class="text-cell"><input type="text" id="fossa2-responsavel" placeholder="Nome do responsável"></td>
+                    <td class="text-cell"><textarea id="fossa2-observacoes" placeholder="Observações" rows="1"></textarea></td>
                 </tr>
                 
                 <!-- Elétrica -->
                 <tr>
                     <td class="section-header">Elétrica</td>
+                    <td></td>
+                    <td></td>
                     <td></td>
                     <td></td>
                 </tr>
@@ -140,6 +171,8 @@
                     </td>
                     <td class="checkbox-cell"><input type="checkbox" checked></td>
                     <td class="checkbox-cell"><input type="checkbox"></td>
+                    <td class="text-cell"><input type="text" id="eletrica1-responsavel" placeholder="Nome do responsável"></td>
+                    <td class="text-cell"><textarea id="eletrica1-observacoes" placeholder="Observações" rows="1"></textarea></td>
                 </tr>
                 <tr class="materials-section">
                     <td colspan="3" class="materials-header">Materiais:</td>
@@ -199,6 +232,8 @@
                     <td class="section-header">Telhado banheiro</td>
                     <td></td>
                     <td></td>
+                    <td></td>
+                    <td></td>
                 </tr>
                 <tr>
                     <td class="action-cell">
@@ -207,6 +242,8 @@
                     </td>
                     <td class="checkbox-cell"><input type="checkbox" checked></td>
                     <td class="checkbox-cell"><input type="checkbox"></td>
+                    <td class="text-cell"><input type="text" id="telhado2-responsavel" placeholder="Nome do responsável"></td>
+                    <td class="text-cell"><textarea id="telhado2-observacoes" placeholder="Observações" rows="1"></textarea></td>
                 </tr>
                 <tr class="materials-section">
                     <td colspan="3" class="materials-header">Materiais:</td>
@@ -239,11 +276,15 @@
                     </td>
                     <td class="checkbox-cell"><input type="checkbox"></td>
                     <td class="checkbox-cell"><input type="checkbox" checked></td>
+                    <td class="text-cell"><input type="text" id="telhado1-responsavel" placeholder="Nome do responsável"></td>
+                    <td class="text-cell"><textarea id="telhado1-observacoes" placeholder="Observações" rows="1"></textarea></td>
                 </tr>
                 
                 <!-- Pia Fora -->
                 <tr>
                     <td class="section-header">Pia Fora</td>
+                    <td></td>
+                    <td></td>
                     <td></td>
                     <td></td>
                 </tr>
@@ -254,6 +295,8 @@
                     </td>
                     <td class="checkbox-cell"><input type="checkbox" checked></td>
                     <td class="checkbox-cell"><input type="checkbox"></td>
+                    <td class="text-cell"><input type="text" id="pia1-responsavel" placeholder="Nome do responsável"></td>
+                    <td class="text-cell"><textarea id="pia1-observacoes" placeholder="Observações" rows="1"></textarea></td>
                 </tr>
                 <tr>
                     <td class="action-cell">
@@ -262,6 +305,8 @@
                     </td>
                     <td class="checkbox-cell"><input type="checkbox" checked></td>
                     <td class="checkbox-cell"><input type="checkbox"></td>
+                    <td class="text-cell"><input type="text" id="pia2-responsavel" placeholder="Nome do responsável"></td>
+                    <td class="text-cell"><textarea id="pia2-observacoes" placeholder="Observações" rows="1"></textarea></td>
                 </tr>
                 <tr class="materials-section">
                     <td colspan="3" class="materials-header">Materiais:</td>
@@ -300,6 +345,8 @@
                     <td class="section-header">Encapar colchões restantes - Peregrinos Casal e Solteiro (M e F)</td>
                     <td></td>
                     <td></td>
+                    <td></td>
+                    <td></td>
                 </tr>
                 <tr>
                     <td class="action-cell">
@@ -308,6 +355,8 @@
                     </td>
                     <td class="checkbox-cell"><input type="checkbox" checked></td>
                     <td class="checkbox-cell"><input type="checkbox"></td>
+                    <td class="text-cell"><input type="text" id="colchao1-responsavel" placeholder="Nome do responsável"></td>
+                    <td class="text-cell"><textarea id="colchao1-observacoes" placeholder="Observações" rows="1"></textarea></td>
                 </tr>
                 <tr class="materials-section">
                     <td colspan="3" class="materials-header">Materiais:</td>
@@ -346,6 +395,8 @@
                     <td class="section-header">Forro faltando quarto casal (Cozinha)</td>
                     <td></td>
                     <td></td>
+                    <td></td>
+                    <td></td>
                 </tr>
                 <tr>
                     <td class="action-cell">
@@ -354,6 +405,8 @@
                     </td>
                     <td class="checkbox-cell"><input type="checkbox" checked></td>
                     <td class="checkbox-cell"><input type="checkbox"></td>
+                    <td class="text-cell"><input type="text" id="forro1-responsavel" placeholder="Nome do responsável"></td>
+                    <td class="text-cell"><textarea id="forro1-observacoes" placeholder="Observações" rows="1"></textarea></td>
                 </tr>
                 <tr class="materials-section">
                     <td colspan="3" class="materials-header">Materiais:</td>
@@ -371,6 +424,8 @@
                     <td class="section-header">Casa Peregrino de Casais</td>
                     <td></td>
                     <td></td>
+                    <td></td>
+                    <td></td>
                 </tr>
                 <tr>
                     <td class="action-cell">
@@ -379,11 +434,15 @@
                     </td>
                     <td class="checkbox-cell"><input type="checkbox" checked></td>
                     <td class="checkbox-cell"><input type="checkbox"></td>
+                    <td class="text-cell"><input type="text" id="teto1-responsavel" placeholder="Nome do responsável"></td>
+                    <td class="text-cell"><textarea id="teto1-observacoes" placeholder="Observações" rows="1"></textarea></td>
                 </tr>
                 
                 <!-- Ajeitar Banheiros -->
                 <tr>
                     <td class="section-header">Ajeitar Banheiros (F e M)</td>
+                    <td></td>
+                    <td></td>
                     <td></td>
                     <td></td>
                 </tr>
@@ -394,6 +453,8 @@
                     </td>
                     <td class="checkbox-cell"><input type="checkbox" checked></td>
                     <td class="checkbox-cell"><input type="checkbox"></td>
+                    <td class="text-cell"><input type="text" id="banheiro1-responsavel" placeholder="Nome do responsável"></td>
+                    <td class="text-cell"><textarea id="banheiro1-observacoes" placeholder="Observações" rows="1"></textarea></td>
                 </tr>
                 <tr class="materials-section">
                     <td colspan="3" class="materials-header">Materiais:</td>
@@ -467,6 +528,8 @@
                     <td class="section-header">Lago</td>
                     <td></td>
                     <td></td>
+                    <td></td>
+                    <td></td>
                 </tr>
                 <tr>
                     <td class="action-cell">
@@ -475,6 +538,8 @@
                     </td>
                     <td class="checkbox-cell"><input type="checkbox" checked></td>
                     <td class="checkbox-cell"><input type="checkbox"></td>
+                    <td class="text-cell"><input type="text" id="lago1-responsavel" placeholder="Nome do responsável"></td>
+                    <td class="text-cell"><textarea id="lago1-observacoes" placeholder="Observações" rows="1"></textarea></td>
                 </tr>
                 <tr>
                     <td class="action-cell">
@@ -483,11 +548,15 @@
                     </td>
                     <td class="checkbox-cell"><input type="checkbox"></td>
                     <td class="checkbox-cell"><input type="checkbox" checked></td>
+                    <td class="text-cell"><input type="text" id="lago2-responsavel" placeholder="Nome do responsável"></td>
+                    <td class="text-cell"><textarea id="lago2-observacoes" placeholder="Observações" rows="1"></textarea></td>
                 </tr>
                 
                 <!-- Limpezas -->
                 <tr>
                     <td class="section-header">Limpezas</td>
+                    <td></td>
+                    <td></td>
                     <td></td>
                     <td></td>
                 </tr>
@@ -498,6 +567,8 @@
                     </td>
                     <td class="checkbox-cell"><input type="checkbox" checked></td>
                     <td class="checkbox-cell"><input type="checkbox"></td>
+                    <td class="text-cell"><input type="text" id="limpeza1-responsavel" placeholder="Nome do responsável"></td>
+                    <td class="text-cell"><textarea id="limpeza1-observacoes" placeholder="Observações" rows="1"></textarea></td>
                 </tr>
                 <tr>
                     <td class="action-cell">
@@ -506,6 +577,8 @@
                     </td>
                     <td class="checkbox-cell"><input type="checkbox" checked></td>
                     <td class="checkbox-cell"><input type="checkbox"></td>
+                    <td class="text-cell"><input type="text" id="limpeza2-responsavel" placeholder="Nome do responsável"></td>
+                    <td class="text-cell"><textarea id="limpeza2-observacoes" placeholder="Observações" rows="1"></textarea></td>
                 </tr>
                 <tr>
                     <td class="action-cell">
@@ -514,11 +587,15 @@
                     </td>
                     <td class="checkbox-cell"><input type="checkbox" checked></td>
                     <td class="checkbox-cell"><input type="checkbox"></td>
+                    <td class="text-cell"><input type="text" id="limpeza3-responsavel" placeholder="Nome do responsável"></td>
+                    <td class="text-cell"><textarea id="limpeza3-observacoes" placeholder="Observações" rows="1"></textarea></td>
                 </tr>
                 
                 <!-- Várias áreas devido ao Curso -->
                 <tr>
                     <td class="section-header">Várias aéreos devido ao Curso</td>
+                    <td></td>
+                    <td></td>
                     <td></td>
                     <td></td>
                 </tr>
@@ -529,6 +606,8 @@
                     </td>
                     <td class="checkbox-cell"><input type="checkbox" checked></td>
                     <td class="checkbox-cell"><input type="checkbox"></td>
+                    <td class="text-cell"><input type="text" id="curso1-responsavel" placeholder="Nome do responsável"></td>
+                    <td class="text-cell"><textarea id="curso1-observacoes" placeholder="Observações" rows="1"></textarea></td>
                 </tr>
                 <tr>
                     <td class="action-cell">
@@ -537,11 +616,15 @@
                     </td>
                     <td class="checkbox-cell"><input type="checkbox" checked></td>
                     <td class="checkbox-cell"><input type="checkbox"></td>
+                    <td class="text-cell"><input type="text" id="curso2-responsavel" placeholder="Nome do responsável"></td>
+                    <td class="text-cell"><textarea id="curso2-observacoes" placeholder="Observações" rows="1"></textarea></td>
                 </tr>
                 
                 <!-- Área externa -->
                 <tr>
                     <td class="section-header">Área externa</td>
+                    <td></td>
+                    <td></td>
                     <td></td>
                     <td></td>
                 </tr>
@@ -552,6 +635,8 @@
                     </td>
                     <td class="checkbox-cell"><input type="checkbox" checked></td>
                     <td class="checkbox-cell"><input type="checkbox"></td>
+                    <td class="text-cell"><input type="text" id="externa1-responsavel" placeholder="Nome do responsável"></td>
+                    <td class="text-cell"><textarea id="externa1-observacoes" placeholder="Observações" rows="1"></textarea></td>
                 </tr>
                 <tr>
                     <td class="action-cell">
@@ -560,6 +645,8 @@
                     </td>
                     <td class="checkbox-cell"><input type="checkbox" checked></td>
                     <td class="checkbox-cell"><input type="checkbox"></td>
+                    <td class="text-cell"><input type="text" id="externa2-responsavel" placeholder="Nome do responsável"></td>
+                    <td class="text-cell"><textarea id="externa2-observacoes" placeholder="Observações" rows="1"></textarea></td>
                 </tr>
                 <tr>
                     <td class="action-cell">
@@ -568,11 +655,15 @@
                     </td>
                     <td class="checkbox-cell"><input type="checkbox" checked></td>
                     <td class="checkbox-cell"><input type="checkbox"></td>
+                    <td class="text-cell"><input type="text" id="externa3-responsavel" placeholder="Nome do responsável"></td>
+                    <td class="text-cell"><textarea id="externa3-observacoes" placeholder="Observações" rows="1"></textarea></td>
                 </tr>
                 
                 <!-- Cozinha -->
                 <tr>
                     <td class="section-header">Cozinha</td>
+                    <td></td>
+                    <td></td>
                     <td></td>
                     <td></td>
                 </tr>
@@ -583,6 +674,8 @@
                     </td>
                     <td class="checkbox-cell"><input type="checkbox"></td>
                     <td class="checkbox-cell"><input type="checkbox" checked></td>
+                    <td class="text-cell"><input type="text" id="cozinha1-responsavel" placeholder="Nome do responsável"></td>
+                    <td class="text-cell"><textarea id="cozinha1-observacoes" placeholder="Observações" rows="1"></textarea></td>
                 </tr>
                 <tr>
                     <td class="action-cell">
@@ -591,6 +684,8 @@
                     </td>
                     <td class="checkbox-cell"><input type="checkbox"></td>
                     <td class="checkbox-cell"><input type="checkbox" checked></td>
+                    <td class="text-cell"><input type="text" id="cozinha2-responsavel" placeholder="Nome do responsável"></td>
+                    <td class="text-cell"><textarea id="cozinha2-observacoes" placeholder="Observações" rows="1"></textarea></td>
                 </tr>
                 <tr class="materials-section">
                     <td colspan="3" class="materials-header">Materiais:</td>
@@ -615,6 +710,8 @@
                     <td class="section-header">Fazer parapeito no andar dos banheiros</td>
                     <td></td>
                     <td></td>
+                    <td></td>
+                    <td></td>
                 </tr>
                 <tr>
                     <td class="action-cell">
@@ -623,11 +720,15 @@
                     </td>
                     <td class="checkbox-cell"><input type="checkbox"></td>
                     <td class="checkbox-cell"><input type="checkbox" checked></td>
+                    <td class="text-cell"><input type="text" id="parapeito1-responsavel" placeholder="Nome do responsável"></td>
+                    <td class="text-cell"><textarea id="parapeito1-observacoes" placeholder="Observações" rows="1"></textarea></td>
                 </tr>
                 
                 <!-- Santuário de Cura -->
                 <tr>
                     <td class="section-header">Santuário de Cura</td>
+                    <td></td>
+                    <td></td>
                     <td></td>
                     <td></td>
                 </tr>
@@ -638,6 +739,8 @@
                     </td>
                     <td class="checkbox-cell"><input type="checkbox"></td>
                     <td class="checkbox-cell"><input type="checkbox" checked></td>
+                    <td class="text-cell"><input type="text" id="santuario1-responsavel" placeholder="Nome do responsável"></td>
+                    <td class="text-cell"><textarea id="santuario1-observacoes" placeholder="Observações" rows="1"></textarea></td>
                 </tr>
                 <tr>
                     <td class="action-cell">
@@ -646,6 +749,8 @@
                     </td>
                     <td class="checkbox-cell"><input type="checkbox" checked></td>
                     <td class="checkbox-cell"><input type="checkbox"></td>
+                    <td class="text-cell"><input type="text" id="santuario2-responsavel" placeholder="Nome do responsável"></td>
+                    <td class="text-cell"><textarea id="santuario2-observacoes" placeholder="Observações" rows="1"></textarea></td>
                 </tr>
                 <tr class="materials-section">
                     <td colspan="3" class="materials-header">Materiais:</td>
@@ -796,6 +901,123 @@
             }
         }
         
+        // ============================================
+        // FUNÇÕES PARA CAMPOS DE TEXTO
+        // ============================================
+        
+        // Salvar campo de texto no Supabase
+        async function saveTextField(fieldId, value) {
+            if (!isConfigured) {
+                localStorage.setItem(fieldId, value);
+                return;
+            }
+            
+            try {
+                const { data, error} = await supabase
+                    .from('text_fields')
+                    .upsert({ 
+                        id: fieldId, 
+                        value: value,
+                        updated_at: new Date().toISOString()
+                    }, { 
+                        onConflict: 'id' 
+                    });
+                
+                if (error) {
+                    console.error('Erro ao salvar texto:', error);
+                    localStorage.setItem(fieldId, value);
+                }
+            } catch (error) {
+                console.error('Erro ao salvar texto:', error);
+                localStorage.setItem(fieldId, value);
+            }
+        }
+        
+        // Carregar campo de texto do Supabase
+        async function loadTextField(fieldId) {
+            if (!isConfigured) {
+                return localStorage.getItem(fieldId) || '';
+            }
+            
+            try {
+                const { data, error } = await supabase
+                    .from('text_fields')
+                    .select('value')
+                    .eq('id', fieldId)
+                    .single();
+                
+                if (error && error.code !== 'PGRST116') {
+                    console.error('Erro ao carregar texto:', error);
+                    return localStorage.getItem(fieldId) || '';
+                }
+                
+                return data ? data.value : '';
+            } catch (error) {
+                console.error('Erro ao carregar texto:', error);
+                return localStorage.getItem(fieldId) || '';
+            }
+        }
+        
+        // Restaurar todos os campos de texto
+        async function restoreTextFields() {
+            const textInputs = document.querySelectorAll('input[type="text"], textarea');
+            
+            for (const input of textInputs) {
+                if (input.id) {
+                    const value = await loadTextField(input.id);
+                    if (value) {
+                        input.value = value;
+                    }
+                }
+            }
+        }
+        
+        // Configurar listeners para campos de texto
+        function setupTextFieldListeners() {
+            const textInputs = document.querySelectorAll('input[type="text"], textarea');
+            
+            textInputs.forEach(input => {
+                // Debounce para evitar salvar a cada tecla
+                let timeout = null;
+                
+                input.addEventListener('input', function() {
+                    clearTimeout(timeout);
+                    timeout = setTimeout(() => {
+                        saveTextField(this.id, this.value);
+                    }, 500); // Aguarda 500ms após parar de digitar
+                });
+                
+                // Salvar imediatamente quando sair do campo
+                input.addEventListener('blur', function() {
+                    clearTimeout(timeout);
+                    saveTextField(this.id, this.value);
+                });
+            });
+        }
+        
+        // Sincronização em tempo real para campos de texto
+        function setupTextFieldRealtimeSync() {
+            if (!isConfigured) return;
+            
+            const channel = supabase
+                .channel('text-fields-changes')
+                .on('postgres_changes', 
+                    { 
+                        event: '*', 
+                        schema: 'public', 
+                        table: 'text_fields' 
+                    }, 
+                    (payload) => {
+                        console.log('Mudança de texto detectada:', payload);
+                        const field = document.getElementById(payload.new.id);
+                        if (field && field !== document.activeElement && field.value !== payload.new.value) {
+                            field.value = payload.new.value;
+                        }
+                    }
+                )
+                .subscribe();
+        }
+        
         // Configurar listeners para mudanças
         function setupCheckboxListeners() {
             const checkboxes = document.querySelectorAll('input[type="checkbox"]');
@@ -863,8 +1085,11 @@
             console.log('🚀 Iniciando checklist...');
             addUniqueIds();
             await restoreCheckboxStates();
+            await restoreTextFields();
             setupCheckboxListeners();
+            setupTextFieldListeners();
             setupRealtimeSync();
+            setupTextFieldRealtimeSync();
             showStatus();
             console.log('✅ Checklist pronto!');
         });
