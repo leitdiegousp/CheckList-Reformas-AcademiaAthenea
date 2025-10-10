@@ -12,120 +12,214 @@
         }
         
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             padding: 20px;
-            background-color: #f5f5f5;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
         }
         
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             background-color: white;
-            padding: 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            border-radius: 12px;
         }
         
         h1 {
             text-align: center;
-            margin-bottom: 30px;
-            color: #333;
+            margin-bottom: 40px;
+            color: #2c3e50;
+            font-size: 28px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 4px solid #667eea;
+            padding-bottom: 15px;
         }
         
         table {
             width: 100%;
-            border-collapse: collapse;
+            border-collapse: separate;
+            border-spacing: 0;
             margin-bottom: 30px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
         
         th, td {
-            border: 1px solid #333;
-            padding: 12px;
+            border: 1px solid #e0e0e0;
+            padding: 15px;
             text-align: left;
         }
         
         th {
-            background-color: #f0f0f0;
-            font-weight: bold;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-weight: 600;
+            font-size: 16px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         
         .section-header {
-            background-color: #e0e0e0;
-            font-weight: bold;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            font-weight: 700;
+            font-size: 18px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 15px 20px;
         }
         
         .checkbox-cell {
             text-align: center;
             width: 10%;
+            background-color: #f8f9fa;
         }
         
         .text-cell {
             width: 15%;
+            background-color: #ffffff;
         }
         
         input[type="checkbox"] {
-            width: 20px;
-            height: 20px;
+            width: 22px;
+            height: 22px;
             cursor: pointer;
+            accent-color: #667eea;
+            vertical-align: middle;
         }
         
         input[type="text"], textarea {
             width: 100%;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-family: Arial, sans-serif;
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             font-size: 14px;
             resize: both;
-            min-height: 30px;
+            min-height: 40px;
             min-width: 100px;
+            transition: all 0.3s ease;
         }
         
         input[type="text"]:focus, textarea:focus {
             outline: none;
-            border-color: #4CAF50;
-            box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
+            border-color: #667eea;
+            box-shadow: 0 0 10px rgba(102, 126, 234, 0.3);
+            background-color: #f8f9ff;
+        }
+        
+        input[type="text"]::placeholder, textarea::placeholder {
+            color: #999;
+            font-size: 13px;
+            font-style: italic;
         }
         
         .action-cell {
-            padding-left: 30px;
+            padding-left: 20px;
+            font-size: 16px;
+            line-height: 1.6;
+            background-color: #ffffff;
+        }
+        
+        .action-cell label {
+            cursor: pointer;
+            vertical-align: middle;
+            margin-left: 10px;
+            font-weight: 500;
+            color: #2c3e50;
+        }
+        
+        .action-cell input[type="checkbox"] {
+            vertical-align: middle;
         }
         
         .materials-section {
-            background-color: #f9f9f9;
+            background-color: #fff8e1;
         }
         
         .materials-header {
-            font-weight: bold;
-            padding-left: 30px;
+            background: linear-gradient(135deg, #ffd89b 0%, #ff9a76 100%);
+            color: #5a3a1f;
+            font-weight: 700;
+            font-size: 16px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            padding: 12px 20px;
+            text-align: left;
         }
         
         .material-item {
-            padding-left: 50px;
+            padding-left: 40px;
+            font-size: 15px;
+            line-height: 1.5;
+            color: #5a3a1f;
+        }
+        
+        .material-item label {
+            cursor: pointer;
+            vertical-align: middle;
+            margin-left: 10px;
+            font-weight: 500;
+        }
+        
+        .material-item input[type="checkbox"] {
+            vertical-align: middle;
+        }
+        
+        /* Animações suaves */
+        tr {
+            transition: background-color 0.2s ease;
+        }
+        
+        tbody tr:not(.materials-section):hover {
+            background-color: #f8f9ff;
+        }
+        
+        .materials-section:hover {
+            background-color: #fff3cd;
         }
         
         /* Estilos para Mobile */
         @media screen and (max-width: 768px) {
             body {
                 padding: 10px;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             }
             
             .container {
-                padding: 10px;
+                padding: 15px;
                 overflow-x: auto;
             }
             
             h1 {
-                font-size: 18px;
-                margin-bottom: 15px;
+                font-size: 20px;
+                margin-bottom: 20px;
             }
             
             table {
-                font-size: 12px;
+                font-size: 14px;
                 min-width: 800px;
             }
             
             th, td {
-                padding: 8px 4px;
+                padding: 12px 8px;
+            }
+            
+            th {
+                font-size: 14px;
+            }
+            
+            .section-header {
+                font-size: 16px;
+            }
+            
+            .materials-header {
+                font-size: 15px;
             }
             
             .checkbox-cell {
@@ -140,25 +234,26 @@
             
             input[type="text"], textarea {
                 font-size: 16px; /* Evita zoom no iOS */
-                padding: 10px;
+                padding: 12px;
                 min-height: 60px;
                 min-width: 140px;
-                /* Força aparecimento do handle de resize no mobile */
                 resize: both;
                 overflow: auto;
             }
             
             /* Aumenta a área de redimensionamento */
             textarea::-webkit-resizer {
-                border: 2px solid #4CAF50;
-                background: #4CAF50;
-                width: 20px;
-                height: 20px;
+                border: 3px solid #667eea;
+                background: #667eea;
+                width: 24px;
+                height: 24px;
+                border-radius: 4px;
             }
             
             .action-cell {
                 padding-left: 15px;
-                min-width: 200px;
+                min-width: 250px;
+                font-size: 15px;
             }
             
             input[type="checkbox"] {
@@ -171,14 +266,15 @@
             }
             
             .material-item {
-                padding-left: 25px;
+                padding-left: 30px;
+                font-size: 14px;
             }
         }
         
         /* Estilos específicos para telas muito pequenas (< 480px) */
         @media screen and (max-width: 480px) {
             h1 {
-                font-size: 16px;
+                font-size: 18px;
             }
             
             table {
@@ -191,8 +287,16 @@
             }
             
             input[type="text"], textarea {
-                min-height: 80px; /* Maior no mobile muito pequeno */
+                min-height: 80px;
                 font-size: 16px;
+            }
+            
+            .action-cell {
+                font-size: 14px;
+            }
+            
+            .material-item {
+                font-size: 13px;
             }
         }
         
