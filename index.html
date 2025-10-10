@@ -642,5 +642,54 @@
             </tbody>
         </table>
     </div>
+    
+    <script>
+        // Função para adicionar IDs únicos aos checkboxes que não têm ID
+        function addUniqueIds() {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            let counter = 0;
+            checkboxes.forEach(checkbox => {
+                if (!checkbox.id) {
+                    checkbox.id = 'checkbox-' + counter;
+                    counter++;
+                }
+            });
+        }
+        
+        // Função para salvar o estado de um checkbox
+        function saveCheckboxState(checkbox) {
+            localStorage.setItem(checkbox.id, checkbox.checked);
+        }
+        
+        // Função para restaurar o estado de todos os checkboxes
+        function restoreCheckboxStates() {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                if (checkbox.id) {
+                    const savedState = localStorage.getItem(checkbox.id);
+                    if (savedState !== null) {
+                        checkbox.checked = (savedState === 'true');
+                    }
+                }
+            });
+        }
+        
+        // Adicionar evento de mudança para todos os checkboxes
+        function setupCheckboxListeners() {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    saveCheckboxState(this);
+                });
+            });
+        }
+        
+        // Executar quando a página carregar
+        window.addEventListener('DOMContentLoaded', function() {
+            addUniqueIds();
+            restoreCheckboxStates();
+            setupCheckboxListeners();
+        });
+    </script>
 </body>
 </html>
