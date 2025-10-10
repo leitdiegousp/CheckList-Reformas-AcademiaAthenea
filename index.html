@@ -682,8 +682,36 @@
         </table>
     </div>
     
+    <!-- Supabase Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
     <script>
-        // Função para adicionar IDs únicos aos checkboxes que não têm ID
+        // ============================================
+        // CONFIGURAÇÃO SUPABASE
+        // ============================================
+        // Você precisa substituir esses valores pelos seus do Supabase:
+        // 1. Vá em: https://supabase.com/dashboard/project/SEU_PROJETO/settings/api
+        // 2. Copie a "Project URL" e a "anon public key"
+        
+        const SUPABASE_URL = 'https://SEU_PROJETO.supabase.co';  // ⬅️ SUBSTITUA AQUI
+        const SUPABASE_KEY = 'SUA_CHAVE_PUBLICA_ANON_AQUI';      // ⬅️ SUBSTITUA AQUI
+        
+        // Verificar se está configurado
+        const isConfigured = !SUPABASE_URL.includes('SEU_PROJETO');
+        
+        let supabase = null;
+        if (isConfigured) {
+            supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+            console.log('✅ Supabase conectado!');
+        } else {
+            console.log('⚠️ Configure o Supabase! Veja INSTRUCOES_SUPABASE.md');
+        }
+        
+        // ============================================
+        // FUNÇÕES DE GERENCIAMENTO DE CHECKBOXES
+        // ============================================
+        
+        // Adicionar IDs únicos aos checkboxes que não têm ID
         function addUniqueIds() {
             const checkboxes = document.querySelectorAll('input[type="checkbox"]');
             let counter = 0;
@@ -695,39 +723,150 @@
             });
         }
         
-        // Função para salvar o estado de um checkbox
-        function saveCheckboxState(checkbox) {
-            localStorage.setItem(checkbox.id, checkbox.checked);
+        // Salvar estado no Supabase
+        async function saveCheckboxState(checkboxId, checked) {
+            if (!isConfigured) {
+                // Fallback para localStorage se não configurado
+                localStorage.setItem(checkboxId, checked);
+                return;
+            }
+            
+            try {
+                const { data, error } = await supabase
+                    .from('checkboxes')
+                    .upsert({ 
+                        id: checkboxId, 
+                        checked: checked,
+                        updated_at: new Date().toISOString()
+                    }, { 
+                        onConflict: 'id' 
+                    });
+                
+                if (error) {
+                    console.error('Erro ao salvar:', error);
+                    // Fallback para localStorage
+                    localStorage.setItem(checkboxId, checked);
+                }
+            } catch (error) {
+                console.error('Erro ao salvar:', error);
+                localStorage.setItem(checkboxId, checked);
+            }
         }
         
-        // Função para restaurar o estado de todos os checkboxes
-        function restoreCheckboxStates() {
+        // Carregar estado do Supabase
+        async function loadCheckboxState(checkboxId) {
+            if (!isConfigured) {
+                // Fallback para localStorage
+                const savedState = localStorage.getItem(checkboxId);
+                return savedState === 'true';
+            }
+            
+            try {
+                const { data, error } = await supabase
+                    .from('checkboxes')
+                    .select('checked')
+                    .eq('id', checkboxId)
+                    .single();
+                
+                if (error && error.code !== 'PGRST116') {
+                    console.error('Erro ao carregar:', error);
+                    const savedState = localStorage.getItem(checkboxId);
+                    return savedState === 'true';
+                }
+                
+                return data ? data.checked : null;
+            } catch (error) {
+                console.error('Erro ao carregar:', error);
+                const savedState = localStorage.getItem(checkboxId);
+                return savedState === 'true';
+            }
+        }
+        
+        // Restaurar estados de todos os checkboxes
+        async function restoreCheckboxStates() {
             const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-            checkboxes.forEach(checkbox => {
+            
+            for (const checkbox of checkboxes) {
                 if (checkbox.id) {
-                    const savedState = localStorage.getItem(checkbox.id);
-                    if (savedState !== null) {
-                        checkbox.checked = (savedState === 'true');
+                    const checked = await loadCheckboxState(checkbox.id);
+                    if (checked !== null) {
+                        checkbox.checked = checked;
                     }
                 }
-            });
+            }
         }
         
-        // Adicionar evento de mudança para todos os checkboxes
+        // Configurar listeners para mudanças
         function setupCheckboxListeners() {
             const checkboxes = document.querySelectorAll('input[type="checkbox"]');
             checkboxes.forEach(checkbox => {
                 checkbox.addEventListener('change', function() {
-                    saveCheckboxState(this);
+                    saveCheckboxState(this.id, this.checked);
                 });
             });
         }
         
-        // Executar quando a página carregar
-        window.addEventListener('DOMContentLoaded', function() {
+        // Sincronização em tempo real (opcional)
+        function setupRealtimeSync() {
+            if (!isConfigured) return;
+            
+            const channel = supabase
+                .channel('checkboxes-changes')
+                .on('postgres_changes', 
+                    { 
+                        event: '*', 
+                        schema: 'public', 
+                        table: 'checkboxes' 
+                    }, 
+                    (payload) => {
+                        console.log('Mudança detectada:', payload);
+                        const checkbox = document.getElementById(payload.new.id);
+                        if (checkbox && checkbox.checked !== payload.new.checked) {
+                            checkbox.checked = payload.new.checked;
+                        }
+                    }
+                )
+                .subscribe();
+        }
+        
+        // Indicador de status
+        function showStatus() {
+            const statusDiv = document.createElement('div');
+            statusDiv.id = 'connection-status';
+            statusDiv.style.cssText = `
+                position: fixed; 
+                bottom: 10px; 
+                right: 10px; 
+                padding: 10px 15px; 
+                border-radius: 5px; 
+                font-size: 12px; 
+                font-weight: bold;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+                z-index: 1000;
+            `;
+            
+            if (isConfigured) {
+                statusDiv.style.background = '#4CAF50';
+                statusDiv.style.color = 'white';
+                statusDiv.textContent = '🌐 Online - Sincronizado';
+            } else {
+                statusDiv.style.background = '#FF9800';
+                statusDiv.style.color = 'white';
+                statusDiv.textContent = '⚠️ Offline - Configure Supabase';
+            }
+            
+            document.body.appendChild(statusDiv);
+        }
+        
+        // Inicializar quando a página carregar
+        window.addEventListener('DOMContentLoaded', async function() {
+            console.log('🚀 Iniciando checklist...');
             addUniqueIds();
-            restoreCheckboxStates();
+            await restoreCheckboxStates();
             setupCheckboxListeners();
+            setupRealtimeSync();
+            showStatus();
+            console.log('✅ Checklist pronto!');
         });
     </script>
 </body>
