@@ -188,15 +188,34 @@
         
         /* Animações suaves */
         tr {
-            transition: background-color 0.2s ease;
+            transition: all 0.3s ease;
         }
         
+        /* Hover para linhas de atividade (ações) */
         tbody tr:not(.materials-section):hover {
             background-color: #e3f2fd;
+            transform: translateX(3px);
+            box-shadow: -3px 0 0 0 #2196F3;
         }
         
+        /* Hover especial para cabeçalhos de seção */
+        tbody tr:has(.section-header):hover {
+            background: linear-gradient(135deg, #1976D2 0%, #42A5F5 100%);
+            transform: translateX(5px);
+            box-shadow: -5px 0 0 0 #0d47a1;
+        }
+        
+        /* Hover para linhas de materiais */
         .materials-section:hover {
             background-color: #bbdefb;
+            transform: translateX(2px);
+            box-shadow: -2px 0 0 0 #64B5F6;
+        }
+        
+        /* Hover especial para header de materiais */
+        tr:has(.materials-header):hover {
+            background: linear-gradient(135deg, #42A5F5 0%, #64B5F6 100%);
+            transform: translateX(3px);
         }
         
         /* Estilos para Mobile */
@@ -354,11 +373,7 @@
             <tbody>
                 <!-- Fossa -->
                 <tr>
-                    <td class="section-header">Fossa</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td colspan="5" class="section-header">Fossa</td>
                 </tr>
                 <tr>
                     <td class="action-cell">
@@ -383,11 +398,7 @@
                 
                 <!-- Elétrica -->
                 <tr>
-                    <td class="section-header">Elétrica</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td colspan="5" class="section-header">Elétrica</td>
                 </tr>
                 <tr>
                     <td class="action-cell">
@@ -447,11 +458,7 @@
                 
                 <!-- Telhado banheiro -->
                 <tr>
-                    <td class="section-header">Telhado banheiro</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td colspan="5" class="section-header">Telhado banheiro</td>
                 </tr>
                 <tr>
                     <td class="action-cell">
@@ -497,11 +504,7 @@
                 
                 <!-- Pia Fora -->
                 <tr>
-                    <td class="section-header">Pia Fora</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td colspan="5" class="section-header">Pia Fora</td>
                 </tr>
                 <tr>
                     <td class="action-cell">
@@ -553,11 +556,7 @@
                 
                 <!-- Encapar colchões -->
                 <tr>
-                    <td class="section-header">Encapar colchões restantes - Peregrinos Casal e Solteiro (M e F)</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td colspan="5" class="section-header">Encapar colchões restantes - Peregrinos Casal e Solteiro (M e F)</td>
                 </tr>
                 <tr>
                     <td class="action-cell">
@@ -599,11 +598,7 @@
                 
                 <!-- Forro faltando -->
                 <tr>
-                    <td class="section-header">Forro faltando quarto casal (Cozinha)</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td colspan="5" class="section-header">Forro faltando quarto casal (Cozinha)</td>
                 </tr>
                 <tr>
                     <td class="action-cell">
@@ -627,11 +622,7 @@
                 
                 <!-- Ver sujeira caindo teto -->
                 <tr>
-                    <td class="section-header">Casa Peregrino de Casais</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td colspan="5" class="section-header">Casa Peregrino de Casais</td>
                 </tr>
                 <tr>
                     <td class="action-cell">
@@ -646,11 +637,7 @@
                 
                 <!-- Ajeitar Banheiros -->
                 <tr>
-                    <td class="section-header">Ajeitar Banheiros (F e M)</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td colspan="5" class="section-header">Ajeitar Banheiros (F e M)</td>
                 </tr>
                 <tr>
                     <td class="action-cell">
@@ -722,11 +709,7 @@
                 
                 <!-- Lago -->
                 <tr>
-                    <td class="section-header">Lago</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td colspan="5" class="section-header">Lago</td>
                 </tr>
                 <tr>
                     <td class="action-cell">
@@ -751,11 +734,7 @@
                 
                 <!-- Limpezas -->
                 <tr>
-                    <td class="section-header">Limpezas</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td colspan="5" class="section-header">Limpezas</td>
                 </tr>
                 <tr>
                     <td class="action-cell">
@@ -790,11 +769,7 @@
                 
                 <!-- Várias áreas devido ao Curso -->
                 <tr>
-                    <td class="section-header">Várias aéreos devido ao Curso</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td colspan="5" class="section-header">Várias aéreos devido ao Curso</td>
                 </tr>
                 <tr>
                     <td class="action-cell">
@@ -819,11 +794,7 @@
                 
                 <!-- Área externa -->
                 <tr>
-                    <td class="section-header">Área externa</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td colspan="5" class="section-header">Área externa</td>
                 </tr>
                 <tr>
                     <td class="action-cell">
@@ -858,11 +829,7 @@
                 
                 <!-- Cozinha -->
                 <tr>
-                    <td class="section-header">Cozinha</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td colspan="5" class="section-header">Cozinha</td>
                 </tr>
                 <tr>
                     <td class="action-cell">
@@ -902,11 +869,7 @@
                 
                 <!-- Fazer parapeito -->
                 <tr>
-                    <td class="section-header">Fazer parapeito no andar dos banheiros</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td colspan="5" class="section-header">Fazer parapeito no andar dos banheiros</td>
                 </tr>
                 <tr>
                     <td class="action-cell">
@@ -921,11 +884,7 @@
                 
                 <!-- Santuário de Cura -->
                 <tr>
-                    <td class="section-header">Santuário de Cura</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td colspan="5" class="section-header">Santuário de Cura</td>
                 </tr>
                 <tr>
                     <td class="action-cell">
