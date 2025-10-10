@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check List Reformas</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+        
+        th, td {
+            border: 1px solid #333;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        th {
+            background-color: #f0f0f0;
+            font-weight: bold;
+        }
+        
+        .section-header {
+            background-color: #e0e0e0;
+            font-weight: bold;
+        }
+        
+        .checkbox-cell {
+            text-align: center;
+            width: 15%;
+        }
+        
+        input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+        
+        .action-cell {
+            padding-left: 30px;
+        }
+        
+        .materials-section {
+            background-color: #f9f9f9;
+        }
+        
+        .materials-header {
+            font-weight: bold;
+            padding-left: 30px;
+        }
+        
+        .material-item {
+            padding-left: 50px;
+        }
+        
+        @media print {
+            body {
+                background-color: white;
+            }
+            .container {
+                box-shadow: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Check List Reformas, Serviços e Consertos - Academia Athenea</h1>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Ação</th>
+                    <th class="checkbox-cell">Urgente</th>
+                    <th class="checkbox-cell">Não Urgente</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Fossa -->
+                <tr>
+                    <td class="section-header">Fossa</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="fossa1"> 
+                        <label for="fossa1">Limpar toda a fossa (Serviço Terceirizado)</label>
+                    </td>
+                    <td class="checkbox-cell"><input type="checkbox" checked></td>
+                    <td class="checkbox-cell"><input type="checkbox"></td>
+                </tr>
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="fossa2"> 
+                        <label for="fossa2">Fazer a Tampa fossa</label>
+                    </td>
+                    <td class="checkbox-cell"><input type="checkbox" checked></td>
+                    <td class="checkbox-cell"><input type="checkbox"></td>
+                </tr>
+                
+                <!-- Telhado banheiro -->
+                <tr>
+                    <td class="section-header">Telhado banheiro</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="telhado2"> 
+                        <label for="telhado2">Madeiramento telhado banheiros</label>
+                    </td>
+                    <td class="checkbox-cell"><input type="checkbox" checked></td>
+                    <td class="checkbox-cell"><input type="checkbox"></td>
+                </tr>
+                <tr class="materials-section">
+                    <td colspan="3" class="materials-header">Materiais:</td>
+                </tr>
+                <tr class="materials-section">
+                    <td class="material-item">
+                        <input type="checkbox" id="telhado-mat1"> 
+                        <label for="telhado-mat1">10 comunheira telhado</label>
+                    </td>
+                    <td colspan="2"></td>
+                </tr>
+                <tr class="materials-section">
+                    <td class="material-item">
+                        <input type="checkbox" id="telhado-mat2"> 
+                        <label for="telhado-mat2">16 ripas de 10cms de 3m</label>
+                    </td>
+                    <td colspan="2"></td>
+                </tr>
+                <tr class="materials-section">
+                    <td class="material-item">
+                        <input type="checkbox" id="telhado-mat3"> 
+                        <label for="telhado-mat3">5 ripas de 5cm de 3m</label>
+                    </td>
+                    <td colspan="2"></td>
+                </tr>
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="telhado1"> 
+                        <label for="telhado1">Terminar pilastra</label>
+                    </td>
+                    <td class="checkbox-cell"><input type="checkbox"></td>
+                    <td class="checkbox-cell"><input type="checkbox" checked></td>
+                </tr>
+                
+                <!-- Pia Fora -->
+                <tr>
+                    <td class="section-header">Pia Fora</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="pia1"> 
+                        <label for="pia1">Trocar pia de fora pela doada</label>
+                    </td>
+                    <td class="checkbox-cell"><input type="checkbox" checked></td>
+                    <td class="checkbox-cell"><input type="checkbox"></td>
+                </tr>
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="pia2"> 
+                        <label for="pia2">Trocar sifão do tanque (vazando)</label>
+                    </td>
+                    <td class="checkbox-cell"><input type="checkbox" checked></td>
+                    <td class="checkbox-cell"><input type="checkbox"></td>
+                </tr>
+                <tr class="materials-section">
+                    <td colspan="3" class="materials-header">Materiais:</td>
+                </tr>
+                <tr class="materials-section">
+                    <td class="material-item">
+                        <input type="checkbox" id="pia-mat1"> 
+                        <label for="pia-mat1">Comprar 2 joelhos para a pia</label>
+                    </td>
+                    <td colspan="2"></td>
+                </tr>
+                <tr class="materials-section">
+                    <td class="material-item">
+                        <input type="checkbox" id="pia-mat2"> 
+                        <label for="pia-mat2">Trocar cífão do tanque (vazando)</label>
+                    </td>
+                    <td colspan="2"></td>
+                </tr>
+                <tr class="materials-section">
+                    <td class="material-item">
+                        <input type="checkbox" id="pia-mat3"> 
+                        <label for="pia-mat3">Comprar 3m de cano 40</label>
+                    </td>
+                    <td colspan="2"></td>
+                </tr>
+                <tr class="materials-section">
+                    <td class="material-item">
+                        <input type="checkbox" id="pia-mat4"> 
+                        <label for="pia-mat4">Comprar 1 T de cano</label>
+                    </td>
+                    <td colspan="2"></td>
+                </tr>
+                
+                <!-- Encapar colchões -->
+                <tr>
+                    <td class="section-header">Encapar colchões restantes - Peregrinos Casal e Solteiro (M e F)</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="colchao1"> 
+                        <label for="colchao1">Encapar colchões</label>
+                    </td>
+                    <td class="checkbox-cell"><input type="checkbox" checked></td>
+                    <td class="checkbox-cell"><input type="checkbox"></td>
+                </tr>
+                <tr class="materials-section">
+                    <td colspan="3" class="materials-header">Materiais:</td>
+                </tr>
+                <tr class="materials-section">
+                    <td class="material-item">
+                        <input type="checkbox" id="colchao-mat1"> 
+                        <label for="colchao-mat1">4 Capas para os colchoes casal</label>
+                    </td>
+                    <td colspan="2"></td>
+                </tr>
+                <tr class="materials-section">
+                    <td class="material-item">
+                        <input type="checkbox" id="colchao-mat2"> 
+                        <label for="colchao-mat2">1 capa colchão casal grosso</label>
+                    </td>
+                    <td colspan="2"></td>
+                </tr>
+                <tr class="materials-section">
+                    <td class="material-item">
+                        <input type="checkbox" id="colchao-mat3"> 
+                        <label for="colchao-mat3">5 Capas colchão solteiro</label>
+                    </td>
+                    <td colspan="2"></td>
+                </tr>
+                <tr class="materials-section">
+                    <td class="material-item">
+                        <input type="checkbox" id="colchao-mat4"> 
+                        <label for="colchao-mat4">1 capa colchão solteiro grosso</label>
+                    </td>
+                    <td colspan="2"></td>
+                </tr>
+                
+                <!-- Forro faltando -->
+                <tr>
+                    <td class="section-header">Forro faltando quarto casal (Cozinha)</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="forro1"> 
+                        <label for="forro1">Instalar forro</label>
+                    </td>
+                    <td class="checkbox-cell"><input type="checkbox" checked></td>
+                    <td class="checkbox-cell"><input type="checkbox"></td>
+                </tr>
+                <tr class="materials-section">
+                    <td colspan="3" class="materials-header">Materiais:</td>
+                </tr>
+                <tr class="materials-section">
+                    <td class="material-item">
+                        <input type="checkbox" id="forro-mat1"> 
+                        <label for="forro-mat1">1 Peça de forro</label>
+                    </td>
+                    <td colspan="2"></td>
+                </tr>
+                
+                <!-- Ver sujeira caindo teto -->
+                <tr>
+                    <td class="section-header">Casa Peregrino de Casais</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="teto1"> 
+                        <label for="teto1">Verificar e corrigir sujeira caindo do teto</label>
+                    </td>
+                    <td class="checkbox-cell"><input type="checkbox" checked></td>
+                    <td class="checkbox-cell"><input type="checkbox"></td>
+                </tr>
+                
+                <!-- Ajeitar Banheiros -->
+                <tr>
+                    <td class="section-header">Ajeitar Banheiros (F e M)</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="banheiro1"> 
+                        <label for="banheiro1">Reformar banheiros</label>
+                    </td>
+                    <td class="checkbox-cell"><input type="checkbox" checked></td>
+                    <td class="checkbox-cell"><input type="checkbox"></td>
+                </tr>
+                <tr class="materials-section">
+                    <td colspan="3" class="materials-header">Materiais:</td>
+                </tr>
+                <tr class="materials-section">
+                    <td class="material-item">
+                        <input type="checkbox" id="banheiro-mat1"> 
+                        <label for="banheiro-mat1">10 trincos para cadeado</label>
+                    </td>
+                    <td colspan="2"></td>
+                </tr>
+                <tr class="materials-section">
+                    <td class="material-item">
+                        <input type="checkbox" id="banheiro-mat2"> 
+                        <label for="banheiro-mat2">2 chuveiros</label>
+                    </td>
+                    <td colspan="2"></td>
+                </tr>
+                <tr class="materials-section">
+                    <td class="material-item">
+                        <input type="checkbox" id="banheiro-mat3"> 
+                        <label for="banheiro-mat3">Rejunte</label>
+                    </td>
+                    <td colspan="2"></td>
+                </tr>
+                <tr class="materials-section">
+                    <td class="material-item">
+                        <input type="checkbox" id="banheiro-mat4"> 
+                        <label for="banheiro-mat4">Reboco e massa corrida</label>
+                    </td>
+                    <td colspan="2"></td>
+                </tr>
+                <tr class="materials-section">
+                    <td class="material-item">
+                        <input type="checkbox" id="banheiro-mat5"> 
+                        <label for="banheiro-mat5">2 Kits de Caixa acoplada vaso sanitario</label>
+                    </td>
+                    <td colspan="2"></td>
+                </tr>
+                <tr class="materials-section">
+                    <td class="material-item">
+                        <input type="checkbox" id="banheiro-mat6"> 
+                        <label for="banheiro-mat6">Azulejos nos Banheiros</label>
+                    </td>
+                    <td colspan="2"></td>
+                </tr>
+                <tr class="materials-section">
+                    <td class="material-item">
+                        <input type="checkbox" id="banheiro-mat7"> 
+                        <label for="banheiro-mat7">Piso nos Banheiros</label>
+                    </td>
+                    <td colspan="2"></td>
+                </tr>
+                
+                <!-- Lago -->
+                <tr>
+                    <td class="section-header">Lago</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="lago1"> 
+                        <label for="lago1">Limpar Lago</label>
+                    </td>
+                    <td class="checkbox-cell"><input type="checkbox" checked></td>
+                    <td class="checkbox-cell"><input type="checkbox"></td>
+                </tr>
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="lago2"> 
+                        <label for="lago2">Expandir area do Lago</label>
+                    </td>
+                    <td class="checkbox-cell"><input type="checkbox"></td>
+                    <td class="checkbox-cell"><input type="checkbox" checked></td>
+                </tr>
+                
+                <!-- Limpezas -->
+                <tr>
+                    <td class="section-header">Limpezas</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="limpeza1"> 
+                        <label for="limpeza1">Limpar canaleta que escorre água para a Athenea e ambiente entre Cozinha e Estufa</label>
+                    </td>
+                    <td class="checkbox-cell"><input type="checkbox" checked></td>
+                    <td class="checkbox-cell"><input type="checkbox"></td>
+                </tr>
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="limpeza2"> 
+                        <label for="limpeza2">Lavanderia ao Lado do Banheiro Feminino</label>
+                    </td>
+                    <td class="checkbox-cell"><input type="checkbox" checked></td>
+                    <td class="checkbox-cell"><input type="checkbox"></td>
+                </tr>
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="limpeza3"> 
+                        <label for="limpeza3">Limpeza atrás dos banheiros (tirar entulhos)</label>
+                    </td>
+                    <td class="checkbox-cell"><input type="checkbox" checked></td>
+                    <td class="checkbox-cell"><input type="checkbox"></td>
+                </tr>
+                
+                <!-- Várias áreas devido ao Curso -->
+                <tr>
+                    <td class="section-header">Várias aéreos devido ao Curso</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="curso1"> 
+                        <label for="curso1">Limpeza e rejunte escada da Academia</label>
+                    </td>
+                    <td class="checkbox-cell"><input type="checkbox" checked></td>
+                    <td class="checkbox-cell"><input type="checkbox"></td>
+                </tr>
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="curso2"> 
+                        <label for="curso2">Retirada dos limos, manchas de sujeira</label>
+                    </td>
+                    <td class="checkbox-cell"><input type="checkbox" checked></td>
+                    <td class="checkbox-cell"><input type="checkbox"></td>
+                </tr>
+                
+                <!-- Área externa -->
+                <tr>
+                    <td class="section-header">Área externa</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="externa1"> 
+                        <label for="externa1">Colocação de mourões na entrada</label>
+                    </td>
+                    <td class="checkbox-cell"><input type="checkbox" checked></td>
+                    <td class="checkbox-cell"><input type="checkbox"></td>
+                </tr>
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="externa2"> 
+                        <label for="externa2">Corrigir buracão de lodo na grama (usar areia ao lado do Zeus)</label>
+                    </td>
+                    <td class="checkbox-cell"><input type="checkbox" checked></td>
+                    <td class="checkbox-cell"><input type="checkbox"></td>
+                </tr>
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="externa3"> 
+                        <label for="externa3">Levar os lixos, entulhos e velharias na Carretinha</label>
+                    </td>
+                    <td class="checkbox-cell"><input type="checkbox" checked></td>
+                    <td class="checkbox-cell"><input type="checkbox"></td>
+                </tr>
+                
+                <!-- Cozinha -->
+                <tr>
+                    <td class="section-header">Cozinha</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="cozinha1"> 
+                        <label for="cozinha1">Instalar janela</label>
+                    </td>
+                    <td class="checkbox-cell"><input type="checkbox"></td>
+                    <td class="checkbox-cell"><input type="checkbox" checked></td>
+                </tr>
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="cozinha2"> 
+                        <label for="cozinha2">Comprar liquidificador</label>
+                    </td>
+                    <td class="checkbox-cell"><input type="checkbox"></td>
+                    <td class="checkbox-cell"><input type="checkbox" checked></td>
+                </tr>
+                <tr class="materials-section">
+                    <td colspan="3" class="materials-header">Materiais:</td>
+                </tr>
+                <tr class="materials-section">
+                    <td class="material-item">
+                        <input type="checkbox" id="cozinha-mat1"> 
+                        <label for="cozinha-mat1">Janela pro vão da cozinha</label>
+                    </td>
+                    <td colspan="2"></td>
+                </tr>
+                <tr class="materials-section">
+                    <td class="material-item">
+                        <input type="checkbox" id="cozinha-mat2"> 
+                        <label for="cozinha-mat2">1 Liquidificador Industrial</label>
+                    </td>
+                    <td colspan="2"></td>
+                </tr>
+                
+                <!-- Fazer parapeito -->
+                <tr>
+                    <td class="section-header">Fazer parapeito no andar dos banheiros</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="parapeito1"> 
+                        <label for="parapeito1">Construir parapeito</label>
+                    </td>
+                    <td class="checkbox-cell"><input type="checkbox"></td>
+                    <td class="checkbox-cell"><input type="checkbox" checked></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
