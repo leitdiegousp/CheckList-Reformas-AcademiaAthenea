@@ -75,8 +75,9 @@
             border-radius: 4px;
             font-family: Arial, sans-serif;
             font-size: 14px;
-            resize: vertical;
+            resize: both;
             min-height: 30px;
+            min-width: 100px;
         }
         
         input[type="text"]:focus, textarea:focus {
@@ -938,6 +939,131 @@
             }
         }
         
+        // ============================================
+        // SALVAR E RESTAURAR TAMANHO DOS CAMPOS
+        // ============================================
+        
+        // Salvar tamanho do campo (largura e altura)
+        async function saveFieldSize(fieldId, width, height) {
+            const sizeData = { width, height };
+            
+            if (!isConfigured) {
+                localStorage.setItem(fieldId + '-size', JSON.stringify(sizeData));
+                return;
+            }
+            
+            try {
+                const { data, error } = await supabase
+                    .from('field_sizes')
+                    .upsert({ 
+                        id: fieldId, 
+                        width: width,
+                        height: height,
+                        updated_at: new Date().toISOString()
+                    }, { 
+                        onConflict: 'id' 
+                    });
+                
+                if (error) {
+                    console.error('Erro ao salvar tamanho:', error);
+                    localStorage.setItem(fieldId + '-size', JSON.stringify(sizeData));
+                }
+            } catch (error) {
+                console.error('Erro ao salvar tamanho:', error);
+                localStorage.setItem(fieldId + '-size', JSON.stringify(sizeData));
+            }
+        }
+        
+        // Carregar tamanho do campo
+        async function loadFieldSize(fieldId) {
+            if (!isConfigured) {
+                const saved = localStorage.getItem(fieldId + '-size');
+                return saved ? JSON.parse(saved) : null;
+            }
+            
+            try {
+                const { data, error } = await supabase
+                    .from('field_sizes')
+                    .select('width, height')
+                    .eq('id', fieldId)
+                    .single();
+                
+                if (error && error.code !== 'PGRST116') {
+                    console.error('Erro ao carregar tamanho:', error);
+                    const saved = localStorage.getItem(fieldId + '-size');
+                    return saved ? JSON.parse(saved) : null;
+                }
+                
+                return data ? { width: data.width, height: data.height } : null;
+            } catch (error) {
+                console.error('Erro ao carregar tamanho:', error);
+                const saved = localStorage.getItem(fieldId + '-size');
+                return saved ? JSON.parse(saved) : null;
+            }
+        }
+        
+        // Restaurar tamanhos de todos os campos
+        async function restoreFieldSizes() {
+            const textareas = document.querySelectorAll('textarea');
+            
+            for (const textarea of textareas) {
+                if (textarea.id) {
+                    const size = await loadFieldSize(textarea.id);
+                    if (size) {
+                        textarea.style.width = size.width + 'px';
+                        textarea.style.height = size.height + 'px';
+                    }
+                }
+            }
+        }
+        
+        // Configurar listeners para detectar redimensionamento
+        function setupResizeListeners() {
+            const textareas = document.querySelectorAll('textarea');
+            
+            textareas.forEach(textarea => {
+                // Usar ResizeObserver para detectar mudanças de tamanho
+                const resizeObserver = new ResizeObserver(entries => {
+                    for (let entry of entries) {
+                        const width = entry.contentRect.width;
+                        const height = entry.contentRect.height;
+                        
+                        // Salvar com debounce
+                        clearTimeout(textarea.resizeTimeout);
+                        textarea.resizeTimeout = setTimeout(() => {
+                            saveFieldSize(textarea.id, width, height);
+                        }, 500);
+                    }
+                });
+                
+                resizeObserver.observe(textarea);
+            });
+        }
+        
+        // Sincronização em tempo real para tamanhos
+        function setupFieldSizeRealtimeSync() {
+            if (!isConfigured) return;
+            
+            const channel = supabase
+                .channel('field-sizes-changes')
+                .on('postgres_changes', 
+                    { 
+                        event: '*', 
+                        schema: 'public', 
+                        table: 'field_sizes' 
+                    }, 
+                    (payload) => {
+                        console.log('Mudança de tamanho detectada:', payload);
+                        const field = document.getElementById(payload.new.id);
+                        if (field) {
+                            field.style.width = payload.new.width + 'px';
+                            field.style.height = payload.new.height + 'px';
+                        }
+                    }
+                )
+                .subscribe();
+        }
+        
         // Configurar listeners para campos de texto
         function setupTextFieldListeners() {
             const textInputs = document.querySelectorAll('input[type="text"], textarea');
@@ -1052,10 +1178,13 @@
             addUniqueIds();
             await restoreCheckboxStates();
             await restoreTextFields();
+            await restoreFieldSizes();
             setupCheckboxListeners();
             setupTextFieldListeners();
+            setupResizeListeners();
             setupRealtimeSync();
             setupTextFieldRealtimeSync();
+            setupFieldSizeRealtimeSync();
             showStatus();
             console.log('✅ Checklist pronto!');
         });

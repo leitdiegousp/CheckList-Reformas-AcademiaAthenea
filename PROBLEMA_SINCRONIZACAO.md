@@ -23,6 +23,8 @@ https://supabase.com/dashboard
 
 #### 4️⃣ Cole este código SQL:
 
+**OBS**: Se der erro "relation text_fields already exists", pule para o passo 4B abaixo! ✅
+
 ```sql
 -- Criar tabela para armazenar campos de texto (Responsável e Observações)
 CREATE TABLE text_fields (
@@ -55,6 +57,41 @@ CREATE INDEX idx_text_fields_updated_at ON text_fields(updated_at DESC);
 -- Habilitar sincronização em tempo real
 ALTER PUBLICATION supabase_realtime ADD TABLE text_fields;
 ```
+
+#### 4️⃣B - SE A TABELA JÁ EXISTE (executar este SQL):
+
+Se você recebeu o erro "relation text_fields already exists", execute ESTE SQL para configurar as permissões:
+
+```sql
+-- Verificar se RLS está ativo
+ALTER TABLE text_fields ENABLE ROW LEVEL SECURITY;
+
+-- Remover políticas antigas se existirem
+DROP POLICY IF EXISTS "Permitir leitura pública text" ON text_fields;
+DROP POLICY IF EXISTS "Permitir escrita pública text" ON text_fields;
+DROP POLICY IF EXISTS "Permitir atualização pública text" ON text_fields;
+
+-- Criar políticas novas
+CREATE POLICY "Permitir leitura pública text" 
+ON text_fields FOR SELECT 
+USING (true);
+
+CREATE POLICY "Permitir escrita pública text" 
+ON text_fields FOR INSERT 
+WITH CHECK (true);
+
+CREATE POLICY "Permitir atualização pública text" 
+ON text_fields FOR UPDATE 
+USING (true);
+
+-- Garantir índice
+CREATE INDEX IF NOT EXISTS idx_text_fields_updated_at ON text_fields(updated_at DESC);
+
+-- Garantir realtime
+ALTER PUBLICATION supabase_realtime ADD TABLE text_fields;
+```
+
+**Execute o SQL acima e ignore qualquer erro sobre "policy already exists" ou "table already in publication"**
 
 #### 5️⃣ Executar:
 - Clique no botão **"Run"** (ou pressione `Ctrl+Enter`)
