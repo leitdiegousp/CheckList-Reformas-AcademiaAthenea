@@ -103,6 +103,99 @@
             padding-left: 50px;
         }
         
+        /* Estilos para Mobile */
+        @media screen and (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .container {
+                padding: 10px;
+                overflow-x: auto;
+            }
+            
+            h1 {
+                font-size: 18px;
+                margin-bottom: 15px;
+            }
+            
+            table {
+                font-size: 12px;
+                min-width: 800px;
+            }
+            
+            th, td {
+                padding: 8px 4px;
+            }
+            
+            .checkbox-cell {
+                width: 60px;
+                min-width: 60px;
+            }
+            
+            .text-cell {
+                width: 150px;
+                min-width: 150px;
+            }
+            
+            input[type="text"], textarea {
+                font-size: 16px; /* Evita zoom no iOS */
+                padding: 10px;
+                min-height: 60px;
+                min-width: 140px;
+                /* Força aparecimento do handle de resize no mobile */
+                resize: both;
+                overflow: auto;
+            }
+            
+            /* Aumenta a área de redimensionamento */
+            textarea::-webkit-resizer {
+                border: 2px solid #4CAF50;
+                background: #4CAF50;
+                width: 20px;
+                height: 20px;
+            }
+            
+            .action-cell {
+                padding-left: 15px;
+                min-width: 200px;
+            }
+            
+            input[type="checkbox"] {
+                width: 24px;
+                height: 24px;
+            }
+            
+            .materials-header {
+                padding-left: 15px;
+            }
+            
+            .material-item {
+                padding-left: 25px;
+            }
+        }
+        
+        /* Estilos específicos para telas muito pequenas (< 480px) */
+        @media screen and (max-width: 480px) {
+            h1 {
+                font-size: 16px;
+            }
+            
+            table {
+                min-width: 900px; /* Força scroll horizontal */
+            }
+            
+            .text-cell {
+                width: 180px;
+                min-width: 180px;
+            }
+            
+            input[type="text"], textarea {
+                min-height: 80px; /* Maior no mobile muito pequeno */
+                font-size: 16px;
+            }
+        }
+        
         @media print {
             body {
                 background-color: white;
