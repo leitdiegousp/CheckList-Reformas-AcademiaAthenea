@@ -351,6 +351,74 @@
                 box-shadow: none;
             }
         }
+        
+        /* Estilos para os ícones de prioridade */
+        .priority-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            background: linear-gradient(135deg, #FF9800 0%, #FF6F00 100%);
+            border-radius: 50%;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+            margin-right: 8px;
+            box-shadow: 0 2px 8px rgba(255, 152, 0, 0.4);
+            border: 2px solid #FFB74D;
+            vertical-align: middle;
+        }
+        
+        /* Legenda */
+        .legend {
+            background: linear-gradient(135deg, #FFF3E0 0%, #FFE0B2 100%);
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            border-left: 5px solid #FF9800;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .legend-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #FF9800 0%, #FF6F00 100%);
+            border-radius: 50%;
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+            box-shadow: 0 2px 8px rgba(255, 152, 0, 0.4);
+            border: 2px solid #FFB74D;
+            flex-shrink: 0;
+        }
+        
+        .legend-text {
+            color: #E65100;
+            font-weight: 600;
+            font-size: 15px;
+            line-height: 1.4;
+        }
+        
+        @media screen and (max-width: 768px) {
+            .legend {
+                flex-direction: column;
+                text-align: center;
+                gap: 10px;
+            }
+            
+            .priority-badge {
+                width: 26px;
+                height: 26px;
+                font-size: 13px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -358,6 +426,11 @@
         <div class="header">
             <img src="logo-athenea.png" alt="Logo Academia Athenea" class="logo">
             <h1>Check List Reformas, Serviços e Consertos - Academia Athenea</h1>
+        </div>
+        
+        <div class="legend">
+            <span class="legend-icon">1</span>
+            <span class="legend-text">Os números laranjas indicam a ordem de prioridade das ações mais importantes</span>
         </div>
         
         <table>
@@ -378,7 +451,7 @@
                 <tr>
                     <td class="action-cell">
                         <input type="checkbox" id="fossa1"> 
-                        <label for="fossa1">Limpar toda a fossa (Serviço Terceirizado)</label>
+                        <label for="fossa1"><span class="priority-badge">1</span>Limpar toda a fossa (Serviço Terceirizado)</label>
                     </td>
                     <td class="checkbox-cell"><input type="checkbox" checked></td>
                     <td class="checkbox-cell"><input type="checkbox"></td>
@@ -403,7 +476,7 @@
                 <tr>
                     <td class="action-cell">
                         <input type="checkbox" id="eletrica1"> 
-                        <label for="eletrica1">Conserto da caixa de energia e cabos do poste</label>
+                        <label for="eletrica1"><span class="priority-badge">2</span>Conserto da caixa de energia e cabos do poste</label>
                     </td>
                     <td class="checkbox-cell"><input type="checkbox" checked></td>
                     <td class="checkbox-cell"><input type="checkbox"></td>
@@ -458,7 +531,7 @@
                 <tr>
                     <td class="action-cell">
                         <input type="checkbox" id="eletrica2"> 
-                        <label for="eletrica2">Consertar tomadas, lâmpadas e fiações</label>
+                        <label for="eletrica2"><span class="priority-badge">14</span>Consertar tomadas, lâmpadas e fiações</label>
                     </td>
                     <td class="checkbox-cell"><input type="checkbox"></td>
                     <td class="checkbox-cell"><input type="checkbox" checked></td>
@@ -473,7 +546,7 @@
                 <tr>
                     <td class="action-cell">
                         <input type="checkbox" id="telhado2"> 
-                        <label for="telhado2">Madeiramento telhado banheiros</label>
+                        <label for="telhado2"><span class="priority-badge">3</span>Madeiramento telhado banheiros</label>
                     </td>
                     <td class="checkbox-cell"><input type="checkbox" checked></td>
                     <td class="checkbox-cell"><input type="checkbox"></td>
@@ -519,7 +592,7 @@
                 <tr>
                     <td class="action-cell">
                         <input type="checkbox" id="pia1"> 
-                        <label for="pia1">Trocar pia de fora pela doada</label>
+                        <label for="pia1"><span class="priority-badge">4</span>Trocar pia de fora pela doada</label>
                     </td>
                     <td class="checkbox-cell"><input type="checkbox" checked></td>
                     <td class="checkbox-cell"><input type="checkbox"></td>
@@ -529,7 +602,7 @@
                 <tr>
                     <td class="action-cell">
                         <input type="checkbox" id="pia2"> 
-                        <label for="pia2">Trocar sifão do tanque (vazando)</label>
+                        <label for="pia2"><span class="priority-badge">5</span>Trocar sifão do tanque (vazando)</label>
                     </td>
                     <td class="checkbox-cell"><input type="checkbox" checked></td>
                     <td class="checkbox-cell"><input type="checkbox"></td>
@@ -571,7 +644,7 @@
                 <tr>
                     <td class="action-cell">
                         <input type="checkbox" id="colchao1"> 
-                        <label for="colchao1">Encapar colchões</label>
+                        <label for="colchao1"><span class="priority-badge">9</span>Encapar colchões</label>
                     </td>
                     <td class="checkbox-cell"><input type="checkbox" checked></td>
                     <td class="checkbox-cell"><input type="checkbox"></td>
@@ -581,7 +654,7 @@
                 <tr>
                     <td class="action-cell">
                         <input type="checkbox" id="colchao2"> 
-                        <label for="colchao2">Tirar mofo e secar colchões</label>
+                        <label for="colchao2"><span class="priority-badge">8</span>Tirar mofo e secar colchões</label>
                     </td>
                     <td class="checkbox-cell"><input type="checkbox" checked></td>
                     <td class="checkbox-cell"><input type="checkbox"></td>
@@ -623,7 +696,7 @@
                 <tr>
                     <td class="action-cell">
                         <input type="checkbox" id="forro1"> 
-                        <label for="forro1">Instalar forro</label>
+                        <label for="forro1"><span class="priority-badge">7</span>Instalar forro</label>
                     </td>
                     <td class="checkbox-cell"><input type="checkbox" checked></td>
                     <td class="checkbox-cell"><input type="checkbox"></td>
@@ -662,7 +735,7 @@
                 <tr>
                     <td class="action-cell">
                         <input type="checkbox" id="banheiro1"> 
-                        <label for="banheiro1">Reformar banheiros</label>
+                        <label for="banheiro1"><span class="priority-badge">6</span>Reformar banheiros</label>
                     </td>
                     <td class="checkbox-cell"><input type="checkbox" checked></td>
                     <td class="checkbox-cell"><input type="checkbox"></td>
@@ -734,7 +807,7 @@
                 <tr>
                     <td class="action-cell">
                         <input type="checkbox" id="lago1"> 
-                        <label for="lago1">Limpar Lago</label>
+                        <label for="lago1"><span class="priority-badge">16</span>Limpar Lago</label>
                     </td>
                     <td class="checkbox-cell"><input type="checkbox" checked></td>
                     <td class="checkbox-cell"><input type="checkbox"></td>
@@ -759,7 +832,7 @@
                 <tr>
                     <td class="action-cell">
                         <input type="checkbox" id="limpeza1"> 
-                        <label for="limpeza1">Limpar canaleta que escorre água para a Athenea e ambiente entre Cozinha e Estufa</label>
+                        <label for="limpeza1"><span class="priority-badge">15</span>Limpar canaleta que escorre água para a Athenea e ambiente entre Cozinha e Estufa</label>
                     </td>
                     <td class="checkbox-cell"><input type="checkbox" checked></td>
                     <td class="checkbox-cell"><input type="checkbox"></td>
@@ -769,7 +842,7 @@
                 <tr>
                     <td class="action-cell">
                         <input type="checkbox" id="limpeza2"> 
-                        <label for="limpeza2">Instalar varais na Lavanderia ao Lado do Banheiro Feminino</label>
+                        <label for="limpeza2"><span class="priority-badge">13</span>Instalar varais na Lavanderia ao Lado do Banheiro Feminino</label>
                     </td>
                     <td class="checkbox-cell"><input type="checkbox" checked></td>
                     <td class="checkbox-cell"><input type="checkbox"></td>
@@ -779,7 +852,7 @@
                 <tr>
                     <td class="action-cell">
                         <input type="checkbox" id="limpeza3"> 
-                        <label for="limpeza3">Limpeza atrás dos banheiros (tirar entulhos)</label>
+                        <label for="limpeza3"><span class="priority-badge">21</span>Limpeza atrás dos banheiros (tirar entulhos)</label>
                     </td>
                     <td class="checkbox-cell"><input type="checkbox" checked></td>
                     <td class="checkbox-cell"><input type="checkbox"></td>
@@ -791,7 +864,7 @@
                 <tr>
                     <td class="action-cell">
                         <input type="checkbox" id="curso1"> 
-                        <label for="curso1">Limpeza e rejunte escada da Academia</label>
+                        <label for="curso1"><span class="priority-badge">19</span>Limpeza e rejunte escada da Academia</label>
                     </td>
                     <td class="checkbox-cell"><input type="checkbox" checked></td>
                     <td class="checkbox-cell"><input type="checkbox"></td>
@@ -801,7 +874,7 @@
                 <tr>
                     <td class="action-cell">
                         <input type="checkbox" id="curso2"> 
-                        <label for="curso2">Retirada dos limos, manchas de sujeira</label>
+                        <label for="curso2"><span class="priority-badge">20</span>Retirada dos limos, manchas de sujeira</label>
                     </td>
                     <td class="checkbox-cell"><input type="checkbox" checked></td>
                     <td class="checkbox-cell"><input type="checkbox"></td>
@@ -811,7 +884,7 @@
                 <tr>
                     <td class="action-cell">
                         <input type="checkbox" id="limpeza4"> 
-                        <label for="limpeza4">Limpar e pintar Faixada entrada Athenea</label>
+                        <label for="limpeza4"><span class="priority-badge">11</span>Limpar e pintar Faixada entrada Athenea</label>
                     </td>
                     <td class="checkbox-cell"><input type="checkbox"></td>
                     <td class="checkbox-cell"><input type="checkbox" checked></td>
@@ -821,7 +894,7 @@
                 <tr>
                     <td class="action-cell">
                         <input type="checkbox" id="limpeza5"> 
-                        <label for="limpeza5">Pintura antecâmara e sala de vestes Zeus</label>
+                        <label for="limpeza5"><span class="priority-badge">12</span>Pintura antecâmara e sala de vestes Zeus</label>
                     </td>
                     <td class="checkbox-cell"><input type="checkbox"></td>
                     <td class="checkbox-cell"><input type="checkbox" checked></td>
@@ -856,7 +929,7 @@
                 <tr>
                     <td class="action-cell">
                         <input type="checkbox" id="externa3"> 
-                        <label for="externa3">Levar os lixos, entulhos e velharias na Carretinha</label>
+                        <label for="externa3"><span class="priority-badge">10</span>Levar os lixos, entulhos e velharias na Carretinha</label>
                     </td>
                     <td class="checkbox-cell"><input type="checkbox" checked></td>
                     <td class="checkbox-cell"><input type="checkbox"></td>
@@ -946,7 +1019,7 @@
                 <tr>
                     <td class="action-cell">
                         <input type="checkbox" id="santuario3"> 
-                        <label for="santuario3">Limpar e Podar a estrada até o Santuário</label>
+                        <label for="santuario3"><span class="priority-badge">18</span>Limpar e Podar a estrada até o Santuário</label>
                     </td>
                     <td class="checkbox-cell"><input type="checkbox"></td>
                     <td class="checkbox-cell"><input type="checkbox" checked></td>
@@ -976,7 +1049,7 @@
                 <tr>
                     <td class="action-cell">
                         <input type="checkbox" id="santuario6"> 
-                        <label for="santuario6">Tirar mofo e limpar cúpula de vidro</label>
+                        <label for="santuario6"><span class="priority-badge">17</span>Tirar mofo e limpar cúpula de vidro</label>
                     </td>
                     <td class="checkbox-cell"><input type="checkbox"></td>
                     <td class="checkbox-cell"><input type="checkbox" checked></td>
@@ -1114,6 +1187,16 @@
                     <td class="checkbox-cell"><input type="checkbox"></td>
                     <td class="text-cell"><textarea id="mutirao9-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
                     <td class="text-cell"><textarea id="mutirao9-observacoes" placeholder="Observações" rows="1"></textarea></td>
+                </tr>
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="mutirao10"> 
+                        <label for="mutirao10">Cozinhar na Convivência Estadual</label>
+                    </td>
+                    <td class="checkbox-cell"><input type="checkbox" checked></td>
+                    <td class="checkbox-cell"><input type="checkbox"></td>
+                    <td class="text-cell"><textarea id="mutirao10-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
+                    <td class="text-cell"><textarea id="mutirao10-observacoes" placeholder="Observações" rows="1"></textarea></td>
                 </tr>
             </tbody>
         </table>
