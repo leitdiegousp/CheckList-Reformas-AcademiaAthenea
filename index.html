@@ -343,6 +343,30 @@
             }
         }
         
+        /* ============================================ */
+        /* ANIMAÇÕES PARA INDICADORES DE SINCRONIZAÇÃO */
+        /* ============================================ */
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+        
         @media print {
             body {
                 background-color: white;
@@ -1301,13 +1325,15 @@
             });
         }
         
-        // Salvar estado no Supabase
+        // Salvar estado no Supabase (sincronização IMEDIATA)
         async function saveCheckboxState(checkboxId, checked) {
             console.log(`💾 Salvando ${checkboxId}: ${checked}`);
+            showSavingIndicator(); // Feedback visual instantâneo
             
             if (!isConfigured || !supabase) {
                 // Fallback para localStorage se não configurado
                 localStorage.setItem(checkboxId, checked);
+                hideSavingIndicator();
                 return;
             }
             
@@ -1326,13 +1352,18 @@
                     console.error('❌ Erro ao salvar checkbox:', error.message);
                     // Fallback para localStorage
                     localStorage.setItem(checkboxId, checked);
+                    showErrorIndicator();
                 } else {
                     console.log(`✅ Checkbox ${checkboxId} salvo com sucesso`);
+                    showSuccessIndicator();
                 }
             } catch (error) {
                 console.error('❌ Erro ao salvar checkbox:', error);
                 localStorage.setItem(checkboxId, checked);
+                showErrorIndicator();
             }
+            
+            setTimeout(hideSavingIndicator, 1000);
         }
         
         // Carregar estado do Supabase
@@ -1392,12 +1423,14 @@
         // FUNÇÕES PARA CAMPOS DE TEXTO
         // ============================================
         
-        // Salvar campo de texto no Supabase
+        // Salvar campo de texto no Supabase (sincronização rápida)
         async function saveTextField(fieldId, value) {
             console.log(`💾 Salvando texto ${fieldId}`);
+            showSavingIndicator();
             
             if (!isConfigured || !supabase) {
                 localStorage.setItem(fieldId, value);
+                hideSavingIndicator();
                 return;
             }
             
@@ -1415,13 +1448,18 @@
                 if (error) {
                     console.error('❌ Erro ao salvar texto:', error.message);
                     localStorage.setItem(fieldId, value);
+                    showErrorIndicator();
                 } else {
                     console.log(`✅ Texto ${fieldId} salvo`);
+                    showSuccessIndicator();
                 }
             } catch (error) {
                 console.error('❌ Erro ao salvar texto:', error);
                 localStorage.setItem(fieldId, value);
+                showErrorIndicator();
             }
+            
+            setTimeout(hideSavingIndicator, 1000);
         }
         
         // Carregar campo de texto do Supabase
@@ -1598,14 +1636,14 @@
             const textInputs = document.querySelectorAll('input[type="text"], textarea');
             
             textInputs.forEach(input => {
-                // Debounce para evitar salvar a cada tecla
+                // Debounce para evitar salvar a cada tecla (reduzido para 300ms = mais rápido)
                 let timeout = null;
                 
                 input.addEventListener('input', function() {
                     clearTimeout(timeout);
                     timeout = setTimeout(() => {
                         saveTextField(this.id, this.value);
-                    }, 500); // Aguarda 500ms após parar de digitar
+                    }, 300); // Aguarda 300ms após parar de digitar (antes era 500ms)
                 });
                 
                 // Salvar imediatamente quando sair do campo
@@ -1721,6 +1759,65 @@
             });
             
             document.body.appendChild(syncButton);
+        }
+        
+        // ============================================
+        // INDICADORES VISUAIS DE SINCRONIZAÇÃO
+        // ============================================
+        
+        // Mostrar indicador de salvamento
+        function showSavingIndicator() {
+            let indicator = document.getElementById('saving-indicator');
+            if (!indicator) {
+                indicator = document.createElement('div');
+                indicator.id = 'saving-indicator';
+                indicator.style.cssText = `
+                    position: fixed;
+                    top: 10px;
+                    right: 10px;
+                    padding: 10px 20px;
+                    background: #2196F3;
+                    color: white;
+                    border-radius: 5px;
+                    font-weight: bold;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+                    z-index: 10000;
+                    display: none;
+                    animation: fadeIn 0.3s;
+                `;
+                document.body.appendChild(indicator);
+            }
+            indicator.innerHTML = '💾 Salvando...';
+            indicator.style.display = 'block';
+            indicator.style.background = '#2196F3';
+        }
+        
+        // Mostrar indicador de sucesso
+        function showSuccessIndicator() {
+            const indicator = document.getElementById('saving-indicator');
+            if (indicator) {
+                indicator.innerHTML = '✅ Salvo!';
+                indicator.style.background = '#4CAF50';
+            }
+        }
+        
+        // Mostrar indicador de erro
+        function showErrorIndicator() {
+            const indicator = document.getElementById('saving-indicator');
+            if (indicator) {
+                indicator.innerHTML = '⚠️ Erro (salvo localmente)';
+                indicator.style.background = '#FF9800';
+            }
+        }
+        
+        // Esconder indicador
+        function hideSavingIndicator() {
+            const indicator = document.getElementById('saving-indicator');
+            if (indicator) {
+                setTimeout(() => {
+                    indicator.style.display = 'none';
+                }, 500);
+            }
         }
         
         // Indicador de status
