@@ -394,6 +394,66 @@
             vertical-align: middle;
         }
         
+        /* Estilos para tarefas concluídas */
+        .task-completed {
+            text-decoration: line-through;
+            opacity: 0.6;
+            color: #757575;
+        }
+        
+        .task-completed::after {
+            content: " ✅ Concluída";
+            text-decoration: none;
+            color: #4CAF50;
+            font-weight: bold;
+            font-size: 14px;
+            margin-left: 10px;
+        }
+        
+        /* Estilo para dropdown de prioridade */
+        .priority-dropdown {
+            width: 100%;
+            padding: 8px;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: 600;
+            background-color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .priority-dropdown:focus {
+            outline: none;
+            border-color: #2196F3;
+            box-shadow: 0 0 5px rgba(33, 150, 243, 0.3);
+        }
+        
+        .priority-dropdown option[value="urgente"] {
+            background-color: #ffebee;
+            color: #d32f2f;
+            font-weight: bold;
+        }
+        
+        .priority-dropdown option[value="nao-urgente"] {
+            background-color: #e8f5e9;
+            color: #388e3c;
+            font-weight: bold;
+        }
+        
+        /* Cores do dropdown baseado na seleção */
+        .priority-dropdown.urgente {
+            background-color: #ffebee;
+            color: #d32f2f;
+            border-color: #ef5350;
+        }
+        
+        .priority-dropdown.nao-urgente {
+            background-color: #e8f5e9;
+            color: #388e3c;
+            border-color: #66bb6a;
+        }
+        
         /* Legenda */
         .legend {
             background: linear-gradient(135deg, #FFF3E0 0%, #FFE0B2 100%);
@@ -474,8 +534,7 @@
             <thead>
                 <tr>
                     <th>Ação</th>
-                    <th class="checkbox-cell">Urgente</th>
-                    <th class="checkbox-cell">Não Urgente</th>
+                    <th style="width: 150px;">Prioridade</th>
                     <th class="text-cell">Responsável</th>
                     <th class="text-cell">Observações</th>
                 </tr>
@@ -490,8 +549,13 @@
                         <input type="checkbox" id="fossa1"> 
                         <label for="fossa1"><span class="priority-badge">1</span>Limpar toda a fossa (Serviço Terceirizado)</label>
                     </td>
-                    <td class="checkbox-cell"><input type="checkbox" checked></td>
-                    <td class="checkbox-cell"><input type="checkbox"></td>
+                    <td>
+                        <select class="priority-dropdown urgente" id="fossa1-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente" selected>Urgente</option>
+                            <option value="nao-urgente">Não Urgente</option>
+                        </select>
+                    </td>
                     <td class="text-cell"><textarea id="fossa1-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
                     <td class="text-cell"><textarea id="fossa1-observacoes" placeholder="Observações" rows="1"></textarea></td>
                 </tr>
@@ -500,8 +564,13 @@
                         <input type="checkbox" id="fossa2"> 
                         <label for="fossa2"><span class="priority-badge">2</span>Fazer a Tampa fossa</label>
                     </td>
-                    <td class="checkbox-cell"><input type="checkbox" checked></td>
-                    <td class="checkbox-cell"><input type="checkbox"></td>
+                    <td>
+                        <select class="priority-dropdown urgente" id="fossa2-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente" selected>Urgente</option>
+                            <option value="nao-urgente">Não Urgente</option>
+                        </select>
+                    </td>
                     <td class="text-cell"><textarea id="fossa2-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
                     <td class="text-cell"><textarea id="fossa2-observacoes" placeholder="Observações" rows="1"></textarea></td>
                 </tr>
@@ -515,8 +584,13 @@
                         <input type="checkbox" id="eletrica1"> 
                         <label for="eletrica1"><span class="priority-badge">3</span>Conserto da caixa de energia e cabos do poste</label>
                     </td>
-                    <td class="checkbox-cell"><input type="checkbox" checked></td>
-                    <td class="checkbox-cell"><input type="checkbox"></td>
+                    <td>
+                        <select class="priority-dropdown urgente" id="fossa1-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente"selected>Urgente</option>
+                            <option value="nao-urgente">Não Urgente</option>
+                        </select>
+                    </td>
                     <td class="text-cell"><textarea id="eletrica1-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
                     <td class="text-cell"><textarea id="eletrica1-observacoes" placeholder="Observações" rows="1"></textarea></td>
                 </tr>
@@ -570,8 +644,13 @@
                         <input type="checkbox" id="eletrica2"> 
                         <label for="eletrica2"><span class="priority-badge">19</span>Consertar tomadas, lâmpadas e fiações (banheiro, peregrinos, cozinha, refeitório, lavanderia etc)</label>
                     </td>
-                    <td class="checkbox-cell"><input type="checkbox"></td>
-                    <td class="checkbox-cell"><input type="checkbox" checked></td>
+                    <td>
+                        <select class="priority-dropdown nao-urgente" id="eletrica2-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente">Urgente</option>
+                            <option value="nao-urgente" selected>Não Urgente</option>
+                        </select>
+                    </td>
                     <td class="text-cell"><textarea id="eletrica2-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
                     <td class="text-cell"><textarea id="eletrica2-observacoes" placeholder="Observações" rows="1"></textarea></td>
                 </tr>
@@ -585,8 +664,13 @@
                         <input type="checkbox" id="telhado2"> 
                         <label for="telhado2"><span class="priority-badge">4</span>Madeiramento telhado banheiros</label>
                     </td>
-                    <td class="checkbox-cell"><input type="checkbox" checked></td>
-                    <td class="checkbox-cell"><input type="checkbox"></td>
+                    <td>
+                        <select class="priority-dropdown urgente" id="telhado2-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente"selected>Urgente</option>
+                            <option value="nao-urgente">Não Urgente</option>
+                        </select>
+                    </td>
                     <td class="text-cell"><textarea id="telhado2-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
                     <td class="text-cell"><textarea id="telhado2-observacoes" placeholder="Observações" rows="1"></textarea></td>
                 </tr>
@@ -616,8 +700,13 @@
                         <input type="checkbox" id="telhado1"> 
                         <label for="telhado1">Terminar pilastra</label>
                     </td>
-                    <td class="checkbox-cell"><input type="checkbox"></td>
-                    <td class="checkbox-cell"><input type="checkbox" checked></td>
+                    <td>
+                        <select class="priority-dropdown nao-urgente" id="telhado1-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente">Urgente</option>
+                            <option value="nao-urgente" selected>Não Urgente</option>
+                        </select>
+                    </td>
                     <td class="text-cell"><textarea id="telhado1-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
                     <td class="text-cell"><textarea id="telhado1-observacoes" placeholder="Observações" rows="1"></textarea></td>
                 </tr>
@@ -631,8 +720,13 @@
                         <input type="checkbox" id="pia1"> 
                         <label for="pia1"><span class="priority-badge">5</span>Trocar pia de fora pela doada</label>
                     </td>
-                    <td class="checkbox-cell"><input type="checkbox" checked></td>
-                    <td class="checkbox-cell"><input type="checkbox"></td>
+                    <td>
+                        <select class="priority-dropdown urgente" id="pia1-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente"selected>Urgente</option>
+                            <option value="nao-urgente">Não Urgente</option>
+                        </select>
+                    </td>
                     <td class="text-cell"><textarea id="pia1-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
                     <td class="text-cell"><textarea id="pia1-observacoes" placeholder="Observações" rows="1"></textarea></td>
                 </tr>
@@ -641,8 +735,13 @@
                         <input type="checkbox" id="pia2"> 
                         <label for="pia2"><span class="priority-badge">6</span>Trocar sifão do tanque (vazando)</label>
                     </td>
-                    <td class="checkbox-cell"><input type="checkbox" checked></td>
-                    <td class="checkbox-cell"><input type="checkbox"></td>
+                    <td>
+                        <select class="priority-dropdown urgente" id="pia2-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente"selected>Urgente</option>
+                            <option value="nao-urgente">Não Urgente</option>
+                        </select>
+                    </td>
                     <td class="text-cell"><textarea id="pia2-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
                     <td class="text-cell"><textarea id="pia2-observacoes" placeholder="Observações" rows="1"></textarea></td>
                 </tr>
@@ -682,8 +781,13 @@
                         <input type="checkbox" id="banheiro2"> 
                         <label for="banheiro2"><span class="priority-badge">7</span>Colocar piso e azulejo em áreas faltantes</label>
                     </td>
-                    <td class="checkbox-cell"><input type="checkbox" checked></td>
-                    <td class="checkbox-cell"><input type="checkbox"></td>
+                    <td>
+                        <select class="priority-dropdown urgente" id="banheiro2-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente"selected>Urgente</option>
+                            <option value="nao-urgente">Não Urgente</option>
+                        </select>
+                    </td>
                     <td class="text-cell"><textarea id="banheiro2-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
                     <td class="text-cell"><textarea id="banheiro2-observacoes" placeholder="Observações" rows="1"></textarea></td>
                 </tr>
@@ -692,8 +796,13 @@
                         <input type="checkbox" id="banheiro3"> 
                         <label for="banheiro3"><span class="priority-badge">8</span>Rebocar e passar massa banheiros masculino</label>
                     </td>
-                    <td class="checkbox-cell"><input type="checkbox" checked></td>
-                    <td class="checkbox-cell"><input type="checkbox"></td>
+                    <td>
+                        <select class="priority-dropdown urgente" id="banheiro3-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente"selected>Urgente</option>
+                            <option value="nao-urgente">Não Urgente</option>
+                        </select>
+                    </td>
                     <td class="text-cell"><textarea id="banheiro3-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
                     <td class="text-cell"><textarea id="banheiro3-observacoes" placeholder="Observações" rows="1"></textarea></td>
                 </tr>
@@ -702,8 +811,13 @@
                         <input type="checkbox" id="banheiro4"> 
                         <label for="banheiro4"><span class="priority-badge">9</span>Pintar banheiros masculino e feminino</label>
                     </td>
-                    <td class="checkbox-cell"><input type="checkbox" checked></td>
-                    <td class="checkbox-cell"><input type="checkbox"></td>
+                    <td>
+                        <select class="priority-dropdown urgente" id="banheiro4-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente"selected>Urgente</option>
+                            <option value="nao-urgente">Não Urgente</option>
+                        </select>
+                    </td>
                     <td class="text-cell"><textarea id="banheiro4-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
                     <td class="text-cell"><textarea id="banheiro4-observacoes" placeholder="Observações" rows="1"></textarea></td>
                 </tr>
@@ -712,8 +826,13 @@
                         <input type="checkbox" id="banheiro5"> 
                         <label for="banheiro5"><span class="priority-badge">10</span>Trocar kit acionador de caixas acopladas 2 vasos sanitários</label>
                     </td>
-                    <td class="checkbox-cell"><input type="checkbox" checked></td>
-                    <td class="checkbox-cell"><input type="checkbox"></td>
+                    <td>
+                        <select class="priority-dropdown urgente" id="banheiro5-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente"selected>Urgente</option>
+                            <option value="nao-urgente">Não Urgente</option>
+                        </select>
+                    </td>
                     <td class="text-cell"><textarea id="banheiro5-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
                     <td class="text-cell"><textarea id="banheiro5-observacoes" placeholder="Observações" rows="1"></textarea></td>
                 </tr>
@@ -722,8 +841,13 @@
                         <input type="checkbox" id="banheiro6"> 
                         <label for="banheiro6"><span class="priority-badge">11</span>Instalar 2 chuveiros</label>
                     </td>
-                    <td class="checkbox-cell"><input type="checkbox" checked></td>
-                    <td class="checkbox-cell"><input type="checkbox"></td>
+                    <td>
+                        <select class="priority-dropdown urgente" id="banheiro6-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente"selected>Urgente</option>
+                            <option value="nao-urgente">Não Urgente</option>
+                        </select>
+                    </td>
                     <td class="text-cell"><textarea id="banheiro6-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
                     <td class="text-cell"><textarea id="banheiro6-observacoes" placeholder="Observações" rows="1"></textarea></td>
                 </tr>
@@ -796,8 +920,13 @@
                         <input type="checkbox" id="forro1"> 
                         <label for="forro1"><span class="priority-badge">12</span>Instalar forro</label>
                     </td>
-                    <td class="checkbox-cell"><input type="checkbox" checked></td>
-                    <td class="checkbox-cell"><input type="checkbox"></td>
+                    <td>
+                        <select class="priority-dropdown urgente" id="forro1-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente"selected>Urgente</option>
+                            <option value="nao-urgente">Não Urgente</option>
+                        </select>
+                    </td>
                     <td class="text-cell"><textarea id="forro1-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
                     <td class="text-cell"><textarea id="forro1-observacoes" placeholder="Observações" rows="1"></textarea></td>
                 </tr>
@@ -822,8 +951,13 @@
                         <input type="checkbox" id="colchao2"> 
                         <label for="colchao2"><span class="priority-badge">13</span>Tirar mofo e secar colchões</label>
                     </td>
-                    <td class="checkbox-cell"><input type="checkbox" checked></td>
-                    <td class="checkbox-cell"><input type="checkbox"></td>
+                    <td>
+                        <select class="priority-dropdown urgente" id="colchao2-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente"selected>Urgente</option>
+                            <option value="nao-urgente">Não Urgente</option>
+                        </select>
+                    </td>
                     <td class="text-cell"><textarea id="colchao2-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
                     <td class="text-cell"><textarea id="colchao2-observacoes" placeholder="Observações" rows="1"></textarea></td>
                 </tr>
@@ -832,8 +966,13 @@
                         <input type="checkbox" id="colchao1"> 
                         <label for="colchao1"><span class="priority-badge">14</span>Encapar colchões</label>
                     </td>
-                    <td class="checkbox-cell"><input type="checkbox" checked></td>
-                    <td class="checkbox-cell"><input type="checkbox"></td>
+                    <td>
+                        <select class="priority-dropdown urgente" id="colchao1-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente"selected>Urgente</option>
+                            <option value="nao-urgente">Não Urgente</option>
+                        </select>
+                    </td>
                     <td class="text-cell"><textarea id="colchao1-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
                     <td class="text-cell"><textarea id="colchao1-observacoes" placeholder="Observações" rows="1"></textarea></td>
                 </tr>
@@ -873,8 +1012,13 @@
                         <input type="checkbox" id="limpeza1"> 
                         <label for="limpeza1"><span class="priority-badge">16</span>Limpar canaleta que escorre água para a Athenea e ambiente entre Cozinha e Estufa</label>
                     </td>
-                    <td class="checkbox-cell"><input type="checkbox" checked></td>
-                    <td class="checkbox-cell"><input type="checkbox"></td>
+                    <td>
+                        <select class="priority-dropdown urgente" id="limpeza1-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente"selected>Urgente</option>
+                            <option value="nao-urgente">Não Urgente</option>
+                        </select>
+                    </td>
                     <td class="text-cell"><textarea id="limpeza1-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
                     <td class="text-cell"><textarea id="limpeza1-observacoes" placeholder="Observações" rows="1"></textarea></td>
                 </tr>
@@ -883,8 +1027,13 @@
                         <input type="checkbox" id="limpeza2"> 
                         <label for="limpeza2"><span class="priority-badge">15</span>Instalar varais na Lavanderia ao Lado do Banheiro Feminino</label>
                     </td>
-                    <td class="checkbox-cell"><input type="checkbox" checked></td>
-                    <td class="checkbox-cell"><input type="checkbox"></td>
+                    <td>
+                        <select class="priority-dropdown urgente" id="limpeza2-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente"selected>Urgente</option>
+                            <option value="nao-urgente">Não Urgente</option>
+                        </select>
+                    </td>
                     <td class="text-cell"><textarea id="limpeza2-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
                     <td class="text-cell"><textarea id="limpeza2-observacoes" placeholder="Observações" rows="1"></textarea></td>
                 </tr>
@@ -893,8 +1042,13 @@
                         <input type="checkbox" id="limpeza3"> 
                         <label for="limpeza3"><span class="priority-badge">28</span>Limpeza atrás dos banheiros (tirar entulhos)</label>
                     </td>
-                    <td class="checkbox-cell"><input type="checkbox" checked></td>
-                    <td class="checkbox-cell"><input type="checkbox"></td>
+                    <td>
+                        <select class="priority-dropdown urgente" id="limpeza3-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente"selected>Urgente</option>
+                            <option value="nao-urgente">Não Urgente</option>
+                        </select>
+                    </td>
                     <td class="text-cell"><textarea id="limpeza3-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
                     <td class="text-cell"><textarea id="limpeza3-observacoes" placeholder="Observações" rows="1"></textarea></td>
                 </tr>
@@ -904,8 +1058,13 @@
                         <input type="checkbox" id="curso1"> 
                         <label for="curso1"><span class="priority-badge">23</span>Limpeza e rejunte escada da Academia</label>
                     </td>
-                    <td class="checkbox-cell"><input type="checkbox" checked></td>
-                    <td class="checkbox-cell"><input type="checkbox"></td>
+                    <td>
+                        <select class="priority-dropdown urgente" id="curso1-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente"selected>Urgente</option>
+                            <option value="nao-urgente">Não Urgente</option>
+                        </select>
+                    </td>
                     <td class="text-cell"><textarea id="curso1-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
                     <td class="text-cell"><textarea id="curso1-observacoes" placeholder="Observações" rows="1"></textarea></td>
                 </tr>
@@ -914,8 +1073,13 @@
                         <input type="checkbox" id="curso2"> 
                         <label for="curso2"><span class="priority-badge">24</span>Retirada dos limos, manchas de sujeira</label>
                     </td>
-                    <td class="checkbox-cell"><input type="checkbox" checked></td>
-                    <td class="checkbox-cell"><input type="checkbox"></td>
+                    <td>
+                        <select class="priority-dropdown urgente" id="curso2-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente"selected>Urgente</option>
+                            <option value="nao-urgente">Não Urgente</option>
+                        </select>
+                    </td>
                     <td class="text-cell"><textarea id="curso2-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
                     <td class="text-cell"><textarea id="curso2-observacoes" placeholder="Observações" rows="1"></textarea></td>
                 </tr>
@@ -924,8 +1088,13 @@
                         <input type="checkbox" id="limpeza4"> 
                         <label for="limpeza4"><span class="priority-badge">18</span>Limpar e pintar Faixada entrada Athenea</label>
                     </td>
-                    <td class="checkbox-cell"><input type="checkbox"></td>
-                    <td class="checkbox-cell"><input type="checkbox" checked></td>
+                    <td>
+                        <select class="priority-dropdown nao-urgente" id="limpeza4-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente">Urgente</option>
+                            <option value="nao-urgente" selected>Não Urgente</option>
+                        </select>
+                    </td>
                     <td class="text-cell"><textarea id="limpeza4-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
                     <td class="text-cell"><textarea id="limpeza4-observacoes" placeholder="Observações" rows="1"></textarea></td>
                 </tr>
@@ -934,8 +1103,13 @@
                         <input type="checkbox" id="limpeza5"> 
                         <label for="limpeza5"><span class="priority-badge">17</span>Pintura antecâmara e sala de vestes Zeus</label>
                     </td>
-                    <td class="checkbox-cell"><input type="checkbox"></td>
-                    <td class="checkbox-cell"><input type="checkbox" checked></td>
+                    <td>
+                        <select class="priority-dropdown nao-urgente" id="limpeza5-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente">Urgente</option>
+                            <option value="nao-urgente" selected>Não Urgente</option>
+                        </select>
+                    </td>
                     <td class="text-cell"><textarea id="limpeza5-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
                     <td class="text-cell"><textarea id="limpeza5-observacoes" placeholder="Observações" rows="1"></textarea></td>
                 </tr>
@@ -948,8 +1122,13 @@
                         <input type="checkbox" id="lago1"> 
                         <label for="lago1"><span class="priority-badge">20</span>Limpar Lago</label>
                     </td>
-                    <td class="checkbox-cell"><input type="checkbox" checked></td>
-                    <td class="checkbox-cell"><input type="checkbox"></td>
+                    <td>
+                        <select class="priority-dropdown urgente" id="lago1-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente"selected>Urgente</option>
+                            <option value="nao-urgente">Não Urgente</option>
+                        </select>
+                    </td>
                     <td class="text-cell"><textarea id="lago1-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
                     <td class="text-cell"><textarea id="lago1-observacoes" placeholder="Observações" rows="1"></textarea></td>
                 </tr>
@@ -958,8 +1137,13 @@
                         <input type="checkbox" id="lago2"> 
                         <label for="lago2">Expandir area do Lago</label>
                     </td>
-                    <td class="checkbox-cell"><input type="checkbox"></td>
-                    <td class="checkbox-cell"><input type="checkbox" checked></td>
+                    <td>
+                        <select class="priority-dropdown nao-urgente" id="lago2-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente">Urgente</option>
+                            <option value="nao-urgente" selected>Não Urgente</option>
+                        </select>
+                    </td>
                     <td class="text-cell"><textarea id="lago2-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
                     <td class="text-cell"><textarea id="lago2-observacoes" placeholder="Observações" rows="1"></textarea></td>
                 </tr>
@@ -972,8 +1156,13 @@
                         <input type="checkbox" id="santuario1"> 
                         <label for="santuario1">Reboco de parede santuário de cura que está esfarelando</label>
                     </td>
-                    <td class="checkbox-cell"><input type="checkbox"></td>
-                    <td class="checkbox-cell"><input type="checkbox" checked></td>
+                    <td>
+                        <select class="priority-dropdown nao-urgente" id="santuario1-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente">Urgente</option>
+                            <option value="nao-urgente" selected>Não Urgente</option>
+                        </select>
+                    </td>
                     <td class="text-cell"><textarea id="santuario1-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
                     <td class="text-cell"><textarea id="santuario1-observacoes" placeholder="Observações" rows="1"></textarea></td>
                 </tr>
@@ -982,8 +1171,13 @@
                         <input type="checkbox" id="santuario3"> 
                         <label for="santuario3"><span class="priority-badge">21</span>Limpar e Podar a estrada até o Santuário</label>
                     </td>
-                    <td class="checkbox-cell"><input type="checkbox"></td>
-                    <td class="checkbox-cell"><input type="checkbox" checked></td>
+                    <td>
+                        <select class="priority-dropdown nao-urgente" id="santuario3-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente">Urgente</option>
+                            <option value="nao-urgente" selected>Não Urgente</option>
+                        </select>
+                    </td>
                     <td class="text-cell"><textarea id="santuario3-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
                     <td class="text-cell"><textarea id="santuario3-observacoes" placeholder="Observações" rows="1"></textarea></td>
                 </tr>
@@ -992,8 +1186,13 @@
                         <input type="checkbox" id="santuario4"> 
                         <label for="santuario4">Restaurar Jardim de inverno</label>
                     </td>
-                    <td class="checkbox-cell"><input type="checkbox"></td>
-                    <td class="checkbox-cell"><input type="checkbox" checked></td>
+                    <td>
+                        <select class="priority-dropdown nao-urgente" id="santuario4-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente">Urgente</option>
+                            <option value="nao-urgente" selected>Não Urgente</option>
+                        </select>
+                    </td>
                     <td class="text-cell"><textarea id="santuario4-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
                     <td class="text-cell"><textarea id="santuario4-observacoes" placeholder="Observações" rows="1"></textarea></td>
                 </tr>
@@ -1002,8 +1201,13 @@
                         <input type="checkbox" id="santuario5"> 
                         <label for="santuario5">Tirar o mofo da mãe divina e resiná-la</label>
                     </td>
-                    <td class="checkbox-cell"><input type="checkbox"></td>
-                    <td class="checkbox-cell"><input type="checkbox" checked></td>
+                    <td>
+                        <select class="priority-dropdown nao-urgente" id="santuario5-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente">Urgente</option>
+                            <option value="nao-urgente" selected>Não Urgente</option>
+                        </select>
+                    </td>
                     <td class="text-cell"><textarea id="santuario5-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
                     <td class="text-cell"><textarea id="santuario5-observacoes" placeholder="Observações" rows="1"></textarea></td>
                 </tr>
@@ -1012,8 +1216,13 @@
                         <input type="checkbox" id="santuario6"> 
                         <label for="santuario6"><span class="priority-badge">22</span>Tirar mofo e limpar cúpula de vidro</label>
                     </td>
-                    <td class="checkbox-cell"><input type="checkbox"></td>
-                    <td class="checkbox-cell"><input type="checkbox" checked></td>
+                    <td>
+                        <select class="priority-dropdown nao-urgente" id="santuario6-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente">Urgente</option>
+                            <option value="nao-urgente" selected>Não Urgente</option>
+                        </select>
+                    </td>
                     <td class="text-cell"><textarea id="santuario6-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
                     <td class="text-cell"><textarea id="santuario6-observacoes" placeholder="Observações" rows="1"></textarea></td>
                 </tr>
@@ -1022,8 +1231,13 @@
                         <input type="checkbox" id="santuario2"> 
                         <label for="santuario2">Utensílios de limpeza para o Santuário de Cura</label>
                     </td>
-                    <td class="checkbox-cell"><input type="checkbox" checked></td>
-                    <td class="checkbox-cell"><input type="checkbox"></td>
+                    <td>
+                        <select class="priority-dropdown urgente" id="santuario2-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente"selected>Urgente</option>
+                            <option value="nao-urgente">Não Urgente</option>
+                        </select>
+                    </td>
                     <td class="text-cell"><textarea id="santuario2-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
                     <td class="text-cell"><textarea id="santuario2-observacoes" placeholder="Observações" rows="1"></textarea></td>
                 </tr>
@@ -1063,8 +1277,13 @@
                         <input type="checkbox" id="teto1"> 
                         <label for="teto1"><span class="priority-badge">25</span>Verificar e corrigir sujeira caindo do teto</label>
                     </td>
-                    <td class="checkbox-cell"><input type="checkbox" checked></td>
-                    <td class="checkbox-cell"><input type="checkbox"></td>
+                    <td>
+                        <select class="priority-dropdown urgente" id="teto1-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente"selected>Urgente</option>
+                            <option value="nao-urgente">Não Urgente</option>
+                        </select>
+                    </td>
                     <td class="text-cell"><textarea id="teto1-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
                     <td class="text-cell"><textarea id="teto1-observacoes" placeholder="Observações" rows="1"></textarea></td>
                 </tr>
@@ -1077,8 +1296,13 @@
                         <input type="checkbox" id="externa1"> 
                         <label for="externa1"><span class="priority-badge">26</span>Colocação de mourões na entrada</label>
                     </td>
-                    <td class="checkbox-cell"><input type="checkbox" checked></td>
-                    <td class="checkbox-cell"><input type="checkbox"></td>
+                    <td>
+                        <select class="priority-dropdown urgente" id="externa1-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente"selected>Urgente</option>
+                            <option value="nao-urgente">Não Urgente</option>
+                        </select>
+                    </td>
                     <td class="text-cell"><textarea id="externa1-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
                     <td class="text-cell"><textarea id="externa1-observacoes" placeholder="Observações" rows="1"></textarea></td>
                 </tr>
@@ -1087,8 +1311,13 @@
                         <input type="checkbox" id="externa2"> 
                         <label for="externa2"><span class="priority-badge">27</span>Corrigir buracão de lodo na grama (usar areia ao lado do Zeus)</label>
                     </td>
-                    <td class="checkbox-cell"><input type="checkbox" checked></td>
-                    <td class="checkbox-cell"><input type="checkbox"></td>
+                    <td>
+                        <select class="priority-dropdown urgente" id="externa2-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente"selected>Urgente</option>
+                            <option value="nao-urgente">Não Urgente</option>
+                        </select>
+                    </td>
                     <td class="text-cell"><textarea id="externa2-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
                     <td class="text-cell"><textarea id="externa2-observacoes" placeholder="Observações" rows="1"></textarea></td>
                 </tr>
@@ -1097,8 +1326,13 @@
                         <input type="checkbox" id="externa3"> 
                         <label for="externa3"><span class="priority-badge">29</span>Levar os lixos, entulhos e velharias na Carretinha</label>
                     </td>
-                    <td class="checkbox-cell"><input type="checkbox" checked></td>
-                    <td class="checkbox-cell"><input type="checkbox"></td>
+                    <td>
+                        <select class="priority-dropdown urgente" id="externa3-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente"selected>Urgente</option>
+                            <option value="nao-urgente">Não Urgente</option>
+                        </select>
+                    </td>
                     <td class="text-cell"><textarea id="externa3-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
                     <td class="text-cell"><textarea id="externa3-observacoes" placeholder="Observações" rows="1"></textarea></td>
                 </tr>
@@ -1107,8 +1341,13 @@
                         <input type="checkbox" id="externa4"> 
                         <label for="externa4">Nivelar e cimentar calçada atrás da antecâmara parte de fora</label>
                     </td>
-                    <td class="checkbox-cell"><input type="checkbox"></td>
-                    <td class="checkbox-cell"><input type="checkbox" checked></td>
+                    <td>
+                        <select class="priority-dropdown nao-urgente" id="externa4-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente">Urgente</option>
+                            <option value="nao-urgente" selected>Não Urgente</option>
+                        </select>
+                    </td>
                     <td class="text-cell"><textarea id="externa4-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
                     <td class="text-cell"><textarea id="externa4-observacoes" placeholder="Observações" rows="1"></textarea></td>
                 </tr>
@@ -1121,8 +1360,13 @@
                         <input type="checkbox" id="cozinha1"> 
                         <label for="cozinha1">Instalar janela</label>
                     </td>
-                    <td class="checkbox-cell"><input type="checkbox"></td>
-                    <td class="checkbox-cell"><input type="checkbox" checked></td>
+                    <td>
+                        <select class="priority-dropdown nao-urgente" id="cozinha1-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente">Urgente</option>
+                            <option value="nao-urgente" selected>Não Urgente</option>
+                        </select>
+                    </td>
                     <td class="text-cell"><textarea id="cozinha1-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
                     <td class="text-cell"><textarea id="cozinha1-observacoes" placeholder="Observações" rows="1"></textarea></td>
                 </tr>
@@ -1131,8 +1375,13 @@
                         <input type="checkbox" id="cozinha2"> 
                         <label for="cozinha2">Comprar liquidificador</label>
                     </td>
-                    <td class="checkbox-cell"><input type="checkbox"></td>
-                    <td class="checkbox-cell"><input type="checkbox" checked></td>
+                    <td>
+                        <select class="priority-dropdown nao-urgente" id="cozinha2-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente">Urgente</option>
+                            <option value="nao-urgente" selected>Não Urgente</option>
+                        </select>
+                    </td>
                     <td class="text-cell"><textarea id="cozinha2-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
                     <td class="text-cell"><textarea id="cozinha2-observacoes" placeholder="Observações" rows="1"></textarea></td>
                 </tr>
@@ -1164,8 +1413,13 @@
                         <input type="checkbox" id="parapeito1"> 
                         <label for="parapeito1">Construir parapeito</label>
                     </td>
-                    <td class="checkbox-cell"><input type="checkbox"></td>
-                    <td class="checkbox-cell"><input type="checkbox" checked></td>
+                    <td>
+                        <select class="priority-dropdown nao-urgente" id="parapeito1-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente">Urgente</option>
+                            <option value="nao-urgente" selected>Não Urgente</option>
+                        </select>
+                    </td>
                     <td class="text-cell"><textarea id="parapeito1-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
                     <td class="text-cell"><textarea id="parapeito1-observacoes" placeholder="Observações" rows="1"></textarea></td>
                 </tr>
@@ -1181,8 +1435,13 @@
                         <input type="checkbox" id="mutirao1"> 
                         <label for="mutirao1">Limpeza dos peregrinos masculinos e feminino</label>
                     </td>
-                    <td class="checkbox-cell"><input type="checkbox" checked></td>
-                    <td class="checkbox-cell"><input type="checkbox"></td>
+                    <td>
+                        <select class="priority-dropdown urgente" id="mutirao1-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente"selected>Urgente</option>
+                            <option value="nao-urgente">Não Urgente</option>
+                        </select>
+                    </td>
                     <td class="text-cell"><textarea id="mutirao1-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
                     <td class="text-cell"><textarea id="mutirao1-observacoes" placeholder="Observações" rows="1"></textarea></td>
                 </tr>
@@ -1191,8 +1450,13 @@
                         <input type="checkbox" id="mutirao2"> 
                         <label for="mutirao2">Limpeza dos banheiros masculino e feminino</label>
                     </td>
-                    <td class="checkbox-cell"><input type="checkbox" checked></td>
-                    <td class="checkbox-cell"><input type="checkbox"></td>
+                    <td>
+                        <select class="priority-dropdown urgente" id="mutirao2-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente"selected>Urgente</option>
+                            <option value="nao-urgente">Não Urgente</option>
+                        </select>
+                    </td>
                     <td class="text-cell"><textarea id="mutirao2-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
                     <td class="text-cell"><textarea id="mutirao2-observacoes" placeholder="Observações" rows="1"></textarea></td>
                 </tr>
@@ -1201,8 +1465,13 @@
                         <input type="checkbox" id="mutirao3"> 
                         <label for="mutirao3">Limpeza dos peregrinos de casal</label>
                     </td>
-                    <td class="checkbox-cell"><input type="checkbox" checked></td>
-                    <td class="checkbox-cell"><input type="checkbox"></td>
+                    <td>
+                        <select class="priority-dropdown urgente" id="mutirao3-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente"selected>Urgente</option>
+                            <option value="nao-urgente">Não Urgente</option>
+                        </select>
+                    </td>
                     <td class="text-cell"><textarea id="mutirao3-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
                     <td class="text-cell"><textarea id="mutirao3-observacoes" placeholder="Observações" rows="1"></textarea></td>
                 </tr>
@@ -1211,8 +1480,13 @@
                         <input type="checkbox" id="mutirao4"> 
                         <label for="mutirao4">Corte da grama</label>
                     </td>
-                    <td class="checkbox-cell"><input type="checkbox" checked></td>
-                    <td class="checkbox-cell"><input type="checkbox"></td>
+                    <td>
+                        <select class="priority-dropdown urgente" id="mutirao4-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente"selected>Urgente</option>
+                            <option value="nao-urgente">Não Urgente</option>
+                        </select>
+                    </td>
                     <td class="text-cell"><textarea id="mutirao4-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
                     <td class="text-cell"><textarea id="mutirao4-observacoes" placeholder="Observações" rows="1"></textarea></td>
                 </tr>
@@ -1221,8 +1495,13 @@
                         <input type="checkbox" id="mutirao5"> 
                         <label for="mutirao5">Rastelagem das folhas secas</label>
                     </td>
-                    <td class="checkbox-cell"><input type="checkbox" checked></td>
-                    <td class="checkbox-cell"><input type="checkbox"></td>
+                    <td>
+                        <select class="priority-dropdown urgente" id="mutirao5-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente"selected>Urgente</option>
+                            <option value="nao-urgente">Não Urgente</option>
+                        </select>
+                    </td>
                     <td class="text-cell"><textarea id="mutirao5-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
                     <td class="text-cell"><textarea id="mutirao5-observacoes" placeholder="Observações" rows="1"></textarea></td>
                 </tr>
@@ -1231,8 +1510,13 @@
                         <input type="checkbox" id="mutirao6"> 
                         <label for="mutirao6">Limpeza da cozinha e refeitório</label>
                     </td>
-                    <td class="checkbox-cell"><input type="checkbox" checked></td>
-                    <td class="checkbox-cell"><input type="checkbox"></td>
+                    <td>
+                        <select class="priority-dropdown urgente" id="mutirao6-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente"selected>Urgente</option>
+                            <option value="nao-urgente">Não Urgente</option>
+                        </select>
+                    </td>
                     <td class="text-cell"><textarea id="mutirao6-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
                     <td class="text-cell"><textarea id="mutirao6-observacoes" placeholder="Observações" rows="1"></textarea></td>
                 </tr>
@@ -1241,8 +1525,13 @@
                         <input type="checkbox" id="mutirao7"> 
                         <label for="mutirao7">Preparação Almoço Mutirão</label>
                     </td>
-                    <td class="checkbox-cell"><input type="checkbox" checked></td>
-                    <td class="checkbox-cell"><input type="checkbox"></td>
+                    <td>
+                        <select class="priority-dropdown urgente" id="mutirao7-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente"selected>Urgente</option>
+                            <option value="nao-urgente">Não Urgente</option>
+                        </select>
+                    </td>
                     <td class="text-cell"><textarea id="mutirao7-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
                     <td class="text-cell"><textarea id="mutirao7-observacoes" placeholder="Observações" rows="1"></textarea></td>
                 </tr>
@@ -1251,8 +1540,13 @@
                         <input type="checkbox" id="mutirao8"> 
                         <label for="mutirao8">Compras mercado evento</label>
                     </td>
-                    <td class="checkbox-cell"><input type="checkbox" checked></td>
-                    <td class="checkbox-cell"><input type="checkbox"></td>
+                    <td>
+                        <select class="priority-dropdown urgente" id="mutirao8-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente"selected>Urgente</option>
+                            <option value="nao-urgente">Não Urgente</option>
+                        </select>
+                    </td>
                     <td class="text-cell"><textarea id="mutirao8-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
                     <td class="text-cell"><textarea id="mutirao8-observacoes" placeholder="Observações" rows="1"></textarea></td>
                 </tr>
@@ -1261,8 +1555,13 @@
                         <input type="checkbox" id="mutirao9"> 
                         <label for="mutirao9">Crachás+cartazes</label>
                     </td>
-                    <td class="checkbox-cell"><input type="checkbox" checked></td>
-                    <td class="checkbox-cell"><input type="checkbox"></td>
+                    <td>
+                        <select class="priority-dropdown urgente" id="mutirao9-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente"selected>Urgente</option>
+                            <option value="nao-urgente">Não Urgente</option>
+                        </select>
+                    </td>
                     <td class="text-cell"><textarea id="mutirao9-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
                     <td class="text-cell"><textarea id="mutirao9-observacoes" placeholder="Observações" rows="1"></textarea></td>
                 </tr>
@@ -1271,8 +1570,13 @@
                         <input type="checkbox" id="mutirao10"> 
                         <label for="mutirao10">Cozinhar na Convivência Estadual</label>
                     </td>
-                    <td class="checkbox-cell"><input type="checkbox" checked></td>
-                    <td class="checkbox-cell"><input type="checkbox"></td>
+                    <td>
+                        <select class="priority-dropdown urgente" id="mutirao10-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente"selected>Urgente</option>
+                            <option value="nao-urgente">Não Urgente</option>
+                        </select>
+                    </td>
                     <td class="text-cell"><textarea id="mutirao10-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
                     <td class="text-cell"><textarea id="mutirao10-observacoes" placeholder="Observações" rows="1"></textarea></td>
                 </tr>
@@ -1412,6 +1716,11 @@
                     if (checked !== null) {
                         checkbox.checked = checked;
                         loaded++;
+                        
+                        // Aplicar estilo riscado se estiver marcado
+                        if (checked) {
+                            toggleTaskCompletion(checkbox);
+                        }
                     }
                 }
             }
@@ -1683,8 +1992,142 @@
             checkboxes.forEach(checkbox => {
                 checkbox.addEventListener('change', function() {
                     saveCheckboxState(this.id, this.checked);
+                    
+                    // Riscar ou desriscar o texto da tarefa
+                    toggleTaskCompletion(this);
                 });
             });
+        }
+        
+        // Função para riscar/desriscar texto quando marcar/desmarcar
+        function toggleTaskCompletion(checkbox) {
+            const label = checkbox.nextElementSibling;
+            if (!label) return;
+            
+            if (checkbox.checked) {
+                label.classList.add('task-completed');
+            } else {
+                label.classList.remove('task-completed');
+            }
+        }
+        
+        // ============================================
+        // FUNÇÕES PARA DROPDOWNS DE PRIORIDADE
+        // ============================================
+        
+        // Salvar prioridade no Supabase
+        async function savePriorityDropdown(dropdownId, value) {
+            console.log(`💾 Salvando prioridade ${dropdownId}: ${value}`);
+            showSavingIndicator();
+            
+            if (!isConfigured || !supabase) {
+                localStorage.setItem(dropdownId, value);
+                hideSavingIndicator();
+                return;
+            }
+            
+            try {
+                const { data, error } = await supabase
+                    .from('text_fields')  // Reutilizamos a tabela text_fields
+                    .upsert({ 
+                        id: dropdownId, 
+                        value: value,
+                        updated_at: new Date().toISOString()
+                    }, { 
+                        onConflict: 'id' 
+                    });
+                
+                if (error) {
+                    console.error('❌ Erro ao salvar prioridade:', error.message);
+                    localStorage.setItem(dropdownId, value);
+                    showErrorIndicator();
+                } else {
+                    console.log(`✅ Prioridade ${dropdownId} salva`);
+                    showSuccessIndicator();
+                }
+            } catch (error) {
+                console.error('❌ Erro ao salvar prioridade:', error);
+                localStorage.setItem(dropdownId, value);
+                showErrorIndicator();
+            }
+            
+            setTimeout(hideSavingIndicator, 1000);
+        }
+        
+        // Carregar prioridade do Supabase
+        async function loadPriorityDropdown(dropdownId) {
+            if (!isConfigured || !supabase) {
+                return localStorage.getItem(dropdownId) || '';
+            }
+            
+            try {
+                const { data, error } = await supabase
+                    .from('text_fields')
+                    .select('value')
+                    .eq('id', dropdownId)
+                    .maybeSingle();
+                
+                if (error) {
+                    console.error(`❌ Erro ao carregar prioridade ${dropdownId}:`, error.message);
+                    return localStorage.getItem(dropdownId) || '';
+                }
+                
+                return data ? data.value : '';
+            } catch (error) {
+                console.error('❌ Erro ao carregar prioridade:', error);
+                return localStorage.getItem(dropdownId) || '';
+            }
+        }
+        
+        // Configurar listeners para dropdowns de prioridade
+        function setupPriorityDropdownListeners() {
+            const dropdowns = document.querySelectorAll('.priority-dropdown');
+            
+            dropdowns.forEach(dropdown => {
+                // Atualizar classe CSS baseado no valor selecionado
+                dropdown.addEventListener('change', function() {
+                    // Remover classes antigas
+                    this.classList.remove('urgente', 'nao-urgente');
+                    
+                    // Adicionar nova classe baseada na seleção
+                    if (this.value === 'urgente') {
+                        this.classList.add('urgente');
+                    } else if (this.value === 'nao-urgente') {
+                        this.classList.add('nao-urgente');
+                    }
+                    
+                    // Salvar no banco
+                    savePriorityDropdown(this.id, this.value);
+                });
+            });
+        }
+        
+        // Restaurar estados dos dropdowns
+        async function restorePriorityDropdowns() {
+            console.log('🔄 Restaurando prioridades...');
+            const dropdowns = document.querySelectorAll('.priority-dropdown');
+            let loaded = 0;
+            
+            for (const dropdown of dropdowns) {
+                if (dropdown.id) {
+                    const value = await loadPriorityDropdown(dropdown.id);
+                    if (value) {
+                        dropdown.value = value;
+                        
+                        // Aplicar classe CSS
+                        dropdown.classList.remove('urgente', 'nao-urgente');
+                        if (value === 'urgente') {
+                            dropdown.classList.add('urgente');
+                        } else if (value === 'nao-urgente') {
+                            dropdown.classList.add('nao-urgente');
+                        }
+                        
+                        loaded++;
+                    }
+                }
+            }
+            
+            console.log(`✅ ${loaded} prioridades restauradas`);
         }
         
         // Sincronização em tempo real (opcional)
@@ -1743,6 +2186,7 @@
                     await restoreCheckboxStates();
                     await restoreTextFields();
                     await restoreFieldSizes();
+                    await restorePriorityDropdowns();
                     syncButton.innerHTML = '✅ Sincronizado!';
                     setTimeout(() => {
                         syncButton.innerHTML = '🔄 Sincronizar';
@@ -1862,10 +2306,12 @@
             await restoreCheckboxStates();
             await restoreTextFields();
             await restoreFieldSizes();
+            await restorePriorityDropdowns();
             
             setupCheckboxListeners();
             setupTextFieldListeners();
             setupResizeListeners();
+            setupPriorityDropdownListeners();
             setupRealtimeSync();
             setupTextFieldRealtimeSync();
             setupFieldSizeRealtimeSync();
@@ -1876,5 +2322,4 @@
         });
     </script>
 </body>
-</html>
 </html>
