@@ -1717,10 +1717,8 @@
                         checkbox.checked = checked;
                         loaded++;
                         
-                        // Aplicar estilo riscado se estiver marcado
-                        if (checked) {
-                            toggleTaskCompletion(checkbox);
-                        }
+                        // Aplicar estilo riscado se estiver marcado, remover se desmarcado
+                        toggleTaskCompletion(checkbox);
                     }
                 }
             }
@@ -2002,12 +2000,17 @@
         // Função para riscar/desriscar texto quando marcar/desmarcar
         function toggleTaskCompletion(checkbox) {
             const label = checkbox.nextElementSibling;
-            if (!label) return;
+            if (!label) {
+                console.warn('Label não encontrado para checkbox:', checkbox.id);
+                return;
+            }
             
             if (checkbox.checked) {
                 label.classList.add('task-completed');
+                console.log(`✅ Texto riscado para: ${checkbox.id}`);
             } else {
                 label.classList.remove('task-completed');
+                console.log(`↩️ Texto normal para: ${checkbox.id}`);
             }
         }
         
