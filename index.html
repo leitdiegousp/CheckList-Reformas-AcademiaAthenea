@@ -1274,6 +1274,10 @@
         const isConfigured = !SUPABASE_URL.includes('SEU_PROJETO');
         
         let supabase = null;
+        let syncChannel = null;
+        let textChannel = null;
+        let sizeChannel = null;
+        
         if (isConfigured) {
             supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
             console.log('✅ Supabase conectado!');
@@ -1299,7 +1303,9 @@
         
         // Salvar estado no Supabase
         async function saveCheckboxState(checkboxId, checked) {
-            if (!isConfigured) {
+            console.log(`💾 Salvando ${checkboxId}: ${checked}`);
+            
+            if (!isConfigured || !supabase) {
                 // Fallback para localStorage se não configurado
                 localStorage.setItem(checkboxId, checked);
                 return;
@@ -1317,19 +1323,21 @@
                     });
                 
                 if (error) {
-                    console.error('Erro ao salvar:', error);
+                    console.error('❌ Erro ao salvar checkbox:', error.message);
                     // Fallback para localStorage
                     localStorage.setItem(checkboxId, checked);
+                } else {
+                    console.log(`✅ Checkbox ${checkboxId} salvo com sucesso`);
                 }
             } catch (error) {
-                console.error('Erro ao salvar:', error);
+                console.error('❌ Erro ao salvar checkbox:', error);
                 localStorage.setItem(checkboxId, checked);
             }
         }
         
         // Carregar estado do Supabase
         async function loadCheckboxState(checkboxId) {
-            if (!isConfigured) {
+            if (!isConfigured || !supabase) {
                 // Fallback para localStorage
                 const savedState = localStorage.getItem(checkboxId);
                 return savedState === 'true';
@@ -1340,17 +1348,22 @@
                     .from('checkboxes')
                     .select('checked')
                     .eq('id', checkboxId)
-                    .single();
+                    .maybeSingle();
                 
-                if (error && error.code !== 'PGRST116') {
-                    console.error('Erro ao carregar:', error);
+                if (error) {
+                    console.error(`❌ Erro ao carregar ${checkboxId}:`, error.message);
                     const savedState = localStorage.getItem(checkboxId);
                     return savedState === 'true';
                 }
                 
-                return data ? data.checked : null;
+                if (data) {
+                    console.log(`📥 Carregado ${checkboxId}: ${data.checked}`);
+                    return data.checked;
+                }
+                
+                return null;
             } catch (error) {
-                console.error('Erro ao carregar:', error);
+                console.error('❌ Erro ao carregar checkbox:', error);
                 const savedState = localStorage.getItem(checkboxId);
                 return savedState === 'true';
             }
@@ -1358,16 +1371,21 @@
         
         // Restaurar estados de todos os checkboxes
         async function restoreCheckboxStates() {
+            console.log('🔄 Restaurando estados dos checkboxes...');
             const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            let loaded = 0;
             
             for (const checkbox of checkboxes) {
                 if (checkbox.id) {
                     const checked = await loadCheckboxState(checkbox.id);
                     if (checked !== null) {
                         checkbox.checked = checked;
+                        loaded++;
                     }
                 }
             }
+            
+            console.log(`✅ ${loaded} checkboxes restaurados`);
         }
         
         // ============================================
@@ -1376,7 +1394,9 @@
         
         // Salvar campo de texto no Supabase
         async function saveTextField(fieldId, value) {
-            if (!isConfigured) {
+            console.log(`💾 Salvando texto ${fieldId}`);
+            
+            if (!isConfigured || !supabase) {
                 localStorage.setItem(fieldId, value);
                 return;
             }
@@ -1393,18 +1413,20 @@
                     });
                 
                 if (error) {
-                    console.error('Erro ao salvar texto:', error);
+                    console.error('❌ Erro ao salvar texto:', error.message);
                     localStorage.setItem(fieldId, value);
+                } else {
+                    console.log(`✅ Texto ${fieldId} salvo`);
                 }
             } catch (error) {
-                console.error('Erro ao salvar texto:', error);
+                console.error('❌ Erro ao salvar texto:', error);
                 localStorage.setItem(fieldId, value);
             }
         }
         
         // Carregar campo de texto do Supabase
         async function loadTextField(fieldId) {
-            if (!isConfigured) {
+            if (!isConfigured || !supabase) {
                 return localStorage.getItem(fieldId) || '';
             }
             
@@ -1413,32 +1435,37 @@
                     .from('text_fields')
                     .select('value')
                     .eq('id', fieldId)
-                    .single();
+                    .maybeSingle();
                 
-                if (error && error.code !== 'PGRST116') {
-                    console.error('Erro ao carregar texto:', error);
+                if (error) {
+                    console.error(`❌ Erro ao carregar texto ${fieldId}:`, error.message);
                     return localStorage.getItem(fieldId) || '';
                 }
                 
                 return data ? data.value : '';
             } catch (error) {
-                console.error('Erro ao carregar texto:', error);
+                console.error('❌ Erro ao carregar texto:', error);
                 return localStorage.getItem(fieldId) || '';
             }
         }
         
         // Restaurar todos os campos de texto
         async function restoreTextFields() {
+            console.log('🔄 Restaurando campos de texto...');
             const textInputs = document.querySelectorAll('input[type="text"], textarea');
+            let loaded = 0;
             
             for (const input of textInputs) {
                 if (input.id) {
                     const value = await loadTextField(input.id);
                     if (value) {
                         input.value = value;
+                        loaded++;
                     }
                 }
             }
+            
+            console.log(`✅ ${loaded} campos de texto restaurados`);
         }
         
         // ============================================
@@ -1624,9 +1651,11 @@
         
         // Sincronização em tempo real (opcional)
         function setupRealtimeSync() {
-            if (!isConfigured) return;
+            if (!isConfigured || !supabase) return;
             
-            const channel = supabase
+            console.log('🔴 Iniciando sincronização em tempo real...');
+            
+            syncChannel = supabase
                 .channel('checkboxes-changes')
                 .on('postgres_changes', 
                     { 
@@ -1635,14 +1664,63 @@
                         table: 'checkboxes' 
                     }, 
                     (payload) => {
-                        console.log('Mudança detectada:', payload);
+                        console.log('📡 Mudança de checkbox detectada:', payload);
                         const checkbox = document.getElementById(payload.new.id);
                         if (checkbox && checkbox.checked !== payload.new.checked) {
                             checkbox.checked = payload.new.checked;
+                            console.log(`✅ Checkbox ${payload.new.id} atualizado em tempo real`);
                         }
                     }
                 )
-                .subscribe();
+                .subscribe((status) => {
+                    console.log('🔴 Status do canal de checkboxes:', status);
+                });
+        }
+        
+        // Botão de sincronização manual
+        function addSyncButton() {
+            const syncButton = document.createElement('button');
+            syncButton.id = 'manual-sync-btn';
+            syncButton.innerHTML = '🔄 Sincronizar';
+            syncButton.style.cssText = `
+                position: fixed;
+                bottom: 50px;
+                right: 10px;
+                padding: 10px 20px;
+                background: #2196F3;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                font-weight: bold;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+                z-index: 1001;
+            `;
+            
+            syncButton.addEventListener('click', async () => {
+                syncButton.innerHTML = '⏳ Sincronizando...';
+                syncButton.disabled = true;
+                
+                try {
+                    await restoreCheckboxStates();
+                    await restoreTextFields();
+                    await restoreFieldSizes();
+                    syncButton.innerHTML = '✅ Sincronizado!';
+                    setTimeout(() => {
+                        syncButton.innerHTML = '🔄 Sincronizar';
+                        syncButton.disabled = false;
+                    }, 2000);
+                } catch (error) {
+                    console.error('Erro ao sincronizar:', error);
+                    syncButton.innerHTML = '❌ Erro';
+                    setTimeout(() => {
+                        syncButton.innerHTML = '🔄 Sincronizar';
+                        syncButton.disabled = false;
+                    }, 2000);
+                }
+            });
+            
+            document.body.appendChild(syncButton);
         }
         
         // Indicador de status
@@ -1661,14 +1739,16 @@
                 z-index: 1000;
             `;
             
-            if (isConfigured) {
+            if (isConfigured && supabase) {
                 statusDiv.style.background = '#4CAF50';
                 statusDiv.style.color = 'white';
-                statusDiv.textContent = '🌐 Online - Sincronizado';
+                statusDiv.textContent = '🌐 Online - Sincronizado com Supabase';
+                statusDiv.title = 'Dados sendo salvos no banco de dados';
             } else {
                 statusDiv.style.background = '#FF9800';
                 statusDiv.style.color = 'white';
-                statusDiv.textContent = '⚠️ Offline - Configure Supabase';
+                statusDiv.textContent = '⚠️ Offline - Apenas Local';
+                statusDiv.title = 'Configure o Supabase para sincronização entre dispositivos';
             }
             
             document.body.appendChild(statusDiv);
@@ -1677,10 +1757,15 @@
         // Inicializar quando a página carregar
         window.addEventListener('DOMContentLoaded', async function() {
             console.log('🚀 Iniciando checklist...');
+            console.log(`📊 Supabase configurado: ${isConfigured}`);
+            
             addUniqueIds();
+            
+            console.log('⏳ Carregando dados...');
             await restoreCheckboxStates();
             await restoreTextFields();
             await restoreFieldSizes();
+            
             setupCheckboxListeners();
             setupTextFieldListeners();
             setupResizeListeners();
@@ -1688,6 +1773,8 @@
             setupTextFieldRealtimeSync();
             setupFieldSizeRealtimeSync();
             showStatus();
+            addSyncButton();
+            
             console.log('✅ Checklist pronto!');
         });
     </script>
