@@ -2886,22 +2886,30 @@
             const dropdowns = document.querySelectorAll('.priority-dropdown');
             
             dropdowns.forEach(dropdown => {
+                // Aplicar cor inicial baseado no valor atual
+                applyPriorityColor(dropdown);
+                
                 // Atualizar classe CSS baseado no valor selecionado
                 dropdown.addEventListener('change', function() {
-                    // Remover classes antigas
-                    this.classList.remove('urgente', 'nao-urgente');
-                    
-                    // Adicionar nova classe baseada na seleção
-                    if (this.value === 'urgente') {
-                        this.classList.add('urgente');
-                    } else if (this.value === 'nao-urgente') {
-                        this.classList.add('nao-urgente');
-                    }
-                    
+                    applyPriorityColor(this);
                     // Salvar no banco
                     savePriorityDropdown(this.id, this.value);
                 });
             });
+        }
+        
+        // Função auxiliar para aplicar cor baseado no valor
+        function applyPriorityColor(dropdown) {
+            // Remover classes antigas
+            dropdown.classList.remove('urgente', 'nao-urgente');
+            
+            // Adicionar nova classe baseada na seleção
+            // Aceita tanto "urgente" quanto "1" para urgente
+            if (dropdown.value === 'urgente' || dropdown.value === '1') {
+                dropdown.classList.add('urgente');
+            } else if (dropdown.value === 'nao-urgente' || dropdown.value === '2' || dropdown.value === '3' || dropdown.value === '4' || dropdown.value === '5') {
+                dropdown.classList.add('nao-urgente');
+            }
         }
         
         // Restaurar estados dos dropdowns
@@ -2916,13 +2924,8 @@
                     if (value) {
                         dropdown.value = value;
                         
-                        // Aplicar classe CSS
-                        dropdown.classList.remove('urgente', 'nao-urgente');
-                        if (value === 'urgente') {
-                            dropdown.classList.add('urgente');
-                        } else if (value === 'nao-urgente') {
-                            dropdown.classList.add('nao-urgente');
-                        }
+                        // Aplicar classe CSS usando função auxiliar
+                        applyPriorityColor(dropdown);
                         
                         loaded++;
                     }
