@@ -2983,41 +2983,59 @@
         
         // Criar gráfico de pizza
         function createPieChart() {
-            const ctx = document.getElementById('pieChart');
-            if (!ctx) return;
+            const canvas = document.getElementById('pieChart');
+            if (!canvas) {
+                console.warn('⚠️ Canvas pieChart não encontrado');
+                return;
+            }
+            
+            const ctx = canvas.getContext('2d');
+            if (!ctx) {
+                console.warn('⚠️ Contexto 2D do pieChart não disponível');
+                return;
+            }
+            
+            // Verificar se Chart.js está carregado
+            if (typeof Chart === 'undefined') {
+                console.error('❌ Chart.js não está carregado');
+                return;
+            }
             
             const completed = parseInt(document.getElementById('statCompleted').textContent) || 0;
             const pending = parseInt(document.getElementById('statPending').textContent) || 0;
+            
+            console.log('📊 Criando gráfico de pizza:', { completed, pending });
             
             if (pieChart) {
                 pieChart.destroy();
             }
             
-            pieChart = new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['Concluídas', 'Pendentes'],
-                    datasets: [{
-                        data: [completed, pending],
-                        backgroundColor: [
-                            'rgba(39, 174, 96, 0.8)',
-                            'rgba(231, 76, 60, 0.8)'
-                        ],
-                        borderColor: [
-                            'rgba(39, 174, 96, 1)',
-                            'rgba(231, 76, 60, 1)'
-                        ],
-                        borderWidth: 2
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: true,
-                    plugins: {
-                        legend: {
-                            position: 'bottom',
-                            labels: {
-                                font: {
+            try {
+                pieChart = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Concluídas', 'Pendentes'],
+                        datasets: [{
+                            data: [completed, pending],
+                            backgroundColor: [
+                                'rgba(39, 174, 96, 0.8)',
+                                'rgba(231, 76, 60, 0.8)'
+                            ],
+                            borderColor: [
+                                'rgba(39, 174, 96, 1)',
+                                'rgba(231, 76, 60, 1)'
+                            ],
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: true,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    font: {
                                     size: 14
                                 },
                                 padding: 15,
@@ -3026,13 +3044,32 @@
                         }
                     }
                 }
-            });
+                });
+                console.log('✅ Gráfico de pizza criado');
+            } catch (error) {
+                console.error('❌ Erro ao criar gráfico de pizza:', error);
+            }
         }
         
         // Criar gráfico de barras por seção
         function createBarChart() {
-            const ctx = document.getElementById('barChart');
-            if (!ctx) return;
+            const canvas = document.getElementById('barChart');
+            if (!canvas) {
+                console.warn('⚠️ Canvas barChart não encontrado');
+                return;
+            }
+            
+            const ctx = canvas.getContext('2d');
+            if (!ctx) {
+                console.warn('⚠️ Contexto 2D do barChart não disponível');
+                return;
+            }
+            
+            // Verificar se Chart.js está carregado
+            if (typeof Chart === 'undefined') {
+                console.error('❌ Chart.js não está carregado');
+                return;
+            }
             
             // Coletar dados por seção
             const sections = {};
@@ -3061,18 +3098,21 @@
             const totals = labels.map(label => sections[label].total);
             const completed = labels.map(label => sections[label].completed);
             
+            console.log('📊 Criando gráfico de barras:', { labels, totals, completed });
+            
             if (barChart) {
                 barChart.destroy();
             }
             
-            barChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: labels.map(l => l.length > 20 ? l.substring(0, 20) + '...' : l),
-                    datasets: [{
-                        label: 'Total',
-                        data: totals,
-                        backgroundColor: 'rgba(52, 152, 219, 0.7)',
+            try {
+                barChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels.map(l => l.length > 20 ? l.substring(0, 20) + '...' : l),
+                        datasets: [{
+                            label: 'Total',
+                            data: totals,
+                            backgroundColor: 'rgba(52, 152, 219, 0.7)',
                         borderColor: 'rgba(52, 152, 219, 1)',
                         borderWidth: 2
                     }, {
@@ -3119,9 +3159,34 @@
                         }
                     }
                 }
-            });
+                });
+                console.log('✅ Gráfico de barras criado');
+            } catch (error) {
+                console.error('❌ Erro ao criar gráfico de barras:', error);
+            }
         }
         
+        // Indicador de status
+        function showStatus() {
+            const statusDiv = document.createElement('div');
+            statusDiv.id = 'connection-status';
+            statusDiv.style.cssText = `
+                position: fixed; 
+                bottom: 10px; 
+                right: 10px; 
+                padding: 10px 15px; 
+                border-radius: 5px; 
+                font-size: 12px; 
+                font-weight: bold;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+                z-index: 1000;
+            `;
+            
+            if (isConfigured && supabase) {
+                statusDiv.style.background = '#4CAF50';
+                statusDiv.style.color = 'white';
+                statusDiv.textContent = '🌐 Online - Sincronizado com Supabase';
+                statusDiv.title = 'Dados sendo salvos no banco de dados';
             } else {
                 statusDiv.style.background = '#FF9800';
                 statusDiv.style.color = 'white';
