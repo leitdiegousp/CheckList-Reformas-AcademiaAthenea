@@ -2773,155 +2773,190 @@
         
         // Função para exportar para PDF
         function exportToPDF() {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
-            
-            // Título
-            doc.setFontSize(18);
-            doc.setFont(undefined, 'bold');
-            doc.text('Check List Reformas - Academia Athenea', 105, 20, { align: 'center' });
-            
-            // Data
-            const hoje = new Date().toLocaleDateString('pt-BR');
-            doc.setFontSize(10);
-            doc.setFont(undefined, 'normal');
-            doc.text(`Gerado em: ${hoje}`, 105, 28, { align: 'center' });
-            
-            // Estatísticas
-            const total = document.getElementById('statTotal').textContent;
-            const concluidas = document.getElementById('statCompleted').textContent;
-            const pendentes = document.getElementById('statPending').textContent;
-            const progresso = document.getElementById('statPercent').textContent;
-            
-            doc.setFontSize(12);
-            doc.setFont(undefined, 'bold');
-            doc.text('Estatísticas:', 20, 40);
-            doc.setFont(undefined, 'normal');
-            doc.text(`Total de Tarefas: ${total}`, 20, 48);
-            doc.text(`Concluídas: ${concluidas}`, 20, 56);
-            doc.text(`Pendentes: ${pendentes}`, 20, 64);
-            doc.text(`Progresso: ${progresso}`, 20, 72);
-            
-            // Linha divisória
-            doc.line(20, 78, 190, 78);
-            
-            // Tarefas
-            let y = 88;
-            doc.setFontSize(12);
-            doc.setFont(undefined, 'bold');
-            doc.text('Tarefas:', 20, y);
-            y += 8;
-            
-            doc.setFontSize(10);
-            const rows = document.querySelectorAll('tbody tr:not(.hidden)');
-            
-            rows.forEach(row => {
-                if (row.querySelector('.section-header')) {
-                    // Seção
-                    if (y > 270) {
-                        doc.addPage();
-                        y = 20;
-                    }
-                    doc.setFont(undefined, 'bold');
-                    doc.setFontSize(11);
-                    const secao = row.querySelector('.section-header').textContent;
-                    doc.text(secao, 20, y);
-                    y += 7;
-                    doc.setFontSize(10);
-                } else {
-                    // Tarefa
-                    if (y > 275) {
-                        doc.addPage();
-                        y = 20;
-                    }
-                    
-                    const checkbox = row.querySelector('input[type="checkbox"]');
-                    const status = checkbox && checkbox.checked ? '✓' : '☐';
-                    const acao = row.cells[0].textContent.replace(/\d+/, '').trim();
-                    const prioridade = row.querySelector('.priority-dropdown');
-                    const prioText = prioridade ? (prioridade.value === 'urgente' ? 'URGENTE' : prioridade.value === 'nao-urgente' ? 'Não Urgente' : '-') : '-';
-                    
-                    doc.setFont(undefined, 'normal');
-                    doc.text(`${status} ${acao}`, 20, y);
-                    doc.setFont(undefined, 'bold');
-                    doc.text(`[${prioText}]`, 180, y, { align: 'right' });
-                    y += 6;
+            try {
+                console.log('📄 Iniciando exportação PDF...');
+                
+                // Verificar se jsPDF está carregado
+                if (typeof window.jspdf === 'undefined') {
+                    alert('❌ Erro: Biblioteca jsPDF não carregada. Recarregue a página e tente novamente.');
+                    console.error('jsPDF não está disponível');
+                    return;
                 }
-            });
-            
-            // Salvar
-            doc.save(`CheckList_Reformas_${hoje.replace(/\//g, '-')}.pdf`);
-            alert('✅ PDF exportado com sucesso!');
+                
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+                
+                // Título
+                doc.setFontSize(18);
+                doc.setFont(undefined, 'bold');
+                doc.text('Check List Reformas - Academia Athenea', 105, 20, { align: 'center' });
+                
+                // Data
+                const hoje = new Date().toLocaleDateString('pt-BR');
+                doc.setFontSize(10);
+                doc.setFont(undefined, 'normal');
+                doc.text(`Gerado em: ${hoje}`, 105, 28, { align: 'center' });
+                
+                // Estatísticas
+                const total = document.getElementById('statTotal').textContent;
+                const concluidas = document.getElementById('statCompleted').textContent;
+                const pendentes = document.getElementById('statPending').textContent;
+                const progresso = document.getElementById('statPercent').textContent;
+                
+                doc.setFontSize(12);
+                doc.setFont(undefined, 'bold');
+                doc.text('Estatísticas:', 20, 40);
+                doc.setFont(undefined, 'normal');
+                doc.text(`Total de Tarefas: ${total}`, 20, 48);
+                doc.text(`Concluídas: ${concluidas}`, 20, 56);
+                doc.text(`Pendentes: ${pendentes}`, 20, 64);
+                doc.text(`Progresso: ${progresso}`, 20, 72);
+                
+                // Linha divisória
+                doc.line(20, 78, 190, 78);
+                
+                // Tarefas
+                let y = 88;
+                doc.setFontSize(12);
+                doc.setFont(undefined, 'bold');
+                doc.text('Tarefas:', 20, y);
+                y += 8;
+                
+                doc.setFontSize(10);
+                const rows = document.querySelectorAll('tbody tr:not(.hidden)');
+                
+                rows.forEach(row => {
+                    if (row.querySelector('.section-header')) {
+                        // Seção
+                        if (y > 270) {
+                            doc.addPage();
+                            y = 20;
+                        }
+                        doc.setFont(undefined, 'bold');
+                        doc.setFontSize(11);
+                        const secao = row.querySelector('.section-header').textContent;
+                        doc.text(secao, 20, y);
+                        y += 7;
+                        doc.setFontSize(10);
+                    } else {
+                        // Tarefa
+                        if (y > 275) {
+                            doc.addPage();
+                            y = 20;
+                        }
+                        
+                        const checkbox = row.querySelector('input[type="checkbox"]');
+                        const status = checkbox && checkbox.checked ? 'OK' : 'Pendente';
+                        const acao = row.cells[0].textContent.replace(/\d+/, '').trim();
+                        const prioridade = row.querySelector('.priority-dropdown');
+                        const prioText = prioridade ? (prioridade.value === 'urgente' ? 'URGENTE' : prioridade.value === 'nao-urgente' ? 'Nao Urgente' : '-') : '-';
+                        
+                        doc.setFont(undefined, 'normal');
+                        const texto = `[${status}] ${acao}`;
+                        doc.text(texto, 20, y, { maxWidth: 150 });
+                        doc.setFont(undefined, 'bold');
+                        doc.text(`[${prioText}]`, 180, y, { align: 'right' });
+                        y += 6;
+                    }
+                });
+                
+                // Salvar
+                const nomeArquivo = `CheckList_Reformas_${hoje.replace(/\//g, '-')}.pdf`;
+                doc.save(nomeArquivo);
+                console.log('✅ PDF gerado:', nomeArquivo);
+                alert('✅ PDF exportado com sucesso!');
+                
+            } catch (error) {
+                console.error('❌ Erro ao exportar PDF:', error);
+                alert('❌ Erro ao exportar PDF. Veja o console para mais detalhes.');
+            }
         }
         
         // Função para exportar para Excel
         function exportToExcel() {
-            const wb = XLSX.utils.book_new();
-            
-            // Preparar dados
-            const data = [
-                ['Check List Reformas - Academia Athenea'],
-                [`Gerado em: ${new Date().toLocaleDateString('pt-BR')}`],
-                [],
-                ['Estatísticas:'],
-                ['Total de Tarefas', document.getElementById('statTotal').textContent],
-                ['Concluídas', document.getElementById('statCompleted').textContent],
-                ['Pendentes', document.getElementById('statPending').textContent],
-                ['Progresso', document.getElementById('statPercent').textContent],
-                [],
-                ['Seção', 'Prioridade Ordem', 'Ação', 'Status', 'Prioridade Tipo', 'Responsável', 'Observações']
-            ];
-            
-            const rows = document.querySelectorAll('tbody tr:not(.hidden)');
-            let currentSection = '';
-            
-            rows.forEach(row => {
-                if (row.querySelector('.section-header')) {
-                    currentSection = row.querySelector('.section-header').textContent;
-                } else {
-                    const checkbox = row.querySelector('input[type="checkbox"]');
-                    const status = checkbox && checkbox.checked ? 'Concluída' : 'Pendente';
-                    
-                    const prioNumero = row.querySelector('.priority-number')?.textContent || '';
-                    const acao = row.cells[0].textContent.replace(/\d+/, '').trim();
-                    
-                    const dropdown = row.querySelector('.priority-dropdown');
-                    const prioTipo = dropdown ? (dropdown.value === 'urgente' ? 'URGENTE' : dropdown.value === 'nao-urgente' ? 'Não Urgente' : '') : '';
-                    
-                    const responsavel = row.querySelector('textarea[id^="resp"]')?.value || '';
-                    const observacoes = row.querySelector('textarea[id^="obs"]')?.value || '';
-                    
-                    data.push([
-                        currentSection,
-                        prioNumero,
-                        acao,
-                        status,
-                        prioTipo,
-                        responsavel,
-                        observacoes
-                    ]);
+            try {
+                console.log('📊 Iniciando exportação Excel...');
+                
+                // Verificar se XLSX está carregado
+                if (typeof XLSX === 'undefined') {
+                    alert('❌ Erro: Biblioteca XLSX não carregada. Recarregue a página e tente novamente.');
+                    console.error('XLSX não está disponível');
+                    return;
                 }
-            });
-            
-            const ws = XLSX.utils.aoa_to_sheet(data);
-            
-            // Ajustar larguras das colunas
-            ws['!cols'] = [
-                { wch: 30 }, // Seção
-                { wch: 10 }, // Prioridade Ordem
-                { wch: 40 }, // Ação
-                { wch: 12 }, // Status
-                { wch: 15 }, // Prioridade Tipo
-                { wch: 25 }, // Responsável
-                { wch: 40 }  // Observações
-            ];
-            
-            XLSX.utils.book_append_sheet(wb, ws, 'Reformas');
-            
-            // Salvar
-            const hoje = new Date().toLocaleDateString('pt-BR').replace(/\//g, '-');
-            XLSX.writeFile(wb, `CheckList_Reformas_${hoje}.xlsx`);
-            alert('✅ Excel exportado com sucesso!');
+                
+                const wb = XLSX.utils.book_new();
+                
+                // Preparar dados
+                const data = [
+                    ['Check List Reformas - Academia Athenea'],
+                    [`Gerado em: ${new Date().toLocaleDateString('pt-BR')}`],
+                    [],
+                    ['Estatísticas:'],
+                    ['Total de Tarefas', document.getElementById('statTotal').textContent],
+                    ['Concluídas', document.getElementById('statCompleted').textContent],
+                    ['Pendentes', document.getElementById('statPending').textContent],
+                    ['Progresso', document.getElementById('statPercent').textContent],
+                    [],
+                    ['Seção', 'Prioridade Ordem', 'Ação', 'Status', 'Prioridade Tipo', 'Responsável', 'Observações']
+                ];
+                
+                const rows = document.querySelectorAll('tbody tr:not(.hidden)');
+                let currentSection = '';
+                
+                rows.forEach(row => {
+                    if (row.querySelector('.section-header')) {
+                        currentSection = row.querySelector('.section-header').textContent;
+                    } else {
+                        const checkbox = row.querySelector('input[type="checkbox"]');
+                        const status = checkbox && checkbox.checked ? 'Concluída' : 'Pendente';
+                        
+                        const prioNumero = row.querySelector('.priority-number')?.textContent || '';
+                        const acao = row.cells[0].textContent.replace(/\d+/, '').trim();
+                        
+                        const dropdown = row.querySelector('.priority-dropdown');
+                        const prioTipo = dropdown ? (dropdown.value === 'urgente' ? 'URGENTE' : dropdown.value === 'nao-urgente' ? 'Não Urgente' : '') : '';
+                        
+                        const responsavel = row.querySelector('textarea[id^="resp"]')?.value || '';
+                        const observacoes = row.querySelector('textarea[id^="obs"]')?.value || '';
+                        
+                        data.push([
+                            currentSection,
+                            prioNumero,
+                            acao,
+                            status,
+                            prioTipo,
+                            responsavel,
+                            observacoes
+                        ]);
+                    }
+                });
+                
+                const ws = XLSX.utils.aoa_to_sheet(data);
+                
+                // Ajustar larguras das colunas
+                ws['!cols'] = [
+                    { wch: 30 }, // Seção
+                    { wch: 10 }, // Prioridade Ordem
+                    { wch: 40 }, // Ação
+                    { wch: 12 }, // Status
+                    { wch: 15 }, // Prioridade Tipo
+                    { wch: 25 }, // Responsável
+                    { wch: 40 }  // Observações
+                ];
+                
+                XLSX.utils.book_append_sheet(wb, ws, 'Reformas');
+                
+                // Salvar
+                const hoje = new Date().toLocaleDateString('pt-BR').replace(/\//g, '-');
+                const nomeArquivo = `CheckList_Reformas_${hoje}.xlsx`;
+                XLSX.writeFile(wb, nomeArquivo);
+                console.log('✅ Excel gerado:', nomeArquivo);
+                alert('✅ Excel exportado com sucesso!');
+                
+            } catch (error) {
+                console.error('❌ Erro ao exportar Excel:', error);
+                alert('❌ Erro ao exportar Excel. Veja o console para mais detalhes.');
+            }
         }
         
         // Função para inicializar gráficos
@@ -3250,6 +3285,12 @@
         window.addEventListener('DOMContentLoaded', async function() {
             console.log('🚀 Iniciando checklist...');
             console.log(`📊 Supabase configurado: ${isConfigured}`);
+            
+            // Verificar bibliotecas externas
+            console.log('📚 Verificando bibliotecas:');
+            console.log(`  - jsPDF: ${typeof window.jspdf !== 'undefined' ? '✅ Carregado' : '❌ NÃO carregado'}`);
+            console.log(`  - XLSX: ${typeof XLSX !== 'undefined' ? '✅ Carregado' : '❌ NÃO carregado'}`);
+            console.log(`  - Chart.js: ${typeof Chart !== 'undefined' ? '✅ Carregado' : '❌ NÃO carregado'}`);
             
             addUniqueIds();
             
