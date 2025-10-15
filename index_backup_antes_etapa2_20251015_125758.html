@@ -1,0 +1,2777 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check List Reformas</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            border-radius: 12px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(30, 60, 114, 0.3);
+        }
+        
+        .logo {
+            max-width: 150px;
+            height: auto;
+            margin-bottom: 15px;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+        }
+        
+        h1 {
+            text-align: center;
+            margin: 0;
+            color: white;
+            font-size: 24px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            line-height: 1.4;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        th, td {
+            border: 1px solid #e0e0e0;
+            padding: 15px;
+            text-align: left;
+        }
+        
+        th {
+            background: linear-gradient(135deg, #1565C0 0%, #1976D2 100%);
+            color: white;
+            font-weight: 600;
+            font-size: 16px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .section-header {
+            background: linear-gradient(135deg, #2196F3 0%, #42A5F5 100%);
+            color: white;
+            font-weight: 700;
+            font-size: 18px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 15px 20px;
+        }
+        
+        .checkbox-cell {
+            text-align: center;
+            width: 10%;
+            background-color: #f8f9fa;
+        }
+        
+        .text-cell {
+            width: 15%;
+            background-color: #ffffff;
+        }
+        
+        input[type="checkbox"] {
+            width: 22px;
+            height: 22px;
+            cursor: pointer;
+            accent-color: #2196F3;
+            vertical-align: middle;
+        }
+        
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 14px;
+            resize: both;
+            min-height: 40px;
+            min-width: 100px;
+            transition: all 0.3s ease;
+        }
+        
+        input[type="text"]:focus, textarea:focus {
+            outline: none;
+            border-color: #2196F3;
+            box-shadow: 0 0 10px rgba(33, 150, 243, 0.3);
+            background-color: #e3f2fd;
+        }
+        
+        input[type="text"]::placeholder, textarea::placeholder {
+            color: #999;
+            font-size: 13px;
+            font-style: italic;
+        }
+        
+        .action-cell {
+            padding-left: 20px;
+            font-size: 16px;
+            line-height: 1.6;
+            background-color: #ffffff;
+        }
+        
+        .action-cell label {
+            cursor: pointer;
+            vertical-align: middle;
+            margin-left: 10px;
+            font-weight: 500;
+            color: #1565C0;
+        }
+        
+        .action-cell input[type="checkbox"] {
+            vertical-align: middle;
+        }
+        
+        .materials-section {
+            background-color: #e3f2fd;
+        }
+        
+        .materials-header {
+            background: linear-gradient(135deg, #64B5F6 0%, #90CAF9 100%);
+            color: #0d47a1;
+            font-weight: 700;
+            font-size: 16px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            padding: 12px 20px;
+            text-align: left;
+        }
+        
+        .material-item {
+            padding-left: 40px;
+            font-size: 15px;
+            line-height: 1.5;
+            color: #1565C0;
+        }
+        
+        .material-item label {
+            cursor: pointer;
+            vertical-align: middle;
+            margin-left: 10px;
+            font-weight: 500;
+        }
+        
+        .material-item input[type="checkbox"] {
+            vertical-align: middle;
+        }
+        
+        /* Animações suaves */
+        tr {
+            transition: all 0.3s ease;
+        }
+        
+        /* Hover para linhas de atividade (ações) */
+        tbody tr:not(.materials-section):hover {
+            background-color: #e3f2fd;
+            transform: translateX(3px);
+            box-shadow: -3px 0 0 0 #2196F3;
+        }
+        
+        /* Hover especial para cabeçalhos de seção */
+        tbody tr:has(.section-header):hover {
+            background: linear-gradient(135deg, #1976D2 0%, #42A5F5 100%);
+            transform: translateX(5px);
+            box-shadow: -5px 0 0 0 #0d47a1;
+        }
+        
+        /* Hover para linhas de materiais */
+        .materials-section:hover {
+            background-color: #bbdefb;
+            transform: translateX(2px);
+            box-shadow: -2px 0 0 0 #64B5F6;
+        }
+        
+        /* Hover especial para header de materiais */
+        tr:has(.materials-header):hover {
+            background: linear-gradient(135deg, #42A5F5 0%, #64B5F6 100%);
+            transform: translateX(3px);
+        }
+        
+        /* Estilos para Mobile */
+        @media screen and (max-width: 768px) {
+            body {
+                padding: 10px;
+                background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            }
+            
+            .container {
+                padding: 15px;
+                overflow-x: auto;
+            }
+            
+            .header {
+                padding: 15px;
+                margin-bottom: 20px;
+            }
+            
+            .logo {
+                max-width: 100px;
+            }
+            
+            h1 {
+                font-size: 18px;
+                letter-spacing: 1px;
+            }
+            
+            table {
+                font-size: 14px;
+                min-width: 800px;
+            }
+            
+            th, td {
+                padding: 12px 8px;
+            }
+            
+            th {
+                font-size: 14px;
+            }
+            
+            .section-header {
+                font-size: 16px;
+            }
+            
+            .materials-header {
+                font-size: 15px;
+            }
+            
+            .checkbox-cell {
+                width: 60px;
+                min-width: 60px;
+            }
+            
+            .text-cell {
+                width: 150px;
+                min-width: 150px;
+            }
+            
+            input[type="text"], textarea {
+                font-size: 16px; /* Evita zoom no iOS */
+                padding: 12px;
+                min-height: 60px;
+                min-width: 140px;
+                resize: both;
+                overflow: auto;
+            }
+            
+            /* Aumenta a área de redimensionamento */
+            textarea::-webkit-resizer {
+                border: 3px solid #2196F3;
+                background: #2196F3;
+                width: 24px;
+                height: 24px;
+                border-radius: 4px;
+            }
+            
+            .action-cell {
+                padding-left: 15px;
+                min-width: 250px;
+                font-size: 15px;
+            }
+            
+            input[type="checkbox"] {
+                width: 24px;
+                height: 24px;
+            }
+            
+            .materials-header {
+                padding-left: 15px;
+            }
+            
+            .material-item {
+                padding-left: 30px;
+                font-size: 14px;
+            }
+        }
+        
+        /* Estilos específicos para telas muito pequenas (< 480px) */
+        @media screen and (max-width: 480px) {
+            h1 {
+                font-size: 18px;
+            }
+            
+            table {
+                min-width: 900px; /* Força scroll horizontal */
+            }
+            
+            .text-cell {
+                width: 180px;
+                min-width: 180px;
+            }
+            
+            input[type="text"], textarea {
+                min-height: 80px;
+                font-size: 16px;
+            }
+            
+            .action-cell {
+                font-size: 14px;
+            }
+            
+            .material-item {
+                font-size: 13px;
+            }
+        }
+        
+        /* ============================================ */
+        /* ANIMAÇÕES PARA INDICADORES DE SINCRONIZAÇÃO */
+        /* ============================================ */
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+        
+        @media print {
+            body {
+                background-color: white;
+            }
+            .container {
+                box-shadow: none;
+            }
+        }
+        
+        /* Estilos para os ícones de prioridade */
+        .priority-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            background: linear-gradient(135deg, #FF9800 0%, #FF6F00 100%);
+            border-radius: 50%;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+            margin-right: 8px;
+            box-shadow: 0 2px 8px rgba(255, 152, 0, 0.4);
+            border: 2px solid #FFB74D;
+            vertical-align: middle;
+        }
+        
+        /* Estilos para tarefas concluídas */
+        .task-completed {
+            text-decoration: line-through;
+            opacity: 0.6;
+            color: #757575;
+        }
+        
+        .task-completed::after {
+            content: " ✅ Concluída";
+            text-decoration: none;
+            color: #4CAF50;
+            font-weight: bold;
+            font-size: 14px;
+            margin-left: 10px;
+        }
+        
+        /* Estilo para dropdown de prioridade */
+        .priority-dropdown {
+            width: 100%;
+            padding: 8px;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: 600;
+            background-color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .priority-dropdown:focus {
+            outline: none;
+            border-color: #2196F3;
+            box-shadow: 0 0 5px rgba(33, 150, 243, 0.3);
+        }
+        
+        .priority-dropdown option[value="urgente"] {
+            background-color: #ffebee;
+            color: #d32f2f;
+            font-weight: bold;
+        }
+        
+        .priority-dropdown option[value="nao-urgente"] {
+            background-color: #e8f5e9;
+            color: #388e3c;
+            font-weight: bold;
+        }
+        
+        /* Cores do dropdown baseado na seleção */
+        .priority-dropdown.urgente {
+            background-color: #ffebee;
+            color: #d32f2f;
+            border-color: #ef5350;
+        }
+        
+        .priority-dropdown.nao-urgente {
+            background-color: #e8f5e9;
+            color: #388e3c;
+            border-color: #66bb6a;
+        }
+        
+        /* Legenda */
+        .legend {
+            background: linear-gradient(135deg, #FFF3E0 0%, #FFE0B2 100%);
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            border-left: 5px solid #FF9800;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .legend-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #FF9800 0%, #FF6F00 100%);
+            border-radius: 50%;
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+            box-shadow: 0 2px 8px rgba(255, 152, 0, 0.4);
+            border: 2px solid #FFB74D;
+            flex-shrink: 0;
+        }
+        
+        .legend-text {
+            color: #E65100;
+            font-weight: 600;
+            font-size: 15px;
+            line-height: 1.4;
+        }
+        
+        /* Estilo especial para a seção Mutirão */
+        .section-header-mutirao {
+            background: linear-gradient(135deg, #D32F2F 0%, #F44336 100%) !important;
+            color: white;
+            font-weight: 700;
+            font-size: 18px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 15px 20px;
+            box-shadow: 0 4px 12px rgba(211, 47, 47, 0.4);
+            border-left: 5px solid #B71C1C;
+        }
+        
+        @media screen and (max-width: 768px) {
+            .legend {
+                flex-direction: column;
+                text-align: center;
+                gap: 10px;
+            }
+            
+            .priority-badge {
+                width: 26px;
+                height: 26px;
+                font-size: 13px;
+            }
+        }
+        
+        /* ============================================ */
+        /* SISTEMA DE BUSCA E FILTROS */
+        /* ============================================ */
+        
+        .search-filter-container {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        
+        .search-box {
+            flex: 1;
+            min-width: 250px;
+            position: relative;
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 12px 45px 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .search-box input:focus {
+            outline: none;
+            border-color: #2196F3;
+            box-shadow: 0 0 10px rgba(33, 150, 243, 0.2);
+        }
+        
+        .search-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #757575;
+            font-size: 20px;
+        }
+        
+        .filter-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-btn {
+            padding: 10px 20px;
+            border: 2px solid #e0e0e0;
+            background: white;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+        
+        .filter-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .filter-btn.active {
+            background: #2196F3;
+            color: white;
+            border-color: #2196F3;
+        }
+        
+        .filter-btn.urgente {
+            border-color: #ef5350;
+            color: #ef5350;
+        }
+        
+        .filter-btn.urgente.active {
+            background: #ef5350;
+            color: white;
+        }
+        
+        .filter-btn.concluidas {
+            border-color: #4CAF50;
+            color: #4CAF50;
+        }
+        
+        .filter-btn.concluidas.active {
+            background: #4CAF50;
+            color: white;
+        }
+        
+        .stats-bar {
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+            padding: 15px;
+            background: linear-gradient(135deg, #f5f5f5 0%, #eeeeee 100%);
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 28px;
+            font-weight: bold;
+            color: #1976D2;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: #757575;
+            text-transform: uppercase;
+            margin-top: 5px;
+        }
+        
+        /* ============================================ */
+        /* TEMA ESCURO */
+        /* ============================================ */
+        
+        body.dark-theme {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        }
+        
+        body.dark-theme .container {
+            background-color: #0f3460;
+            color: #e0e0e0;
+        }
+        
+        body.dark-theme .header {
+            background: linear-gradient(135deg, #16213e 0%, #0f3460 100%);
+        }
+        
+        body.dark-theme table {
+            background-color: #16213e;
+        }
+        
+        body.dark-theme th {
+            background: linear-gradient(135deg, #0f3460 0%, #16213e 100%);
+        }
+        
+        body.dark-theme td {
+            background-color: #1a1a2e;
+            color: #e0e0e0;
+            border-color: #2d3561;
+        }
+        
+        body.dark-theme .section-header {
+            background: linear-gradient(135deg, #16213e 0%, #1976D2 100%) !important;
+        }
+        
+        body.dark-theme .search-filter-container {
+            background-color: #16213e;
+        }
+        
+        body.dark-theme .search-box input {
+            background-color: #1a1a2e;
+            color: #e0e0e0;
+            border-color: #2d3561;
+        }
+        
+        body.dark-theme .filter-btn {
+            background-color: #1a1a2e;
+            color: #e0e0e0;
+            border-color: #2d3561;
+        }
+        
+        body.dark-theme .stats-bar {
+            background: linear-gradient(135deg, #16213e 0%, #1a1a2e 100%);
+        }
+        
+        body.dark-theme .legend {
+            background: linear-gradient(135deg, #2d3561 0%, #16213e 100%);
+        }
+        
+        body.dark-theme .legend-text {
+            color: #FFB74D;
+        }
+        
+        /* Botão de tema */
+        .theme-toggle {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 24px;
+            color: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            z-index: 1002;
+        }
+        
+        .theme-toggle:hover {
+            transform: scale(1.1) rotate(15deg);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.4);
+        }
+        
+        body.dark-theme .theme-toggle {
+            background: linear-gradient(135deg, #FFA726 0%, #FF9800 100%);
+        }
+        
+        /* Animações */
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .search-filter-container {
+            animation: slideIn 0.5s ease;
+        }
+        
+        /* Linha oculta (para filtros) */
+        tr.hidden {
+            display: none;
+        }
+        
+    </style>
+</head>
+<body>
+    <button class="theme-toggle" id="themeToggle" title="Alternar tema">🌙</button>
+    
+    <div class="container">
+        <div class="header">
+            <img src="logo-athenea.png" alt="Logo Academia Athenea" class="logo">
+            <h1>Check List Reformas, Serviços e Consertos - Academia Athenea</h1>
+        </div>
+        
+        <!-- Sistema de Busca e Filtros -->
+        <div class="search-filter-container">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="🔍 Buscar tarefas..." />
+                <span class="search-icon">🔍</span>
+            </div>
+            
+            <div class="filter-buttons">
+                <button class="filter-btn" id="filterAll" onclick="filterTasks('all')">Todas</button>
+                <button class="filter-btn urgente" id="filterUrgent" onclick="filterTasks('urgente')">Urgentes</button>
+                <button class="filter-btn concluidas" id="filterCompleted" onclick="filterTasks('concluidas')">Concluídas</button>
+                <button class="filter-btn" id="filterPending" onclick="filterTasks('pendentes')">Pendentes</button>
+            </div>
+            
+            <div class="stats-bar">
+                <div class="stat-item">
+                    <div class="stat-number" id="statTotal">0</div>
+                    <div class="stat-label">Total</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="statCompleted">0</div>
+                    <div class="stat-label">Concluídas</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="statPending">0</div>
+                    <div class="stat-label">Pendentes</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="statPercent">0%</div>
+                    <div class="stat-label">Progresso</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="legend">
+            <span class="legend-icon">1</span>
+            <span class="legend-text">Os números laranjas indicam a ordem de prioridade das ações mais importantes</span>
+        </div>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Ação</th>
+                    <th style="width: 150px;">Prioridade</th>
+                    <th class="text-cell">Responsável</th>
+                    <th class="text-cell">Observações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Fossa -->
+                <tr>
+                    <td colspan="5" class="section-header">Fossa</td>
+                </tr>
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="fossa1"> 
+                        <label for="fossa1"><span class="priority-badge">1</span>Limpar toda a fossa (Serviço Terceirizado)</label>
+                    </td>
+                    <td>
+                        <select class="priority-dropdown urgente" id="fossa1-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente" selected>Urgente</option>
+                            <option value="nao-urgente">Não Urgente</option>
+                        </select>
+                    </td>
+                    <td class="text-cell"><textarea id="fossa1-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
+                    <td class="text-cell"><textarea id="fossa1-observacoes" placeholder="Observações" rows="1"></textarea></td>
+                </tr>
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="fossa2"> 
+                        <label for="fossa2"><span class="priority-badge">2</span>Fazer a Tampa fossa</label>
+                    </td>
+                    <td>
+                        <select class="priority-dropdown urgente" id="fossa2-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente" selected>Urgente</option>
+                            <option value="nao-urgente">Não Urgente</option>
+                        </select>
+                    </td>
+                    <td class="text-cell"><textarea id="fossa2-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
+                    <td class="text-cell"><textarea id="fossa2-observacoes" placeholder="Observações" rows="1"></textarea></td>
+                </tr>
+                
+                <!-- Elétrica -->
+                <tr>
+                    <td colspan="5" class="section-header">Elétrica</td>
+                </tr>
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="eletrica1"> 
+                        <label for="eletrica1"><span class="priority-badge">3</span>Conserto da caixa de energia e cabos do poste</label>
+                    </td>
+                    <td>
+                        <select class="priority-dropdown urgente" id="fossa1-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente"selected>Urgente</option>
+                            <option value="nao-urgente">Não Urgente</option>
+                        </select>
+                    </td>
+                    <td class="text-cell"><textarea id="eletrica1-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
+                    <td class="text-cell"><textarea id="eletrica1-observacoes" placeholder="Observações" rows="1"></textarea></td>
+                </tr>
+                <tr class="materials-section">
+                    <td colspan="5" class="materials-header">Materiais:</td>
+                </tr>
+                <tr class="materials-section">
+                    <td colspan="5" class="material-item">
+                        <input type="checkbox" id="eletrica-mat1"> 
+                        <label for="eletrica-mat1">1 Caixa de med. trif. polic. p/ dps cdm3 p6</label>
+                    </td>
+                </tr>
+                <tr class="materials-section">
+                    <td colspan="5" class="material-item">
+                        <input type="checkbox" id="eletrica-mat2"> 
+                        <label for="eletrica-mat2">1 Medidor eletronico monof. din 50a sibra</label>
+                    </td>
+                </tr>
+                <tr class="materials-section">
+                    <td colspan="5" class="material-item">
+                        <input type="checkbox" id="eletrica-mat3"> 
+                        <label for="eletrica-mat3">1 Disjuntor bif. din 50a-c tramontina</label>
+                    </td>
+                </tr>
+                <tr class="materials-section">
+                    <td colspan="5" class="material-item">
+                        <input type="checkbox" id="eletrica-mat4"> 
+                        <label for="eletrica-mat4">3 Protetor c. surtos s1-c 10a 20 ka sibrat</label>
+                    </td>
+                </tr>
+                <tr class="materials-section">
+                    <td colspan="5" class="material-item">
+                        <input type="checkbox" id="eletrica-mat5"> 
+                        <label for="eletrica-mat5">1 Haste terra cobre 5/8 12,0mm x 2,00m</label>
+                    </td>
+                </tr>
+                <tr class="materials-section">
+                    <td colspan="5" class="material-item">
+                        <input type="checkbox" id="eletrica-mat6"> 
+                        <label for="eletrica-mat6">1 Conector p/ haste 1/2 (13mm) 25-35mm t</label>
+                    </td>
+                </tr>
+                <tr class="materials-section">
+                    <td colspan="5" class="material-item">
+                        <input type="checkbox" id="eletrica-mat7"> 
+                        <label for="eletrica-mat7">1 Caixa de aterramento pvc red. pq</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="eletrica2"> 
+                        <label for="eletrica2"><span class="priority-badge">21</span>Consertar tomadas, lâmpadas e fiações (banheiro, peregrinos, cozinha, refeitório, lavanderia etc)</label>
+                    </td>
+                    <td>
+                        <select class="priority-dropdown nao-urgente" id="eletrica2-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente">Urgente</option>
+                            <option value="nao-urgente" selected>Não Urgente</option>
+                        </select>
+                    </td>
+                    <td class="text-cell"><textarea id="eletrica2-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
+                    <td class="text-cell"><textarea id="eletrica2-observacoes" placeholder="Observações" rows="1"></textarea></td>
+                </tr>
+                
+                <!-- Telhado banheiro -->
+                <tr>
+                    <td colspan="5" class="section-header">Telhado banheiro</td>
+                </tr>
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="telhado2"> 
+                        <label for="telhado2"><span class="priority-badge">4</span>Madeiramento telhado banheiros</label>
+                    </td>
+                    <td>
+                        <select class="priority-dropdown urgente" id="telhado2-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente"selected>Urgente</option>
+                            <option value="nao-urgente">Não Urgente</option>
+                        </select>
+                    </td>
+                    <td class="text-cell"><textarea id="telhado2-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
+                    <td class="text-cell"><textarea id="telhado2-observacoes" placeholder="Observações" rows="1"></textarea></td>
+                </tr>
+                <tr class="materials-section">
+                    <td colspan="5" class="materials-header">Materiais:</td>
+                </tr>
+                <tr class="materials-section">
+                    <td colspan="5" class="material-item">
+                        <input type="checkbox" id="telhado-mat1"> 
+                        <label for="telhado-mat1">10 comunheira telhado</label>
+                    </td>
+                </tr>
+                <tr class="materials-section">
+                    <td colspan="5" class="material-item">
+                        <input type="checkbox" id="telhado-mat2"> 
+                        <label for="telhado-mat2">16 ripas de 10cms de 3m</label>
+                    </td>
+                </tr>
+                <tr class="materials-section">
+                    <td colspan="5" class="material-item">
+                        <input type="checkbox" id="telhado-mat3"> 
+                        <label for="telhado-mat3">5 ripas de 5cm de 3m</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="telhado1"> 
+                        <label for="telhado1">Terminar pilastra</label>
+                    </td>
+                    <td>
+                        <select class="priority-dropdown nao-urgente" id="telhado1-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente">Urgente</option>
+                            <option value="nao-urgente" selected>Não Urgente</option>
+                        </select>
+                    </td>
+                    <td class="text-cell"><textarea id="telhado1-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
+                    <td class="text-cell"><textarea id="telhado1-observacoes" placeholder="Observações" rows="1"></textarea></td>
+                </tr>
+                
+                <!-- Pia parte de Fora -->
+                <tr>
+                    <td colspan="5" class="section-header">Pia parte de Fora</td>
+                </tr>
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="pia1"> 
+                        <label for="pia1"><span class="priority-badge">5</span>Trocar pia de fora pela doada</label>
+                    </td>
+                    <td>
+                        <select class="priority-dropdown urgente" id="pia1-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente"selected>Urgente</option>
+                            <option value="nao-urgente">Não Urgente</option>
+                        </select>
+                    </td>
+                    <td class="text-cell"><textarea id="pia1-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
+                    <td class="text-cell"><textarea id="pia1-observacoes" placeholder="Observações" rows="1"></textarea></td>
+                </tr>
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="pia2"> 
+                        <label for="pia2"><span class="priority-badge">6</span>Trocar sifão do tanque (vazando)</label>
+                    </td>
+                    <td>
+                        <select class="priority-dropdown urgente" id="pia2-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente"selected>Urgente</option>
+                            <option value="nao-urgente">Não Urgente</option>
+                        </select>
+                    </td>
+                    <td class="text-cell"><textarea id="pia2-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
+                    <td class="text-cell"><textarea id="pia2-observacoes" placeholder="Observações" rows="1"></textarea></td>
+                </tr>
+                <tr class="materials-section">
+                    <td colspan="5" class="materials-header">Materiais:</td>
+                </tr>
+                <tr class="materials-section">
+                    <td colspan="5" class="material-item">
+                        <input type="checkbox" id="pia-mat1"> 
+                        <label for="pia-mat1">Comprar 2 joelhos para a pia</label>
+                    </td>
+                </tr>
+                <tr class="materials-section">
+                    <td colspan="5" class="material-item">
+                        <input type="checkbox" id="pia-mat2"> 
+                        <label for="pia-mat2">Trocar cífão do tanque (vazando)</label>
+                    </td>
+                </tr>
+                <tr class="materials-section">
+                    <td colspan="5" class="material-item">
+                        <input type="checkbox" id="pia-mat3"> 
+                        <label for="pia-mat3">Comprar 3m de cano 40</label>
+                    </td>
+                </tr>
+                <tr class="materials-section">
+                    <td colspan="5" class="material-item">
+                        <input type="checkbox" id="pia-mat4"> 
+                        <label for="pia-mat4">Comprar 1 T de cano</label>
+                    </td>
+                </tr>
+<!-- Reformar Banheiros -->
+                <tr>
+                    <td colspan="5" class="section-header">Reformar banheiros (F e M)</td>
+                </tr>
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="banheiro2"> 
+                        <label for="banheiro2"><span class="priority-badge">7</span>Colocar piso e azulejo em áreas faltantes</label>
+                    </td>
+                    <td>
+                        <select class="priority-dropdown urgente" id="banheiro2-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente"selected>Urgente</option>
+                            <option value="nao-urgente">Não Urgente</option>
+                        </select>
+                    </td>
+                    <td class="text-cell"><textarea id="banheiro2-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
+                    <td class="text-cell"><textarea id="banheiro2-observacoes" placeholder="Observações" rows="1"></textarea></td>
+                </tr>
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="banheiro3"> 
+                        <label for="banheiro3"><span class="priority-badge">8</span>Rebocar e passar massa banheiros masculino</label>
+                    </td>
+                    <td>
+                        <select class="priority-dropdown urgente" id="banheiro3-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente"selected>Urgente</option>
+                            <option value="nao-urgente">Não Urgente</option>
+                        </select>
+                    </td>
+                    <td class="text-cell"><textarea id="banheiro3-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
+                    <td class="text-cell"><textarea id="banheiro3-observacoes" placeholder="Observações" rows="1"></textarea></td>
+                </tr>
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="banheiro4"> 
+                        <label for="banheiro4"><span class="priority-badge">9</span>Pintar banheiros masculino e feminino</label>
+                    </td>
+                    <td>
+                        <select class="priority-dropdown urgente" id="banheiro4-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente"selected>Urgente</option>
+                            <option value="nao-urgente">Não Urgente</option>
+                        </select>
+                    </td>
+                    <td class="text-cell"><textarea id="banheiro4-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
+                    <td class="text-cell"><textarea id="banheiro4-observacoes" placeholder="Observações" rows="1"></textarea></td>
+                </tr>
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="banheiro5"> 
+                        <label for="banheiro5"><span class="priority-badge">10</span>Trocar kit acionador de caixas acopladas 2 vasos sanitários</label>
+                    </td>
+                    <td>
+                        <select class="priority-dropdown urgente" id="banheiro5-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente"selected>Urgente</option>
+                            <option value="nao-urgente">Não Urgente</option>
+                        </select>
+                    </td>
+                    <td class="text-cell"><textarea id="banheiro5-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
+                    <td class="text-cell"><textarea id="banheiro5-observacoes" placeholder="Observações" rows="1"></textarea></td>
+                </tr>
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="banheiro6"> 
+                        <label for="banheiro6"><span class="priority-badge">11</span>Instalar 2 chuveiros</label>
+                    </td>
+                    <td>
+                        <select class="priority-dropdown urgente" id="banheiro6-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente"selected>Urgente</option>
+                            <option value="nao-urgente">Não Urgente</option>
+                        </select>
+                    </td>
+                    <td class="text-cell"><textarea id="banheiro6-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
+                    <td class="text-cell"><textarea id="banheiro6-observacoes" placeholder="Observações" rows="1"></textarea></td>
+                </tr>
+                <tr class="materials-section">
+                    <td colspan="5" class="materials-header">Materiais:</td>
+                </tr>
+                <tr class="materials-section">
+                    <td colspan="5" class="material-item">
+                        <input type="checkbox" id="banheiro-mat1"> 
+                        <label for="banheiro-mat1">1 Puxador</label>
+                    </td>
+                </tr>
+                <tr class="materials-section">
+                    <td colspan="5" class="material-item">
+                        <input type="checkbox" id="banheiro-mat2"> 
+                        <label for="banheiro-mat2">10 Targetas (trincos)</label>
+                    </td>
+                </tr>
+                <tr class="materials-section">
+                    <td colspan="5" class="material-item">
+                        <input type="checkbox" id="banheiro-mat3"> 
+                        <label for="banheiro-mat3">10 Cadeados</label>
+                    </td>
+                </tr>
+                <tr class="materials-section">
+                    <td colspan="5" class="material-item">
+                        <input type="checkbox" id="banheiro-mat4"> 
+                        <label for="banheiro-mat4">2 Chuveiros elétrico</label>
+                    </td>
+                </tr>
+                <tr class="materials-section">
+                    <td colspan="5" class="material-item">
+                        <input type="checkbox" id="banheiro-mat5"> 
+                        <label for="banheiro-mat5">2 Kits de Caixa acoplada vaso sanitario</label>
+                    </td>
+                </tr>
+                <tr class="materials-section">
+                    <td colspan="5" class="material-item">
+                        <input type="checkbox" id="banheiro-mat6"> 
+                        <label for="banheiro-mat6">Rejunte</label>
+                    </td>
+                </tr>
+                <tr class="materials-section">
+                    <td colspan="5" class="material-item">
+                        <input type="checkbox" id="banheiro-mat7"> 
+                        <label for="banheiro-mat7">Reboco e massa corrida</label>
+                    </td>
+                </tr>
+                <tr class="materials-section">
+                    <td colspan="5" class="material-item">
+                        <input type="checkbox" id="banheiro-mat8"> 
+                        <label for="banheiro-mat8">Azulejos nos Banheiros</label>
+                    </td>
+                </tr>
+                <tr class="materials-section">
+                    <td colspan="5" class="material-item">
+                        <input type="checkbox" id="banheiro-mat9"> 
+                        <label for="banheiro-mat9">Piso nos Banheiros</label>
+                    </td>
+                </tr>
+                
+                
+                
+                <!-- Forro faltando -->
+                <tr>
+                    <td colspan="5" class="section-header">Forro faltando quarto casal (Cozinha)</td>
+                </tr>
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="forro1"> 
+                        <label for="forro1"><span class="priority-badge">12</span>Instalar forro</label>
+                    </td>
+                    <td>
+                        <select class="priority-dropdown urgente" id="forro1-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente"selected>Urgente</option>
+                            <option value="nao-urgente">Não Urgente</option>
+                        </select>
+                    </td>
+                    <td class="text-cell"><textarea id="forro1-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
+                    <td class="text-cell"><textarea id="forro1-observacoes" placeholder="Observações" rows="1"></textarea></td>
+                </tr>
+                <tr class="materials-section">
+                    <td colspan="5" class="materials-header">Materiais:</td>
+                </tr>
+                <tr class="materials-section">
+                    <td colspan="5" class="material-item">
+                        <input type="checkbox" id="forro-mat1"> 
+                        <label for="forro-mat1">1 Peça de forro</label>
+                    </td>
+                </tr>
+                
+                
+                
+<!-- Colchões - Peregrinos Casal e Solteiro (M e F) -->
+                <tr>
+                    <td colspan="5" class="section-header">Colchões - Peregrinos Casal e Solteiro (M e F)</td>
+                </tr>
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="colchao2"> 
+                        <label for="colchao2"><span class="priority-badge">13</span>Tirar mofo e secar colchões</label>
+                    </td>
+                    <td>
+                        <select class="priority-dropdown urgente" id="colchao2-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente"selected>Urgente</option>
+                            <option value="nao-urgente">Não Urgente</option>
+                        </select>
+                    </td>
+                    <td class="text-cell"><textarea id="colchao2-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
+                    <td class="text-cell"><textarea id="colchao2-observacoes" placeholder="Observações" rows="1"></textarea></td>
+                </tr>
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="colchao1"> 
+                        <label for="colchao1"><span class="priority-badge">14</span>Encapar colchões</label>
+                    </td>
+                    <td>
+                        <select class="priority-dropdown urgente" id="colchao1-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente"selected>Urgente</option>
+                            <option value="nao-urgente">Não Urgente</option>
+                        </select>
+                    </td>
+                    <td class="text-cell"><textarea id="colchao1-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
+                    <td class="text-cell"><textarea id="colchao1-observacoes" placeholder="Observações" rows="1"></textarea></td>
+                </tr>
+                <tr class="materials-section">
+                    <td colspan="5" class="materials-header">Materiais:</td>
+                </tr>
+                <tr class="materials-section">
+                    <td colspan="5" class="material-item">
+                        <input type="checkbox" id="colchao-mat1"> 
+                        <label for="colchao-mat1">4 Capas para os colchoes casal</label>
+                    </td>
+                </tr>
+                <tr class="materials-section">
+                    <td colspan="5" class="material-item">
+                        <input type="checkbox" id="colchao-mat2"> 
+                        <label for="colchao-mat2">1 capa colchão casal grosso</label>
+                    </td>
+                </tr>
+                <tr class="materials-section">
+                    <td colspan="5" class="material-item">
+                        <input type="checkbox" id="colchao-mat3"> 
+                        <label for="colchao-mat3">5 Capas colchão solteiro</label>
+                    </td>
+                </tr>
+                <tr class="materials-section">
+                    <td colspan="5" class="material-item">
+                        <input type="checkbox" id="colchao-mat4"> 
+                        <label for="colchao-mat4">1 capa colchão solteiro grosso</label>
+                    </td>
+                </tr>
+                
+                <!-- Tarefas preparação Curso Agrocultura -->
+                <tr>
+                    <td colspan="5" class="section-header">Tarefas preparação Curso Agrocultura</td>
+                </tr>
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="agrocultura1"> 
+                        <label for="agrocultura1"><span class="priority-badge">15</span>Consertar carrinhos de mão</label>
+                    </td>
+                    <td>
+                        <select class="priority-dropdown nao-urgente" id="agrocultura1-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente">Urgente</option>
+                            <option value="nao-urgente" selected>Não Urgente</option>
+                        </select>
+                    </td>
+                    <td class="text-cell"><textarea id="agrocultura1-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
+                    <td class="text-cell"><textarea id="agrocultura1-observacoes" placeholder="Observações" rows="1"></textarea></td>
+                </tr>
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="agrocultura2"> 
+                        <label for="agrocultura2"><span class="priority-badge">16</span>Consertar ferramentas de campo</label>
+                    </td>
+                    <td>
+                        <select class="priority-dropdown nao-urgente" id="agrocultura2-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente">Urgente</option>
+                            <option value="nao-urgente" selected>Não Urgente</option>
+                        </select>
+                    </td>
+                    <td class="text-cell"><textarea id="agrocultura2-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
+                    <td class="text-cell"><textarea id="agrocultura2-observacoes" placeholder="Observações" rows="1"></textarea></td>
+                </tr>
+                
+<!-- Limpezas e Pinturas -->
+                <tr>
+                    <td colspan="5" class="section-header">Limpezas e Pinturas</td>
+                </tr>
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="limpeza1"> 
+                        <label for="limpeza1"><span class="priority-badge">18</span>Limpar canaleta que escorre água para a Athenea e ambiente entre Cozinha e Estufa</label>
+                    </td>
+                    <td>
+                        <select class="priority-dropdown urgente" id="limpeza1-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente"selected>Urgente</option>
+                            <option value="nao-urgente">Não Urgente</option>
+                        </select>
+                    </td>
+                    <td class="text-cell"><textarea id="limpeza1-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
+                    <td class="text-cell"><textarea id="limpeza1-observacoes" placeholder="Observações" rows="1"></textarea></td>
+                </tr>
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="limpeza2"> 
+                        <label for="limpeza2"><span class="priority-badge">17</span>Instalar varais na Lavanderia ao Lado do Banheiro Feminino</label>
+                    </td>
+                    <td>
+                        <select class="priority-dropdown urgente" id="limpeza2-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente"selected>Urgente</option>
+                            <option value="nao-urgente">Não Urgente</option>
+                        </select>
+                    </td>
+                    <td class="text-cell"><textarea id="limpeza2-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
+                    <td class="text-cell"><textarea id="limpeza2-observacoes" placeholder="Observações" rows="1"></textarea></td>
+                </tr>
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="limpeza3"> 
+                        <label for="limpeza3"><span class="priority-badge">30</span>Limpeza atrás dos banheiros (tirar entulhos)</label>
+                    </td>
+                    <td>
+                        <select class="priority-dropdown urgente" id="limpeza3-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente"selected>Urgente</option>
+                            <option value="nao-urgente">Não Urgente</option>
+                        </select>
+                    </td>
+                    <td class="text-cell"><textarea id="limpeza3-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
+                    <td class="text-cell"><textarea id="limpeza3-observacoes" placeholder="Observações" rows="1"></textarea></td>
+                </tr>
+<!-- Varais áereos Lavanderia devido ao Curso (itens pertencem à seção Limpezas) -->
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="curso1"> 
+                        <label for="curso1"><span class="priority-badge">25</span>Limpeza e rejunte escada da Academia</label>
+                    </td>
+                    <td>
+                        <select class="priority-dropdown urgente" id="curso1-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente"selected>Urgente</option>
+                            <option value="nao-urgente">Não Urgente</option>
+                        </select>
+                    </td>
+                    <td class="text-cell"><textarea id="curso1-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
+                    <td class="text-cell"><textarea id="curso1-observacoes" placeholder="Observações" rows="1"></textarea></td>
+                </tr>
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="curso2"> 
+                        <label for="curso2"><span class="priority-badge">26</span>Retirada dos limos, manchas de sujeira</label>
+                    </td>
+                    <td>
+                        <select class="priority-dropdown urgente" id="curso2-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente"selected>Urgente</option>
+                            <option value="nao-urgente">Não Urgente</option>
+                        </select>
+                    </td>
+                    <td class="text-cell"><textarea id="curso2-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
+                    <td class="text-cell"><textarea id="curso2-observacoes" placeholder="Observações" rows="1"></textarea></td>
+                </tr>
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="limpeza4"> 
+                        <label for="limpeza4"><span class="priority-badge">20</span>Limpar e pintar Faixada entrada Athenea</label>
+                    </td>
+                    <td>
+                        <select class="priority-dropdown nao-urgente" id="limpeza4-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente">Urgente</option>
+                            <option value="nao-urgente" selected>Não Urgente</option>
+                        </select>
+                    </td>
+                    <td class="text-cell"><textarea id="limpeza4-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
+                    <td class="text-cell"><textarea id="limpeza4-observacoes" placeholder="Observações" rows="1"></textarea></td>
+                </tr>
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="limpeza5"> 
+                        <label for="limpeza5"><span class="priority-badge">19</span>Pintura antecâmara e sala de vestes Zeus</label>
+                    </td>
+                    <td>
+                        <select class="priority-dropdown nao-urgente" id="limpeza5-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente">Urgente</option>
+                            <option value="nao-urgente" selected>Não Urgente</option>
+                        </select>
+                    </td>
+                    <td class="text-cell"><textarea id="limpeza5-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
+                    <td class="text-cell"><textarea id="limpeza5-observacoes" placeholder="Observações" rows="1"></textarea></td>
+                </tr>
+<!-- Lago -->
+                <tr>
+                    <td colspan="5" class="section-header">Lago</td>
+                </tr>
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="lago1"> 
+                        <label for="lago1"><span class="priority-badge">22</span>Limpar Lago</label>
+                    </td>
+                    <td>
+                        <select class="priority-dropdown urgente" id="lago1-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente"selected>Urgente</option>
+                            <option value="nao-urgente">Não Urgente</option>
+                        </select>
+                    </td>
+                    <td class="text-cell"><textarea id="lago1-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
+                    <td class="text-cell"><textarea id="lago1-observacoes" placeholder="Observações" rows="1"></textarea></td>
+                </tr>
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="lago2"> 
+                        <label for="lago2">Expandir area do Lago</label>
+                    </td>
+                    <td>
+                        <select class="priority-dropdown nao-urgente" id="lago2-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente">Urgente</option>
+                            <option value="nao-urgente" selected>Não Urgente</option>
+                        </select>
+                    </td>
+                    <td class="text-cell"><textarea id="lago2-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
+                    <td class="text-cell"><textarea id="lago2-observacoes" placeholder="Observações" rows="1"></textarea></td>
+                </tr>
+<!-- Santuário de Cura -->
+                <tr>
+                    <td colspan="5" class="section-header">Santuário de Cura</td>
+                </tr>
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="santuario1"> 
+                        <label for="santuario1">Reboco de parede santuário de cura que está esfarelando</label>
+                    </td>
+                    <td>
+                        <select class="priority-dropdown nao-urgente" id="santuario1-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente">Urgente</option>
+                            <option value="nao-urgente" selected>Não Urgente</option>
+                        </select>
+                    </td>
+                    <td class="text-cell"><textarea id="santuario1-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
+                    <td class="text-cell"><textarea id="santuario1-observacoes" placeholder="Observações" rows="1"></textarea></td>
+                </tr>
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="santuario3"> 
+                        <label for="santuario3"><span class="priority-badge">23</span>Limpar e Podar a estrada até o Santuário</label>
+                    </td>
+                    <td>
+                        <select class="priority-dropdown nao-urgente" id="santuario3-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente">Urgente</option>
+                            <option value="nao-urgente" selected>Não Urgente</option>
+                        </select>
+                    </td>
+                    <td class="text-cell"><textarea id="santuario3-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
+                    <td class="text-cell"><textarea id="santuario3-observacoes" placeholder="Observações" rows="1"></textarea></td>
+                </tr>
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="santuario4"> 
+                        <label for="santuario4">Restaurar Jardim de inverno</label>
+                    </td>
+                    <td>
+                        <select class="priority-dropdown nao-urgente" id="santuario4-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente">Urgente</option>
+                            <option value="nao-urgente" selected>Não Urgente</option>
+                        </select>
+                    </td>
+                    <td class="text-cell"><textarea id="santuario4-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
+                    <td class="text-cell"><textarea id="santuario4-observacoes" placeholder="Observações" rows="1"></textarea></td>
+                </tr>
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="santuario5"> 
+                        <label for="santuario5">Tirar o mofo da mãe divina e resiná-la</label>
+                    </td>
+                    <td>
+                        <select class="priority-dropdown nao-urgente" id="santuario5-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente">Urgente</option>
+                            <option value="nao-urgente" selected>Não Urgente</option>
+                        </select>
+                    </td>
+                    <td class="text-cell"><textarea id="santuario5-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
+                    <td class="text-cell"><textarea id="santuario5-observacoes" placeholder="Observações" rows="1"></textarea></td>
+                </tr>
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="santuario6"> 
+                        <label for="santuario6"><span class="priority-badge">24</span>Tirar mofo e limpar cúpula de vidro</label>
+                    </td>
+                    <td>
+                        <select class="priority-dropdown nao-urgente" id="santuario6-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente">Urgente</option>
+                            <option value="nao-urgente" selected>Não Urgente</option>
+                        </select>
+                    </td>
+                    <td class="text-cell"><textarea id="santuario6-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
+                    <td class="text-cell"><textarea id="santuario6-observacoes" placeholder="Observações" rows="1"></textarea></td>
+                </tr>
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="santuario2"> 
+                        <label for="santuario2">Utensílios de limpeza para o Santuário de Cura</label>
+                    </td>
+                    <td>
+                        <select class="priority-dropdown urgente" id="santuario2-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente"selected>Urgente</option>
+                            <option value="nao-urgente">Não Urgente</option>
+                        </select>
+                    </td>
+                    <td class="text-cell"><textarea id="santuario2-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
+                    <td class="text-cell"><textarea id="santuario2-observacoes" placeholder="Observações" rows="1"></textarea></td>
+                </tr>
+                <tr class="materials-section">
+                    <td colspan="5" class="materials-header">Materiais:</td>
+                </tr>
+                <tr class="materials-section">
+                    <td colspan="5" class="material-item">
+                        <input type="checkbox" id="santuario-mat1"> 
+                        <label for="santuario-mat1">Maçarico</label>
+                    </td>
+                </tr>
+                <tr class="materials-section">
+                    <td colspan="5" class="material-item">
+                        <input type="checkbox" id="santuario-mat2"> 
+                        <label for="santuario-mat2">Vassoura esfregão</label>
+                    </td>
+                </tr>
+                <tr class="materials-section">
+                    <td colspan="5" class="material-item">
+                        <input type="checkbox" id="santuario-mat3"> 
+                        <label for="santuario-mat3">Rodo gde</label>
+                    </td>
+                </tr>
+                <tr class="materials-section">
+                    <td colspan="5" class="material-item">
+                        <input type="checkbox" id="santuario-mat4"> 
+                        <label for="santuario-mat4">Pano gde</label>
+                    </td>
+                </tr>
+<!-- Ver sujeira caindo teto -->
+                <tr>
+                    <td colspan="5" class="section-header">Casa Peregrino de Casais</td>
+                </tr>
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="teto1"> 
+                        <label for="teto1"><span class="priority-badge">27</span>Verificar e corrigir sujeira caindo do teto</label>
+                    </td>
+                    <td>
+                        <select class="priority-dropdown urgente" id="teto1-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente"selected>Urgente</option>
+                            <option value="nao-urgente">Não Urgente</option>
+                        </select>
+                    </td>
+                    <td class="text-cell"><textarea id="teto1-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
+                    <td class="text-cell"><textarea id="teto1-observacoes" placeholder="Observações" rows="1"></textarea></td>
+                </tr>
+<!-- Área externa -->
+                <tr>
+                    <td colspan="5" class="section-header">Área externa</td>
+                </tr>
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="externa1"> 
+                        <label for="externa1"><span class="priority-badge">28</span>Colocação de mourões na entrada</label>
+                    </td>
+                    <td>
+                        <select class="priority-dropdown urgente" id="externa1-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente"selected>Urgente</option>
+                            <option value="nao-urgente">Não Urgente</option>
+                        </select>
+                    </td>
+                    <td class="text-cell"><textarea id="externa1-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
+                    <td class="text-cell"><textarea id="externa1-observacoes" placeholder="Observações" rows="1"></textarea></td>
+                </tr>
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="externa2"> 
+                        <label for="externa2"><span class="priority-badge">29</span>Corrigir buracão de lodo na grama (usar areia ao lado do Zeus)</label>
+                    </td>
+                    <td>
+                        <select class="priority-dropdown urgente" id="externa2-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente"selected>Urgente</option>
+                            <option value="nao-urgente">Não Urgente</option>
+                        </select>
+                    </td>
+                    <td class="text-cell"><textarea id="externa2-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
+                    <td class="text-cell"><textarea id="externa2-observacoes" placeholder="Observações" rows="1"></textarea></td>
+                </tr>
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="externa3"> 
+                        <label for="externa3"><span class="priority-badge">31</span>Levar os lixos, entulhos e velharias na Carretinha</label>
+                    </td>
+                    <td>
+                        <select class="priority-dropdown urgente" id="externa3-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente"selected>Urgente</option>
+                            <option value="nao-urgente">Não Urgente</option>
+                        </select>
+                    </td>
+                    <td class="text-cell"><textarea id="externa3-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
+                    <td class="text-cell"><textarea id="externa3-observacoes" placeholder="Observações" rows="1"></textarea></td>
+                </tr>
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="externa4"> 
+                        <label for="externa4">Nivelar e cimentar calçada atrás da antecâmara parte de fora</label>
+                    </td>
+                    <td>
+                        <select class="priority-dropdown nao-urgente" id="externa4-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente">Urgente</option>
+                            <option value="nao-urgente" selected>Não Urgente</option>
+                        </select>
+                    </td>
+                    <td class="text-cell"><textarea id="externa4-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
+                    <td class="text-cell"><textarea id="externa4-observacoes" placeholder="Observações" rows="1"></textarea></td>
+                </tr>
+<!-- Cozinha -->
+                <tr>
+                    <td colspan="5" class="section-header">Cozinha</td>
+                </tr>
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="cozinha1"> 
+                        <label for="cozinha1">Instalar janela</label>
+                    </td>
+                    <td>
+                        <select class="priority-dropdown nao-urgente" id="cozinha1-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente">Urgente</option>
+                            <option value="nao-urgente" selected>Não Urgente</option>
+                        </select>
+                    </td>
+                    <td class="text-cell"><textarea id="cozinha1-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
+                    <td class="text-cell"><textarea id="cozinha1-observacoes" placeholder="Observações" rows="1"></textarea></td>
+                </tr>
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="cozinha2"> 
+                        <label for="cozinha2">Comprar liquidificador</label>
+                    </td>
+                    <td>
+                        <select class="priority-dropdown nao-urgente" id="cozinha2-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente">Urgente</option>
+                            <option value="nao-urgente" selected>Não Urgente</option>
+                        </select>
+                    </td>
+                    <td class="text-cell"><textarea id="cozinha2-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
+                    <td class="text-cell"><textarea id="cozinha2-observacoes" placeholder="Observações" rows="1"></textarea></td>
+                </tr>
+                <tr class="materials-section">
+                    <td colspan="5" class="materials-header">Materiais:</td>
+                </tr>
+                <tr class="materials-section">
+                    <td colspan="5" class="material-item">
+                        <input type="checkbox" id="cozinha-mat1"> 
+                        <label for="cozinha-mat1">Janela pro vão da cozinha</label>
+                    </td>
+                </tr>
+                <tr class="materials-section">
+                    <td colspan="5" class="material-item">
+                        <input type="checkbox" id="cozinha-mat2"> 
+                        <label for="cozinha-mat2">1 Liquidificador Industrial</label>
+                    </td>
+                </tr>
+
+                
+                
+                
+                <!-- Fazer parapeito -->
+                <tr>
+                    <td colspan="5" class="section-header">Fazer parapeito no andar dos banheiros</td>
+                </tr>
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="parapeito1"> 
+                        <label for="parapeito1">Construir parapeito</label>
+                    </td>
+                    <td>
+                        <select class="priority-dropdown nao-urgente" id="parapeito1-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente">Urgente</option>
+                            <option value="nao-urgente" selected>Não Urgente</option>
+                        </select>
+                    </td>
+                    <td class="text-cell"><textarea id="parapeito1-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
+                    <td class="text-cell"><textarea id="parapeito1-observacoes" placeholder="Observações" rows="1"></textarea></td>
+                </tr>
+                
+                
+                
+                <!-- Mutirão Pré-Evento dia 26/10 -->
+                <tr>
+                    <td colspan="5" class="section-header section-header-mutirao">Mutirão Pré-Evento dia 26/10</td>
+                </tr>
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="mutirao1"> 
+                        <label for="mutirao1">Limpeza dos peregrinos masculinos e feminino</label>
+                    </td>
+                    <td>
+                        <select class="priority-dropdown urgente" id="mutirao1-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente"selected>Urgente</option>
+                            <option value="nao-urgente">Não Urgente</option>
+                        </select>
+                    </td>
+                    <td class="text-cell"><textarea id="mutirao1-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
+                    <td class="text-cell"><textarea id="mutirao1-observacoes" placeholder="Observações" rows="1"></textarea></td>
+                </tr>
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="mutirao2"> 
+                        <label for="mutirao2">Limpeza dos banheiros masculino e feminino</label>
+                    </td>
+                    <td>
+                        <select class="priority-dropdown urgente" id="mutirao2-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente"selected>Urgente</option>
+                            <option value="nao-urgente">Não Urgente</option>
+                        </select>
+                    </td>
+                    <td class="text-cell"><textarea id="mutirao2-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
+                    <td class="text-cell"><textarea id="mutirao2-observacoes" placeholder="Observações" rows="1"></textarea></td>
+                </tr>
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="mutirao3"> 
+                        <label for="mutirao3">Limpeza dos peregrinos de casal</label>
+                    </td>
+                    <td>
+                        <select class="priority-dropdown urgente" id="mutirao3-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente"selected>Urgente</option>
+                            <option value="nao-urgente">Não Urgente</option>
+                        </select>
+                    </td>
+                    <td class="text-cell"><textarea id="mutirao3-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
+                    <td class="text-cell"><textarea id="mutirao3-observacoes" placeholder="Observações" rows="1"></textarea></td>
+                </tr>
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="mutirao4"> 
+                        <label for="mutirao4">Corte da grama</label>
+                    </td>
+                    <td>
+                        <select class="priority-dropdown urgente" id="mutirao4-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente"selected>Urgente</option>
+                            <option value="nao-urgente">Não Urgente</option>
+                        </select>
+                    </td>
+                    <td class="text-cell"><textarea id="mutirao4-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
+                    <td class="text-cell"><textarea id="mutirao4-observacoes" placeholder="Observações" rows="1"></textarea></td>
+                </tr>
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="mutirao5"> 
+                        <label for="mutirao5">Rastelagem das folhas secas</label>
+                    </td>
+                    <td>
+                        <select class="priority-dropdown urgente" id="mutirao5-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente"selected>Urgente</option>
+                            <option value="nao-urgente">Não Urgente</option>
+                        </select>
+                    </td>
+                    <td class="text-cell"><textarea id="mutirao5-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
+                    <td class="text-cell"><textarea id="mutirao5-observacoes" placeholder="Observações" rows="1"></textarea></td>
+                </tr>
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="mutirao6"> 
+                        <label for="mutirao6">Limpeza da cozinha e refeitório</label>
+                    </td>
+                    <td>
+                        <select class="priority-dropdown urgente" id="mutirao6-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente"selected>Urgente</option>
+                            <option value="nao-urgente">Não Urgente</option>
+                        </select>
+                    </td>
+                    <td class="text-cell"><textarea id="mutirao6-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
+                    <td class="text-cell"><textarea id="mutirao6-observacoes" placeholder="Observações" rows="1"></textarea></td>
+                </tr>
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="mutirao7"> 
+                        <label for="mutirao7">Preparação Almoço Mutirão</label>
+                    </td>
+                    <td>
+                        <select class="priority-dropdown urgente" id="mutirao7-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente"selected>Urgente</option>
+                            <option value="nao-urgente">Não Urgente</option>
+                        </select>
+                    </td>
+                    <td class="text-cell"><textarea id="mutirao7-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
+                    <td class="text-cell"><textarea id="mutirao7-observacoes" placeholder="Observações" rows="1"></textarea></td>
+                </tr>
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="mutirao8"> 
+                        <label for="mutirao8">Compras mercado evento</label>
+                    </td>
+                    <td>
+                        <select class="priority-dropdown urgente" id="mutirao8-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente"selected>Urgente</option>
+                            <option value="nao-urgente">Não Urgente</option>
+                        </select>
+                    </td>
+                    <td class="text-cell"><textarea id="mutirao8-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
+                    <td class="text-cell"><textarea id="mutirao8-observacoes" placeholder="Observações" rows="1"></textarea></td>
+                </tr>
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="mutirao9"> 
+                        <label for="mutirao9">Crachás+cartazes</label>
+                    </td>
+                    <td>
+                        <select class="priority-dropdown urgente" id="mutirao9-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente"selected>Urgente</option>
+                            <option value="nao-urgente">Não Urgente</option>
+                        </select>
+                    </td>
+                    <td class="text-cell"><textarea id="mutirao9-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
+                    <td class="text-cell"><textarea id="mutirao9-observacoes" placeholder="Observações" rows="1"></textarea></td>
+                </tr>
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="mutirao10"> 
+                        <label for="mutirao10">Cozinhar na Convivência Estadual</label>
+                    </td>
+                    <td>
+                        <select class="priority-dropdown urgente" id="mutirao10-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente"selected>Urgente</option>
+                            <option value="nao-urgente">Não Urgente</option>
+                        </select>
+                    </td>
+                    <td class="text-cell"><textarea id="mutirao10-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
+                    <td class="text-cell"><textarea id="mutirao10-observacoes" placeholder="Observações" rows="1"></textarea></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    <!-- Supabase Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <script>
+        // ============================================
+        // CONFIGURAÇÃO SUPABASE
+        // ============================================
+        // Você precisa substituir esses valores pelos seus do Supabase:
+        // 1. Vá em: https://supabase.com/dashboard/project/SEU_PROJETO/settings/api
+        // 2. Copie a "Project URL" e a "anon public key"
+        
+        const SUPABASE_URL = 'https://vxhohdxqdrfkqtmhflhy.supabase.co';  // ⬅️ SUBSTITUA AQUI
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ4aG9oZHhxZHJma3F0bWhmbGh5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjAwOTg1MTAsImV4cCI6MjA3NTY3NDUxMH0.r0RCPQdIm_tAUWzWlZ-BxYqnIetOt-J2m99WXGZIS0k';      // ⬅️ SUBSTITUA AQUI
+        
+        // Verificar se está configurado
+        const isConfigured = !SUPABASE_URL.includes('SEU_PROJETO');
+        
+        let supabase = null;
+        let syncChannel = null;
+        let textChannel = null;
+        let sizeChannel = null;
+        
+        if (isConfigured) {
+            supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+            console.log('✅ Supabase conectado!');
+        } else {
+            console.log('⚠️ Configure o Supabase! Veja INSTRUCOES_SUPABASE.md');
+        }
+        
+        // ============================================
+        // FUNÇÕES DE GERENCIAMENTO DE CHECKBOXES
+        // ============================================
+        
+        // Adicionar IDs únicos aos checkboxes que não têm ID
+        function addUniqueIds() {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            let counter = 0;
+            checkboxes.forEach(checkbox => {
+                if (!checkbox.id) {
+                    checkbox.id = 'checkbox-' + counter;
+                    counter++;
+                }
+            });
+        }
+        
+        // Salvar estado no Supabase (sincronização IMEDIATA)
+        async function saveCheckboxState(checkboxId, checked) {
+            console.log(`💾 Salvando ${checkboxId}: ${checked}`);
+            showSavingIndicator(); // Feedback visual instantâneo
+            
+            if (!isConfigured || !supabase) {
+                // Fallback para localStorage se não configurado
+                localStorage.setItem(checkboxId, checked);
+                hideSavingIndicator();
+                return;
+            }
+            
+            try {
+                const { data, error } = await supabase
+                    .from('checkboxes')
+                    .upsert({ 
+                        id: checkboxId, 
+                        checked: checked,
+                        updated_at: new Date().toISOString()
+                    }, { 
+                        onConflict: 'id' 
+                    });
+                
+                if (error) {
+                    console.error('❌ Erro ao salvar checkbox:', error.message);
+                    // Fallback para localStorage
+                    localStorage.setItem(checkboxId, checked);
+                    showErrorIndicator();
+                } else {
+                    console.log(`✅ Checkbox ${checkboxId} salvo com sucesso`);
+                    showSuccessIndicator();
+                }
+            } catch (error) {
+                console.error('❌ Erro ao salvar checkbox:', error);
+                localStorage.setItem(checkboxId, checked);
+                showErrorIndicator();
+            }
+            
+            setTimeout(hideSavingIndicator, 1000);
+        }
+        
+        // Carregar estado do Supabase
+        async function loadCheckboxState(checkboxId) {
+            if (!isConfigured || !supabase) {
+                // Fallback para localStorage
+                const savedState = localStorage.getItem(checkboxId);
+                return savedState === 'true';
+            }
+            
+            try {
+                const { data, error } = await supabase
+                    .from('checkboxes')
+                    .select('checked')
+                    .eq('id', checkboxId)
+                    .maybeSingle();
+                
+                if (error) {
+                    console.error(`❌ Erro ao carregar ${checkboxId}:`, error.message);
+                    const savedState = localStorage.getItem(checkboxId);
+                    return savedState === 'true';
+                }
+                
+                if (data) {
+                    console.log(`📥 Carregado ${checkboxId}: ${data.checked}`);
+                    return data.checked;
+                }
+                
+                return null;
+            } catch (error) {
+                console.error('❌ Erro ao carregar checkbox:', error);
+                const savedState = localStorage.getItem(checkboxId);
+                return savedState === 'true';
+            }
+        }
+        
+        // Restaurar estados de todos os checkboxes
+        async function restoreCheckboxStates() {
+            console.log('🔄 Restaurando estados dos checkboxes...');
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            let loaded = 0;
+            
+            for (const checkbox of checkboxes) {
+                if (checkbox.id) {
+                    const checked = await loadCheckboxState(checkbox.id);
+                    if (checked !== null) {
+                        checkbox.checked = checked;
+                        loaded++;
+                        
+                        // Aplicar estilo riscado se estiver marcado
+                        if (checked) {
+                            toggleTaskCompletion(checkbox);
+                        }
+                    }
+                }
+            }
+            
+            console.log(`✅ ${loaded} checkboxes restaurados`);
+        }
+        
+        // ============================================
+        // FUNÇÕES PARA CAMPOS DE TEXTO
+        // ============================================
+        
+        // Salvar campo de texto no Supabase (sincronização rápida)
+        async function saveTextField(fieldId, value) {
+            console.log(`💾 Salvando texto ${fieldId}`);
+            showSavingIndicator();
+            
+            if (!isConfigured || !supabase) {
+                localStorage.setItem(fieldId, value);
+                hideSavingIndicator();
+                return;
+            }
+            
+            try {
+                const { data, error} = await supabase
+                    .from('text_fields')
+                    .upsert({ 
+                        id: fieldId, 
+                        value: value,
+                        updated_at: new Date().toISOString()
+                    }, { 
+                        onConflict: 'id' 
+                    });
+                
+                if (error) {
+                    console.error('❌ Erro ao salvar texto:', error.message);
+                    localStorage.setItem(fieldId, value);
+                    showErrorIndicator();
+                } else {
+                    console.log(`✅ Texto ${fieldId} salvo`);
+                    showSuccessIndicator();
+                }
+            } catch (error) {
+                console.error('❌ Erro ao salvar texto:', error);
+                localStorage.setItem(fieldId, value);
+                showErrorIndicator();
+            }
+            
+            setTimeout(hideSavingIndicator, 1000);
+        }
+        
+        // Carregar campo de texto do Supabase
+        async function loadTextField(fieldId) {
+            if (!isConfigured || !supabase) {
+                return localStorage.getItem(fieldId) || '';
+            }
+            
+            try {
+                const { data, error } = await supabase
+                    .from('text_fields')
+                    .select('value')
+                    .eq('id', fieldId)
+                    .maybeSingle();
+                
+                if (error) {
+                    console.error(`❌ Erro ao carregar texto ${fieldId}:`, error.message);
+                    return localStorage.getItem(fieldId) || '';
+                }
+                
+                return data ? data.value : '';
+            } catch (error) {
+                console.error('❌ Erro ao carregar texto:', error);
+                return localStorage.getItem(fieldId) || '';
+            }
+        }
+        
+        // Restaurar todos os campos de texto
+        async function restoreTextFields() {
+            console.log('🔄 Restaurando campos de texto...');
+            const textInputs = document.querySelectorAll('input[type="text"], textarea');
+            let loaded = 0;
+            
+            for (const input of textInputs) {
+                if (input.id) {
+                    const value = await loadTextField(input.id);
+                    if (value) {
+                        input.value = value;
+                        loaded++;
+                    }
+                }
+            }
+            
+            console.log(`✅ ${loaded} campos de texto restaurados`);
+        }
+        
+        // ============================================
+        // SALVAR E RESTAURAR TAMANHO DOS CAMPOS
+        // ============================================
+        
+        // Salvar tamanho do campo (largura e altura)
+        async function saveFieldSize(fieldId, width, height) {
+            const sizeData = { width, height };
+            
+            if (!isConfigured) {
+                localStorage.setItem(fieldId + '-size', JSON.stringify(sizeData));
+                return;
+            }
+            
+            try {
+                const { data, error } = await supabase
+                    .from('field_sizes')
+                    .upsert({ 
+                        id: fieldId, 
+                        width: width,
+                        height: height,
+                        updated_at: new Date().toISOString()
+                    }, { 
+                        onConflict: 'id' 
+                    });
+                
+                if (error) {
+                    console.error('Erro ao salvar tamanho:', error);
+                    localStorage.setItem(fieldId + '-size', JSON.stringify(sizeData));
+                }
+            } catch (error) {
+                console.error('Erro ao salvar tamanho:', error);
+                localStorage.setItem(fieldId + '-size', JSON.stringify(sizeData));
+            }
+        }
+        
+        // Carregar tamanho do campo
+        async function loadFieldSize(fieldId) {
+            if (!isConfigured) {
+                const saved = localStorage.getItem(fieldId + '-size');
+                return saved ? JSON.parse(saved) : null;
+            }
+            
+            try {
+                const { data, error } = await supabase
+                    .from('field_sizes')
+                    .select('width, height')
+                    .eq('id', fieldId)
+                    .single();
+                
+                if (error && error.code !== 'PGRST116') {
+                    console.error('Erro ao carregar tamanho:', error);
+                    const saved = localStorage.getItem(fieldId + '-size');
+                    return saved ? JSON.parse(saved) : null;
+                }
+                
+                return data ? { width: data.width, height: data.height } : null;
+            } catch (error) {
+                console.error('Erro ao carregar tamanho:', error);
+                const saved = localStorage.getItem(fieldId + '-size');
+                return saved ? JSON.parse(saved) : null;
+            }
+        }
+        
+        // Restaurar tamanhos de todos os campos
+        async function restoreFieldSizes() {
+            const textareas = document.querySelectorAll('textarea');
+            
+            for (const textarea of textareas) {
+                if (textarea.id) {
+                    const size = await loadFieldSize(textarea.id);
+                    if (size) {
+                        textarea.style.width = size.width + 'px';
+                        textarea.style.height = size.height + 'px';
+                    }
+                }
+            }
+        }
+        
+        // Configurar listeners para detectar redimensionamento
+        function setupResizeListeners() {
+            const textareas = document.querySelectorAll('textarea');
+            
+            textareas.forEach(textarea => {
+                // Usar ResizeObserver para detectar mudanças de tamanho
+                const resizeObserver = new ResizeObserver(entries => {
+                    for (let entry of entries) {
+                        const width = entry.contentRect.width;
+                        const height = entry.contentRect.height;
+                        
+                        // Salvar com debounce
+                        clearTimeout(textarea.resizeTimeout);
+                        textarea.resizeTimeout = setTimeout(() => {
+                            saveFieldSize(textarea.id, width, height);
+                        }, 500);
+                    }
+                });
+                
+                resizeObserver.observe(textarea);
+            });
+        }
+        
+        // Sincronização em tempo real para tamanhos
+        function setupFieldSizeRealtimeSync() {
+            if (!isConfigured) return;
+            
+            const channel = supabase
+                .channel('field-sizes-changes')
+                .on('postgres_changes', 
+                    { 
+                        event: '*', 
+                        schema: 'public', 
+                        table: 'field_sizes' 
+                    }, 
+                    (payload) => {
+                        console.log('Mudança de tamanho detectada:', payload);
+                        const field = document.getElementById(payload.new.id);
+                        if (field) {
+                            field.style.width = payload.new.width + 'px';
+                            field.style.height = payload.new.height + 'px';
+                        }
+                    }
+                )
+                .subscribe();
+        }
+        
+        // Configurar listeners para campos de texto
+        function setupTextFieldListeners() {
+            const textInputs = document.querySelectorAll('input[type="text"], textarea');
+            
+            textInputs.forEach(input => {
+                // Debounce para evitar salvar a cada tecla (reduzido para 300ms = mais rápido)
+                let timeout = null;
+                
+                input.addEventListener('input', function() {
+                    clearTimeout(timeout);
+                    timeout = setTimeout(() => {
+                        saveTextField(this.id, this.value);
+                    }, 300); // Aguarda 300ms após parar de digitar (antes era 500ms)
+                });
+                
+                // Salvar imediatamente quando sair do campo
+                input.addEventListener('blur', function() {
+                    clearTimeout(timeout);
+                    saveTextField(this.id, this.value);
+                });
+            });
+        }
+        
+        // Sincronização em tempo real para campos de texto
+        function setupTextFieldRealtimeSync() {
+            if (!isConfigured) return;
+            
+            const channel = supabase
+                .channel('text-fields-changes')
+                .on('postgres_changes', 
+                    { 
+                        event: '*', 
+                        schema: 'public', 
+                        table: 'text_fields' 
+                    }, 
+                    (payload) => {
+                        console.log('Mudança de texto detectada:', payload);
+                        const field = document.getElementById(payload.new.id);
+                        if (field && field !== document.activeElement && field.value !== payload.new.value) {
+                            field.value = payload.new.value;
+                        }
+                    }
+                )
+                .subscribe();
+        }
+        
+        // Configurar listeners para mudanças
+        function setupCheckboxListeners() {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    saveCheckboxState(this.id, this.checked);
+                    
+                    // Riscar ou desriscar o texto da tarefa
+                    toggleTaskCompletion(this);
+                });
+            });
+        }
+        
+        // Função para riscar/desriscar texto quando marcar/desmarcar
+        function toggleTaskCompletion(checkbox) {
+            const label = checkbox.nextElementSibling;
+            if (!label) return;
+            
+            if (checkbox.checked) {
+                label.classList.add('task-completed');
+            } else {
+                label.classList.remove('task-completed');
+            }
+        }
+        
+        // ============================================
+        // FUNÇÕES PARA DROPDOWNS DE PRIORIDADE
+        // ============================================
+        
+        // Salvar prioridade no Supabase
+        async function savePriorityDropdown(dropdownId, value) {
+            console.log(`💾 Salvando prioridade ${dropdownId}: ${value}`);
+            showSavingIndicator();
+            
+            if (!isConfigured || !supabase) {
+                localStorage.setItem(dropdownId, value);
+                hideSavingIndicator();
+                return;
+            }
+            
+            try {
+                const { data, error } = await supabase
+                    .from('text_fields')  // Reutilizamos a tabela text_fields
+                    .upsert({ 
+                        id: dropdownId, 
+                        value: value,
+                        updated_at: new Date().toISOString()
+                    }, { 
+                        onConflict: 'id' 
+                    });
+                
+                if (error) {
+                    console.error('❌ Erro ao salvar prioridade:', error.message);
+                    localStorage.setItem(dropdownId, value);
+                    showErrorIndicator();
+                } else {
+                    console.log(`✅ Prioridade ${dropdownId} salva`);
+                    showSuccessIndicator();
+                }
+            } catch (error) {
+                console.error('❌ Erro ao salvar prioridade:', error);
+                localStorage.setItem(dropdownId, value);
+                showErrorIndicator();
+            }
+            
+            setTimeout(hideSavingIndicator, 1000);
+        }
+        
+        // Carregar prioridade do Supabase
+        async function loadPriorityDropdown(dropdownId) {
+            if (!isConfigured || !supabase) {
+                return localStorage.getItem(dropdownId) || '';
+            }
+            
+            try {
+                const { data, error } = await supabase
+                    .from('text_fields')
+                    .select('value')
+                    .eq('id', dropdownId)
+                    .maybeSingle();
+                
+                if (error) {
+                    console.error(`❌ Erro ao carregar prioridade ${dropdownId}:`, error.message);
+                    return localStorage.getItem(dropdownId) || '';
+                }
+                
+                return data ? data.value : '';
+            } catch (error) {
+                console.error('❌ Erro ao carregar prioridade:', error);
+                return localStorage.getItem(dropdownId) || '';
+            }
+        }
+        
+        // Configurar listeners para dropdowns de prioridade
+        function setupPriorityDropdownListeners() {
+            const dropdowns = document.querySelectorAll('.priority-dropdown');
+            
+            dropdowns.forEach(dropdown => {
+                // Atualizar classe CSS baseado no valor selecionado
+                dropdown.addEventListener('change', function() {
+                    // Remover classes antigas
+                    this.classList.remove('urgente', 'nao-urgente');
+                    
+                    // Adicionar nova classe baseada na seleção
+                    if (this.value === 'urgente') {
+                        this.classList.add('urgente');
+                    } else if (this.value === 'nao-urgente') {
+                        this.classList.add('nao-urgente');
+                    }
+                    
+                    // Salvar no banco
+                    savePriorityDropdown(this.id, this.value);
+                });
+            });
+        }
+        
+        // Restaurar estados dos dropdowns
+        async function restorePriorityDropdowns() {
+            console.log('🔄 Restaurando prioridades...');
+            const dropdowns = document.querySelectorAll('.priority-dropdown');
+            let loaded = 0;
+            
+            for (const dropdown of dropdowns) {
+                if (dropdown.id) {
+                    const value = await loadPriorityDropdown(dropdown.id);
+                    if (value) {
+                        dropdown.value = value;
+                        
+                        // Aplicar classe CSS
+                        dropdown.classList.remove('urgente', 'nao-urgente');
+                        if (value === 'urgente') {
+                            dropdown.classList.add('urgente');
+                        } else if (value === 'nao-urgente') {
+                            dropdown.classList.add('nao-urgente');
+                        }
+                        
+                        loaded++;
+                    }
+                }
+            }
+            
+            console.log(`✅ ${loaded} prioridades restauradas`);
+        }
+        
+        // Sincronização em tempo real (opcional)
+        function setupRealtimeSync() {
+            if (!isConfigured || !supabase) return;
+            
+            console.log('🔴 Iniciando sincronização em tempo real...');
+            
+            syncChannel = supabase
+                .channel('checkboxes-changes')
+                .on('postgres_changes', 
+                    { 
+                        event: '*', 
+                        schema: 'public', 
+                        table: 'checkboxes' 
+                    }, 
+                    (payload) => {
+                        console.log('📡 Mudança de checkbox detectada:', payload);
+                        const checkbox = document.getElementById(payload.new.id);
+                        if (checkbox && checkbox.checked !== payload.new.checked) {
+                            checkbox.checked = payload.new.checked;
+                            console.log(`✅ Checkbox ${payload.new.id} atualizado em tempo real`);
+                        }
+                    }
+                )
+                .subscribe((status) => {
+                    console.log('🔴 Status do canal de checkboxes:', status);
+                });
+        }
+        
+        // Botão de sincronização manual
+        function addSyncButton() {
+            const syncButton = document.createElement('button');
+            syncButton.id = 'manual-sync-btn';
+            syncButton.innerHTML = '🔄 Sincronizar';
+            syncButton.style.cssText = `
+                position: fixed;
+                bottom: 50px;
+                right: 10px;
+                padding: 10px 20px;
+                background: #2196F3;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                font-weight: bold;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+                z-index: 1001;
+            `;
+            
+            syncButton.addEventListener('click', async () => {
+                syncButton.innerHTML = '⏳ Sincronizando...';
+                syncButton.disabled = true;
+                
+                try {
+                    await restoreCheckboxStates();
+                    await restoreTextFields();
+                    await restoreFieldSizes();
+                    await restorePriorityDropdowns();
+                    syncButton.innerHTML = '✅ Sincronizado!';
+                    setTimeout(() => {
+                        syncButton.innerHTML = '🔄 Sincronizar';
+                        syncButton.disabled = false;
+                    }, 2000);
+                } catch (error) {
+                    console.error('Erro ao sincronizar:', error);
+                    syncButton.innerHTML = '❌ Erro';
+                    setTimeout(() => {
+                        syncButton.innerHTML = '🔄 Sincronizar';
+                        syncButton.disabled = false;
+                    }, 2000);
+                }
+            });
+            
+            document.body.appendChild(syncButton);
+        }
+        
+        // ============================================
+        // INDICADORES VISUAIS DE SINCRONIZAÇÃO
+        // ============================================
+        
+        // Mostrar indicador de salvamento
+        function showSavingIndicator() {
+            let indicator = document.getElementById('saving-indicator');
+            if (!indicator) {
+                indicator = document.createElement('div');
+                indicator.id = 'saving-indicator';
+                indicator.style.cssText = `
+                    position: fixed;
+                    top: 10px;
+                    right: 10px;
+                    padding: 10px 20px;
+                    background: #2196F3;
+                    color: white;
+                    border-radius: 5px;
+                    font-weight: bold;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+                    z-index: 10000;
+                    display: none;
+                    animation: fadeIn 0.3s;
+                `;
+                document.body.appendChild(indicator);
+            }
+            indicator.innerHTML = '💾 Salvando...';
+            indicator.style.display = 'block';
+            indicator.style.background = '#2196F3';
+        }
+        
+        // Mostrar indicador de sucesso
+        function showSuccessIndicator() {
+            const indicator = document.getElementById('saving-indicator');
+            if (indicator) {
+                indicator.innerHTML = '✅ Salvo!';
+                indicator.style.background = '#4CAF50';
+            }
+        }
+        
+        // Mostrar indicador de erro
+        function showErrorIndicator() {
+            const indicator = document.getElementById('saving-indicator');
+            if (indicator) {
+                indicator.innerHTML = '⚠️ Erro (salvo localmente)';
+                indicator.style.background = '#FF9800';
+            }
+        }
+        
+        // Esconder indicador
+        function hideSavingIndicator() {
+            const indicator = document.getElementById('saving-indicator');
+            if (indicator) {
+                setTimeout(() => {
+                    indicator.style.display = 'none';
+                }, 500);
+            }
+        }
+        
+        // Indicador de status
+        function showStatus() {
+            const statusDiv = document.createElement('div');
+            statusDiv.id = 'connection-status';
+            statusDiv.style.cssText = `
+                position: fixed; 
+                bottom: 10px; 
+                right: 10px; 
+                padding: 10px 15px; 
+                border-radius: 5px; 
+                font-size: 12px; 
+                font-weight: bold;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+                z-index: 1000;
+            `;
+            
+            if (isConfigured && supabase) {
+                statusDiv.style.background = '#4CAF50';
+                statusDiv.style.color = 'white';
+                statusDiv.textContent = '🌐 Online - Sincronizado com Supabase';
+                statusDiv.title = 'Dados sendo salvos no banco de dados';
+            } else {
+                statusDiv.style.background = '#FF9800';
+                statusDiv.style.color = 'white';
+                statusDiv.textContent = '⚠️ Offline - Apenas Local';
+                statusDiv.title = 'Configure o Supabase para sincronização entre dispositivos';
+            }
+            
+            document.body.appendChild(statusDiv);
+        }
+        
+        // ============================================
+        // SISTEMA DE BUSCA E FILTROS
+        // ============================================
+        
+        // Busca em tempo real
+        function setupSearch() {
+            const searchInput = document.getElementById('searchInput');
+            
+            searchInput.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                const rows = document.querySelectorAll('tbody tr');
+                
+                rows.forEach(row => {
+                    // Pular headers de seção
+                    if (row.querySelector('.section-header')) {
+                        return;
+                    }
+                    
+                    const text = row.textContent.toLowerCase();
+                    
+                    if (text.includes(searchTerm)) {
+                        row.classList.remove('hidden');
+                    } else {
+                        row.classList.add('hidden');
+                    }
+                });
+                
+                updateStats();
+            });
+        }
+        
+        // Filtros
+        let currentFilter = 'all';
+        
+        function filterTasks(type) {
+            currentFilter = type;
+            const rows = document.querySelectorAll('tbody tr');
+            
+            // Atualizar botões ativos
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            
+            if (type === 'all') {
+                document.getElementById('filterAll').classList.add('active');
+                rows.forEach(row => {
+                    if (!row.querySelector('.section-header')) {
+                        row.classList.remove('hidden');
+                    }
+                });
+            } else if (type === 'urgente') {
+                document.getElementById('filterUrgent').classList.add('active');
+                rows.forEach(row => {
+                    if (row.querySelector('.section-header')) return;
+                    
+                    const dropdown = row.querySelector('.priority-dropdown');
+                    if (dropdown && dropdown.value === 'urgente') {
+                        row.classList.remove('hidden');
+                    } else {
+                        row.classList.add('hidden');
+                    }
+                });
+            } else if (type === 'concluidas') {
+                document.getElementById('filterCompleted').classList.add('active');
+                rows.forEach(row => {
+                    if (row.querySelector('.section-header')) return;
+                    
+                    const checkbox = row.querySelector('input[type="checkbox"]');
+                    if (checkbox && checkbox.checked) {
+                        row.classList.remove('hidden');
+                    } else {
+                        row.classList.add('hidden');
+                    }
+                });
+            } else if (type === 'pendentes') {
+                document.getElementById('filterPending').classList.add('active');
+                rows.forEach(row => {
+                    if (row.querySelector('.section-header')) return;
+                    
+                    const checkbox = row.querySelector('input[type="checkbox"]');
+                    if (checkbox && !checkbox.checked) {
+                        row.classList.remove('hidden');
+                    } else {
+                        row.classList.add('hidden');
+                    }
+                });
+            }
+            
+            updateStats();
+        }
+        
+        // Atualizar estatísticas
+        function updateStats() {
+            const allCheckboxes = document.querySelectorAll('tbody tr:not(.hidden) input[type="checkbox"][id]');
+            const total = allCheckboxes.length;
+            const completed = Array.from(allCheckboxes).filter(cb => cb.checked).length;
+            const pending = total - completed;
+            const percent = total > 0 ? Math.round((completed / total) * 100) : 0;
+            
+            document.getElementById('statTotal').textContent = total;
+            document.getElementById('statCompleted').textContent = completed;
+            document.getElementById('statPending').textContent = pending;
+            document.getElementById('statPercent').textContent = percent + '%';
+        }
+        
+        // ============================================
+        // TEMA CLARO/ESCURO
+        // ============================================
+        
+        function setupThemeToggle() {
+            const themeToggle = document.getElementById('themeToggle');
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            
+            // Aplicar tema salvo
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-theme');
+                themeToggle.textContent = '☀️';
+            }
+            
+            themeToggle.addEventListener('click', function() {
+                document.body.classList.toggle('dark-theme');
+                
+                if (document.body.classList.contains('dark-theme')) {
+                    themeToggle.textContent = '☀️';
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    themeToggle.textContent = '🌙';
+                    localStorage.setItem('theme', 'light');
+                }
+            });
+        }
+        
+        // Atualizar estatísticas quando checkboxes mudam
+        function setupStatsUpdate() {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', updateStats);
+            });
+        }
+        
+        // Inicializar quando a página carregar
+        window.addEventListener('DOMContentLoaded', async function() {
+            console.log('🚀 Iniciando checklist...');
+            console.log(`📊 Supabase configurado: ${isConfigured}`);
+            
+            addUniqueIds();
+            
+            console.log('⏳ Carregando dados...');
+            await restoreCheckboxStates();
+            await restoreTextFields();
+            await restoreFieldSizes();
+            await restorePriorityDropdowns();
+            
+            setupCheckboxListeners();
+            setupTextFieldListeners();
+            setupResizeListeners();
+            setupPriorityDropdownListeners();
+            setupRealtimeSync();
+            setupTextFieldRealtimeSync();
+            setupFieldSizeRealtimeSync();
+            showStatus();
+            addSyncButton();
+            
+            // Novas funcionalidades
+            setupSearch();
+            setupThemeToggle();
+            setupStatsUpdate();
+            updateStats();
+            
+            // Ativar filtro "Todas" por padrão
+            document.getElementById('filterAll').classList.add('active');
+            
+            console.log('✅ Checklist pronto!');
+        });
+    </script>
+</body>
+</html>
