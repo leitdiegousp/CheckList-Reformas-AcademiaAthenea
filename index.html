@@ -838,8 +838,7 @@
                 grid-template-columns: 1fr;
             }
             
-            .chart-box:nth-child(2),
-            .chart-box:nth-child(3) {
+            .chart-box:nth-child(2) {
                 display: none;
             }
         }
@@ -966,11 +965,6 @@
                 <div class="chart-box">
                     <div class="chart-title">Distribuição de Tarefas</div>
                     <canvas id="pieChart"></canvas>
-                </div>
-                
-                <div class="chart-box">
-                    <div class="chart-title">Tarefas por Seção</div>
-                    <canvas id="barChart"></canvas>
                 </div>
             </div>
         </div>
@@ -2981,7 +2975,7 @@
             setTimeout(() => {
                 updateProgressBar();
                 createPieChart();
-                createBarChart();
+                // createBarChart(); // Removido - gráfico de barras não é mais usado
             }, 500);
         }
         
@@ -3069,6 +3063,7 @@
         }
         
         // Criar gráfico de barras por seção
+        /* REMOVIDO - Gráfico de barras por seção não é mais usado
         function createBarChart() {
             const canvas = document.getElementById('barChart');
             if (!canvas) {
@@ -3182,6 +3177,7 @@
                 console.error('❌ Erro ao criar gráfico de barras:', error);
             }
         }
+        */
         
         // Indicador de status
         function showStatus() {
@@ -3322,7 +3318,7 @@
             try {
                 updateProgressBar();
                 createPieChart();
-                createBarChart();
+                // createBarChart(); // Removido - gráfico de barras não é mais usado
             } catch (error) {
                 console.error('❌ Erro ao atualizar gráficos:', error);
             }
