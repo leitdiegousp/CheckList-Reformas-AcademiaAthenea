@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Check List Reformas</title>
+    
+    <!-- Bibliotecas para Export e Gráficos -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
     <style>
         * {
             margin: 0;
@@ -749,6 +755,128 @@
             display: none;
         }
         
+        /* === Estilos para Export e Gráficos === */
+        .export-container {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 1400px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .export-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .export-btn.pdf {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+        }
+        
+        .export-btn.pdf:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4);
+        }
+        
+        .export-btn.excel {
+            background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+            color: white;
+        }
+        
+        .export-btn.excel:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(39, 174, 96, 0.4);
+        }
+        
+        .charts-container {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 1400px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 20px;
+        }
+        
+        .chart-box {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        
+        .chart-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .progress-bar-container {
+            width: 100%;
+            height: 30px;
+            background-color: #ecf0f1;
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #e74c3c 0%, #f39c12 50%, #27ae60 100%);
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        /* Dark theme para export e gráficos */
+        body.dark-theme .export-container,
+        body.dark-theme .charts-container {
+            background-color: #16213e;
+        }
+        
+        body.dark-theme .charts-container h2 {
+            color: #e0e0e0;
+        }
+        
+        body.dark-theme .chart-box {
+            background-color: #1a1a2e;
+        }
+        
+        body.dark-theme .chart-title {
+            color: #e0e0e0;
+        }
+        
+        body.dark-theme .progress-bar-container {
+            background-color: #1a1a2e;
+        }
+        
     </style>
 </head>
 <body>
@@ -790,6 +918,40 @@
                 <div class="stat-item">
                     <div class="stat-number" id="statPercent">0%</div>
                     <div class="stat-label">Progresso</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Botões de Exportação -->
+        <div class="export-container">
+            <button class="export-btn pdf" onclick="exportToPDF()">
+                📄 Exportar PDF
+            </button>
+            <button class="export-btn excel" onclick="exportToExcel()">
+                📊 Exportar Excel
+            </button>
+        </div>
+        
+        <!-- Área de Gráficos -->
+        <div class="charts-container">
+            <h2 style="text-align: center; color: #2c3e50; margin-bottom: 10px;">📊 Dashboard Visual</h2>
+            
+            <div class="charts-grid">
+                <div class="chart-box">
+                    <div class="chart-title">Progresso Geral</div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar-fill" id="progressBar">0%</div>
+                    </div>
+                </div>
+                
+                <div class="chart-box">
+                    <div class="chart-title">Distribuição de Tarefas</div>
+                    <canvas id="pieChart"></canvas>
+                </div>
+                
+                <div class="chart-box">
+                    <div class="chart-title">Tarefas por Seção</div>
+                    <canvas id="barChart"></canvas>
                 </div>
             </div>
         </div>
@@ -2590,6 +2752,306 @@
                 statusDiv.style.color = 'white';
                 statusDiv.textContent = '🌐 Online - Sincronizado com Supabase';
                 statusDiv.title = 'Dados sendo salvos no banco de dados';
+        
+        // === FUNÇÕES DE EXPORTAÇÃO E GRÁFICOS ===
+        
+        // Variáveis globais para os gráficos
+        let pieChart = null;
+        let barChart = null;
+        
+        // Função para exportar para PDF
+        function exportToPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            // Título
+            doc.setFontSize(18);
+            doc.setFont(undefined, 'bold');
+            doc.text('Check List Reformas - Academia Athenea', 105, 20, { align: 'center' });
+            
+            // Data
+            const hoje = new Date().toLocaleDateString('pt-BR');
+            doc.setFontSize(10);
+            doc.setFont(undefined, 'normal');
+            doc.text(`Gerado em: ${hoje}`, 105, 28, { align: 'center' });
+            
+            // Estatísticas
+            const total = document.getElementById('statTotal').textContent;
+            const concluidas = document.getElementById('statCompleted').textContent;
+            const pendentes = document.getElementById('statPending').textContent;
+            const progresso = document.getElementById('statPercent').textContent;
+            
+            doc.setFontSize(12);
+            doc.setFont(undefined, 'bold');
+            doc.text('Estatísticas:', 20, 40);
+            doc.setFont(undefined, 'normal');
+            doc.text(`Total de Tarefas: ${total}`, 20, 48);
+            doc.text(`Concluídas: ${concluidas}`, 20, 56);
+            doc.text(`Pendentes: ${pendentes}`, 20, 64);
+            doc.text(`Progresso: ${progresso}`, 20, 72);
+            
+            // Linha divisória
+            doc.line(20, 78, 190, 78);
+            
+            // Tarefas
+            let y = 88;
+            doc.setFontSize(12);
+            doc.setFont(undefined, 'bold');
+            doc.text('Tarefas:', 20, y);
+            y += 8;
+            
+            doc.setFontSize(10);
+            const rows = document.querySelectorAll('tbody tr:not(.hidden)');
+            
+            rows.forEach(row => {
+                if (row.querySelector('.section-header')) {
+                    // Seção
+                    if (y > 270) {
+                        doc.addPage();
+                        y = 20;
+                    }
+                    doc.setFont(undefined, 'bold');
+                    doc.setFontSize(11);
+                    const secao = row.querySelector('.section-header').textContent;
+                    doc.text(secao, 20, y);
+                    y += 7;
+                    doc.setFontSize(10);
+                } else {
+                    // Tarefa
+                    if (y > 275) {
+                        doc.addPage();
+                        y = 20;
+                    }
+                    
+                    const checkbox = row.querySelector('input[type="checkbox"]');
+                    const status = checkbox && checkbox.checked ? '✓' : '☐';
+                    const acao = row.cells[0].textContent.replace(/\d+/, '').trim();
+                    const prioridade = row.querySelector('.priority-dropdown');
+                    const prioText = prioridade ? (prioridade.value === 'urgente' ? 'URGENTE' : prioridade.value === 'nao-urgente' ? 'Não Urgente' : '-') : '-';
+                    
+                    doc.setFont(undefined, 'normal');
+                    doc.text(`${status} ${acao}`, 20, y);
+                    doc.setFont(undefined, 'bold');
+                    doc.text(`[${prioText}]`, 180, y, { align: 'right' });
+                    y += 6;
+                }
+            });
+            
+            // Salvar
+            doc.save(`CheckList_Reformas_${hoje.replace(/\//g, '-')}.pdf`);
+            alert('✅ PDF exportado com sucesso!');
+        }
+        
+        // Função para exportar para Excel
+        function exportToExcel() {
+            const wb = XLSX.utils.book_new();
+            
+            // Preparar dados
+            const data = [
+                ['Check List Reformas - Academia Athenea'],
+                [`Gerado em: ${new Date().toLocaleDateString('pt-BR')}`],
+                [],
+                ['Estatísticas:'],
+                ['Total de Tarefas', document.getElementById('statTotal').textContent],
+                ['Concluídas', document.getElementById('statCompleted').textContent],
+                ['Pendentes', document.getElementById('statPending').textContent],
+                ['Progresso', document.getElementById('statPercent').textContent],
+                [],
+                ['Seção', 'Prioridade Ordem', 'Ação', 'Status', 'Prioridade Tipo', 'Responsável', 'Observações']
+            ];
+            
+            const rows = document.querySelectorAll('tbody tr:not(.hidden)');
+            let currentSection = '';
+            
+            rows.forEach(row => {
+                if (row.querySelector('.section-header')) {
+                    currentSection = row.querySelector('.section-header').textContent;
+                } else {
+                    const checkbox = row.querySelector('input[type="checkbox"]');
+                    const status = checkbox && checkbox.checked ? 'Concluída' : 'Pendente';
+                    
+                    const prioNumero = row.querySelector('.priority-number')?.textContent || '';
+                    const acao = row.cells[0].textContent.replace(/\d+/, '').trim();
+                    
+                    const dropdown = row.querySelector('.priority-dropdown');
+                    const prioTipo = dropdown ? (dropdown.value === 'urgente' ? 'URGENTE' : dropdown.value === 'nao-urgente' ? 'Não Urgente' : '') : '';
+                    
+                    const responsavel = row.querySelector('textarea[id^="resp"]')?.value || '';
+                    const observacoes = row.querySelector('textarea[id^="obs"]')?.value || '';
+                    
+                    data.push([
+                        currentSection,
+                        prioNumero,
+                        acao,
+                        status,
+                        prioTipo,
+                        responsavel,
+                        observacoes
+                    ]);
+                }
+            });
+            
+            const ws = XLSX.utils.aoa_to_sheet(data);
+            
+            // Ajustar larguras das colunas
+            ws['!cols'] = [
+                { wch: 30 }, // Seção
+                { wch: 10 }, // Prioridade Ordem
+                { wch: 40 }, // Ação
+                { wch: 12 }, // Status
+                { wch: 15 }, // Prioridade Tipo
+                { wch: 25 }, // Responsável
+                { wch: 40 }  // Observações
+            ];
+            
+            XLSX.utils.book_append_sheet(wb, ws, 'Reformas');
+            
+            // Salvar
+            const hoje = new Date().toLocaleDateString('pt-BR').replace(/\//g, '-');
+            XLSX.writeFile(wb, `CheckList_Reformas_${hoje}.xlsx`);
+            alert('✅ Excel exportado com sucesso!');
+        }
+        
+        // Função para inicializar gráficos
+        function initCharts() {
+            updateProgressBar();
+            createPieChart();
+            createBarChart();
+        }
+        
+        // Atualizar barra de progresso
+        function updateProgressBar() {
+            const percent = parseInt(document.getElementById('statPercent').textContent);
+            const progressBar = document.getElementById('progressBar');
+            progressBar.style.width = percent + '%';
+            progressBar.textContent = percent + '%';
+        }
+        
+        // Criar gráfico de pizza
+        function createPieChart() {
+            const ctx = document.getElementById('pieChart').getContext('2d');
+            
+            const completed = parseInt(document.getElementById('statCompleted').textContent) || 0;
+            const pending = parseInt(document.getElementById('statPending').textContent) || 0;
+            
+            if (pieChart) {
+                pieChart.destroy();
+            }
+            
+            pieChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Concluídas', 'Pendentes'],
+                    datasets: [{
+                        data: [completed, pending],
+                        backgroundColor: [
+                            'rgba(39, 174, 96, 0.8)',
+                            'rgba(231, 76, 60, 0.8)'
+                        ],
+                        borderColor: [
+                            'rgba(39, 174, 96, 1)',
+                            'rgba(231, 76, 60, 1)'
+                        ],
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: {
+                                    size: 14
+                                },
+                                padding: 15
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Criar gráfico de barras por seção
+        function createBarChart() {
+            const ctx = document.getElementById('barChart').getContext('2d');
+            
+            // Coletar dados por seção
+            const sections = {};
+            let currentSection = '';
+            
+            const rows = document.querySelectorAll('tbody tr:not(.hidden)');
+            rows.forEach(row => {
+                if (row.querySelector('.section-header')) {
+                    currentSection = row.querySelector('.section-header').textContent.trim();
+                    if (!sections[currentSection]) {
+                        sections[currentSection] = { total: 0, completed: 0 };
+                    }
+                } else if (currentSection) {
+                    const checkbox = row.querySelector('input[type="checkbox"]');
+                    if (checkbox) {
+                        sections[currentSection].total++;
+                        if (checkbox.checked) {
+                            sections[currentSection].completed++;
+                        }
+                    }
+                }
+            });
+            
+            // Preparar dados para o gráfico
+            const labels = Object.keys(sections);
+            const totals = labels.map(label => sections[label].total);
+            const completed = labels.map(label => sections[label].completed);
+            
+            if (barChart) {
+                barChart.destroy();
+            }
+            
+            barChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels.map(l => l.length > 20 ? l.substring(0, 20) + '...' : l),
+                    datasets: [{
+                        label: 'Total',
+                        data: totals,
+                        backgroundColor: 'rgba(52, 152, 219, 0.7)',
+                        borderColor: 'rgba(52, 152, 219, 1)',
+                        borderWidth: 2
+                    }, {
+                        label: 'Concluídas',
+                        data: completed,
+                        backgroundColor: 'rgba(39, 174, 96, 0.7)',
+                        borderColor: 'rgba(39, 174, 96, 1)',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: {
+                                    size: 14
+                                },
+                                padding: 15
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
             } else {
                 statusDiv.style.background = '#FF9800';
                 statusDiv.style.color = 'white';
@@ -2701,6 +3163,11 @@
             document.getElementById('statCompleted').textContent = completed;
             document.getElementById('statPending').textContent = pending;
             document.getElementById('statPercent').textContent = percent + '%';
+            
+            // Atualizar gráficos
+            updateProgressBar();
+            createPieChart();
+            createBarChart();
         }
         
         // ============================================
@@ -2766,6 +3233,7 @@
             setupThemeToggle();
             setupStatsUpdate();
             updateStats();
+            initCharts();
             
             // Ativar filtro "Todas" por padrão
             document.getElementById('filterAll').classList.add('active');
