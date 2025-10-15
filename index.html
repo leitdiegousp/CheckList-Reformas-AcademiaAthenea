@@ -825,6 +825,18 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
         }
         
+        /* Mobile - mostrar apenas progresso geral */
+        @media (max-width: 768px) {
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .chart-box:nth-child(2),
+            .chart-box:nth-child(3) {
+                display: none;
+            }
+        }
+        
         .chart-title {
             font-size: 18px;
             font-weight: 600;
@@ -2914,22 +2926,30 @@
         
         // Função para inicializar gráficos
         function initCharts() {
-            updateProgressBar();
-            createPieChart();
-            createBarChart();
+            // Aguardar um momento para os dados estarem carregados
+            setTimeout(() => {
+                updateProgressBar();
+                createPieChart();
+                createBarChart();
+            }, 500);
         }
         
         // Atualizar barra de progresso
         function updateProgressBar() {
-            const percent = parseInt(document.getElementById('statPercent').textContent);
+            const percentText = document.getElementById('statPercent').textContent;
+            const percent = parseInt(percentText.replace('%', '')) || 0;
             const progressBar = document.getElementById('progressBar');
-            progressBar.style.width = percent + '%';
-            progressBar.textContent = percent + '%';
+            
+            if (progressBar) {
+                progressBar.style.width = percent + '%';
+                progressBar.textContent = percent + '%';
+            }
         }
         
         // Criar gráfico de pizza
         function createPieChart() {
-            const ctx = document.getElementById('pieChart').getContext('2d');
+            const ctx = document.getElementById('pieChart');
+            if (!ctx) return;
             
             const completed = parseInt(document.getElementById('statCompleted').textContent) || 0;
             const pending = parseInt(document.getElementById('statPending').textContent) || 0;
@@ -2965,7 +2985,8 @@
                                 font: {
                                     size: 14
                                 },
-                                padding: 15
+                                padding: 15,
+                                color: document.body.classList.contains('dark-theme') ? '#e0e0e0' : '#2c3e50'
                             }
                         }
                     }
@@ -2975,7 +2996,8 @@
         
         // Criar gráfico de barras por seção
         function createBarChart() {
-            const ctx = document.getElementById('barChart').getContext('2d');
+            const ctx = document.getElementById('barChart');
+            if (!ctx) return;
             
             // Coletar dados por seção
             const sections = {};
@@ -3033,7 +3055,19 @@
                         y: {
                             beginAtZero: true,
                             ticks: {
-                                stepSize: 1
+                                stepSize: 1,
+                                color: document.body.classList.contains('dark-theme') ? '#e0e0e0' : '#2c3e50'
+                            },
+                            grid: {
+                                color: document.body.classList.contains('dark-theme') ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: document.body.classList.contains('dark-theme') ? '#e0e0e0' : '#2c3e50'
+                            },
+                            grid: {
+                                color: document.body.classList.contains('dark-theme') ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'
                             }
                         }
                     },
@@ -3044,7 +3078,8 @@
                                 font: {
                                     size: 14
                                 },
-                                padding: 15
+                                padding: 15,
+                                color: document.body.classList.contains('dark-theme') ? '#e0e0e0' : '#2c3e50'
                             }
                         }
                     }
@@ -3164,10 +3199,16 @@
             document.getElementById('statPending').textContent = pending;
             document.getElementById('statPercent').textContent = percent + '%';
             
+            console.log('📊 Stats atualizadas:', { total, completed, pending, percent });
+            
             // Atualizar gráficos
-            updateProgressBar();
-            createPieChart();
-            createBarChart();
+            try {
+                updateProgressBar();
+                createPieChart();
+                createBarChart();
+            } catch (error) {
+                console.error('❌ Erro ao atualizar gráficos:', error);
+            }
         }
         
         // ============================================
