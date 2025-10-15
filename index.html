@@ -825,6 +825,13 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
         }
         
+        /* Limitar altura do gráfico de pizza */
+        .chart-box canvas {
+            max-height: 300px;
+            margin: 0 auto;
+            display: block;
+        }
+        
         /* Mobile - mostrar apenas progresso geral */
         @media (max-width: 768px) {
             .charts-grid {
@@ -3040,6 +3047,7 @@
                     options: {
                         responsive: true,
                         maintainAspectRatio: true,
+                        aspectRatio: 1.8,
                         plugins: {
                             legend: {
                                 position: 'bottom',
