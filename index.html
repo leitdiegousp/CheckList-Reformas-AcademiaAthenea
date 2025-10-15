@@ -2277,6 +2277,40 @@
     
     <script>
         // ============================================
+        // SERVICE WORKER - MODO OFFLINE
+        // ============================================
+        
+        // Registrar Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./service-worker.js')
+                    .then(registration => {
+                        console.log('✅ Service Worker registrado:', registration.scope);
+                        
+                        // Verificar atualizações
+                        registration.addEventListener('updatefound', () => {
+                            const newWorker = registration.installing;
+                            console.log('🔄 Nova versão do Service Worker encontrada!');
+                            
+                            newWorker.addEventListener('statechange', () => {
+                                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                    // Nova versão disponível
+                                    if (confirm('Nova versão disponível! Atualizar agora?')) {
+                                        window.location.reload();
+                                    }
+                                }
+                            });
+                        });
+                    })
+                    .catch(error => {
+                        console.error('❌ Erro ao registrar Service Worker:', error);
+                    });
+            });
+        } else {
+            console.warn('⚠️ Service Worker não suportado neste navegador');
+        }
+        
+        // ============================================
         // CONFIGURAÇÃO SUPABASE
         // ============================================
         // Você precisa substituir esses valores pelos seus do Supabase:
@@ -2299,6 +2333,74 @@
             console.log('✅ Supabase conectado!');
         } else {
             console.log('⚠️ Configure o Supabase! Veja INSTRUCOES_SUPABASE.md');
+        }
+        
+        // ============================================
+        // OTIMIZAÇÕES DE PERFORMANCE
+        // ============================================
+        
+        // Debounce - evita execução excessiva de funções
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+        
+        // Throttle - limita frequência de execução
+        function throttle(func, limit) {
+            let inThrottle;
+            return function(...args) {
+                if (!inThrottle) {
+                    func.apply(this, args);
+                    inThrottle = true;
+                    setTimeout(() => inThrottle = false, limit);
+                }
+            };
+        }
+        
+        // Lazy loading de imagens
+        function setupLazyLoading() {
+            const images = document.querySelectorAll('img[data-src]');
+            
+            const imageObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        img.src = img.dataset.src;
+                        img.removeAttribute('data-src');
+                        observer.unobserve(img);
+                    }
+                });
+            });
+            
+            images.forEach(img => imageObserver.observe(img));
+        }
+        
+        // Otimizar scroll com RequestAnimationFrame
+        let ticking = false;
+        function optimizedScroll(callback) {
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    callback();
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        }
+        
+        // Cache de consultas DOM
+        const domCache = new Map();
+        function getCachedElement(selector) {
+            if (!domCache.has(selector)) {
+                domCache.set(selector, document.querySelector(selector));
+            }
+            return domCache.get(selector);
         }
         
         // ============================================
@@ -3629,8 +3731,8 @@
         function setupSearch() {
             const searchInput = document.getElementById('searchInput');
             
-            searchInput.addEventListener('input', function() {
-                const searchTerm = this.value.toLowerCase();
+            // Aplicar debounce para melhor performance
+            const performSearch = debounce(function(searchTerm) {
                 const rows = document.querySelectorAll('tbody tr');
                 
                 rows.forEach(row => {
@@ -3649,6 +3751,11 @@
                 });
                 
                 updateStats();
+            }, 300); // Aguardar 300ms após última digitação
+            
+            searchInput.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                performSearch(searchTerm);
             });
         }
         
@@ -3775,6 +3882,9 @@
             console.log('🚀 Iniciando checklist...');
             console.log(`📊 Supabase configurado: ${isConfigured}`);
             
+            // Métricas de performance
+            const startTime = performance.now();
+            
             // Verificar bibliotecas externas
             console.log('📚 Verificando bibliotecas:');
             console.log(`  - jsPDF: ${typeof window.jspdf !== 'undefined' ? '✅ Carregado' : '❌ NÃO carregado'}`);
@@ -3782,6 +3892,9 @@
             console.log(`  - Chart.js: ${typeof Chart !== 'undefined' ? '✅ Carregado' : '❌ NÃO carregado'}`);
             
             addUniqueIds();
+            
+            // Aplicar lazy loading para imagens
+            setupLazyLoading();
             
             console.log('⏳ Carregando dados...');
             await restoreCheckboxStates();
@@ -3826,7 +3939,16 @@
             // Ativar filtro "Todas" por padrão
             document.getElementById('filterAll').classList.add('active');
             
+            // Métricas de performance
+            const endTime = performance.now();
+            const loadTime = (endTime - startTime).toFixed(2);
+            console.log(`⚡ Tempo de carregamento: ${loadTime}ms`);
             console.log('✅ Checklist pronto!');
+            
+            // Log de métricas de performance
+            if (performance.memory) {
+                console.log(`💾 Memória usada: ${(performance.memory.usedJSHeapSize / 1048576).toFixed(2)} MB`);
+            }
         }); // Fecha addEventListener DOMContentLoaded
     </script>
 </body>
