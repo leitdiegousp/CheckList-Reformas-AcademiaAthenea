@@ -1,7 +1,7 @@
 // Service Worker para CheckList Reformas Academia Athenea
-// Versão 1.0.0
+// Versão 2.0.0 - Network First Strategy
 
-const CACHE_NAME = 'checklist-academia-v1';
+const CACHE_NAME = 'checklist-academia-v2';
 const urlsToCache = [
     './',
     './index.html',
@@ -53,35 +53,57 @@ self.addEventListener('activate', event => {
     );
 });
 
-// Interceptar requisições e servir do cache quando offline
+// Interceptar requisições com estratégia Network First (prioriza rede sobre cache)
 self.addEventListener('fetch', event => {
+    // Para requisições do Supabase, SEMPRE usar rede (nunca cache)
+    if (event.request.url.includes('supabase.co')) {
+        event.respondWith(fetch(event.request));
+        return;
+    }
+
+    // Para HTML, sempre tentar rede primeiro
+    if (event.request.url.includes('.html') || event.request.url === self.registration.scope) {
+        event.respondWith(
+            fetch(event.request)
+                .then(response => {
+                    // Rede funcionou - cachear e retornar
+                    const responseToCache = response.clone();
+                    caches.open(CACHE_NAME).then(cache => {
+                        cache.put(event.request, responseToCache);
+                    });
+                    return response;
+                })
+                .catch(() => {
+                    // Rede falhou - usar cache
+                    return caches.match(event.request)
+                        .then(cachedResponse => {
+                            return cachedResponse || caches.match('./index.html');
+                        });
+                })
+        );
+        return;
+    }
+
+    // Para outros recursos (JS, CSS, imagens), usar Cache First
     event.respondWith(
         caches.match(event.request)
             .then(response => {
-                // Cache hit - retornar resposta do cache
                 if (response) {
                     return response;
                 }
 
-                // Cache miss - fazer requisição na rede
                 return fetch(event.request).then(response => {
-                    // Verificar se é uma resposta válida
                     if (!response || response.status !== 200 || response.type !== 'basic') {
                         return response;
                     }
 
-                    // Clonar resposta (pode ser usada apenas uma vez)
                     const responseToCache = response.clone();
-
-                    // Adicionar ao cache para uso futuro
-                    caches.open(CACHE_NAME)
-                        .then(cache => {
-                            cache.put(event.request, responseToCache);
-                        });
+                    caches.open(CACHE_NAME).then(cache => {
+                        cache.put(event.request, responseToCache);
+                    });
 
                     return response;
                 }).catch(() => {
-                    // Offline e não está no cache - retornar página offline
                     return caches.match('./index.html');
                 });
             })

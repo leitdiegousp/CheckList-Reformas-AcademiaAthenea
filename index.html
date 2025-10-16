@@ -2762,7 +2762,19 @@
                     .from('field_sizes')
                     .select('id, width, height');
                 
-                if (error) throw error;
+                if (error) {
+                    // Se tabela não existe, mostrar aviso
+                    if (error.code === 'PGRST205') {
+                        console.warn('⚠️ ATENÇÃO: Tabela field_sizes não existe no Supabase!');
+                        console.warn('📚 Execute o script: supabase-tables.sql');
+                        addNotification(
+                            '⚠️ Configuração Incompleta',
+                            'Tabela field_sizes não encontrada. Execute supabase-tables.sql no Supabase Dashboard.',
+                            'warning'
+                        );
+                    }
+                    throw error;
+                }
                 
                 // Map para lookup rápido
                 const sizeMap = new Map(data.map(item => [item.id, { width: item.width, height: item.height }]));
@@ -3048,7 +3060,19 @@
                     .from('priority_dropdowns')
                     .select('id, value');
                 
-                if (error) throw error;
+                if (error) {
+                    // Se tabela não existe, mostrar aviso
+                    if (error.code === 'PGRST205') {
+                        console.warn('⚠️ ATENÇÃO: Tabela priority_dropdowns não existe no Supabase!');
+                        console.warn('📚 Execute o script: supabase-tables.sql');
+                        addNotification(
+                            '⚠️ Configuração Incompleta',
+                            'Tabela priority_dropdowns não encontrada. Execute supabase-tables.sql no Supabase Dashboard.',
+                            'warning'
+                        );
+                    }
+                    throw error;
+                }
                 
                 // Map para lookup rápido
                 const valueMap = new Map(data.map(item => [item.id, item.value]));
