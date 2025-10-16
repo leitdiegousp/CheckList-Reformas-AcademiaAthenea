@@ -55,6 +55,11 @@ self.addEventListener('activate', event => {
 
 // Interceptar requisições com estratégia Network First (prioriza rede sobre cache)
 self.addEventListener('fetch', event => {
+    // Ignorar requisições de extensões do Chrome
+    if (event.request.url.startsWith('chrome-extension://')) {
+        return;
+    }
+    
     // Para requisições do Supabase, SEMPRE usar rede (nunca cache)
     if (event.request.url.includes('supabase.co')) {
         event.respondWith(fetch(event.request));
@@ -93,7 +98,10 @@ self.addEventListener('fetch', event => {
                 }
 
                 return fetch(event.request).then(response => {
-                    if (!response || response.status !== 200 || response.type !== 'basic') {
+                    // Apenas cachear requisições válidas e HTTP/HTTPS
+                    if (!response || response.status !== 200 || 
+                        response.type !== 'basic' || 
+                        !event.request.url.startsWith('http')) {
                         return response;
                     }
 

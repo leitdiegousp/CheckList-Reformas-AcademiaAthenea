@@ -2951,7 +2951,7 @@
             
             try {
                 const { data, error } = await supabase
-                    .from('text_fields')  // Reutilizamos a tabela text_fields
+                    .from('priority_dropdowns')  // ✅ CORRIGIDO: usar tabela correta
                     .upsert({ 
                         id: dropdownId, 
                         value: value,
@@ -2985,7 +2985,7 @@
             
             try {
                 const { data, error } = await supabase
-                    .from('text_fields')
+                    .from('priority_dropdowns')  // ✅ CORRIGIDO: usar tabela correta
                     .select('value')
                     .eq('id', dropdownId)
                     .maybeSingle();
