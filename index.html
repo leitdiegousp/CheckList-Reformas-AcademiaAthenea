@@ -2494,28 +2494,65 @@
             }
         }
         
-        // Restaurar estados de todos os checkboxes
+        // Restaurar estados de todos os checkboxes - OTIMIZADO (batch loading)
         async function restoreCheckboxStates() {
             console.log('🔄 Restaurando estados dos checkboxes...');
             const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-            let loaded = 0;
             
-            for (const checkbox of checkboxes) {
-                if (checkbox.id) {
-                    const checked = await loadCheckboxState(checkbox.id);
-                    if (checked !== null) {
+            if (!isConfigured || !supabase) {
+                // Modo offline: carregar do localStorage
+                console.log('📦 Carregando do localStorage (modo offline)...');
+                checkboxes.forEach(checkbox => {
+                    if (checkbox.id) {
+                        const saved = localStorage.getItem(checkbox.id);
+                        if (saved === 'true') {
+                            checkbox.checked = true;
+                            toggleTaskCompletion(checkbox);
+                        }
+                    }
+                });
+                console.log('✅ Checkboxes carregados do localStorage');
+                return;
+            }
+            
+            try {
+                // OTIMIZAÇÃO: Carregar TODOS de uma vez (batch)
+                const { data, error } = await supabase
+                    .from('checkboxes')
+                    .select('id, checked');
+                
+                if (error) throw error;
+                
+                // Criar Map para lookup rápido O(1)
+                const stateMap = new Map(data.map(item => [item.id, item.checked]));
+                
+                let loaded = 0;
+                checkboxes.forEach(checkbox => {
+                    if (checkbox.id && stateMap.has(checkbox.id)) {
+                        const checked = stateMap.get(checkbox.id);
                         checkbox.checked = checked;
                         loaded++;
                         
-                        // Aplicar estilo riscado se estiver marcado
                         if (checked) {
                             toggleTaskCompletion(checkbox);
                         }
                     }
-                }
+                });
+                
+                console.log(`✅ ${loaded} checkboxes restaurados em batch`);
+            } catch (error) {
+                console.error('❌ Erro ao carregar checkboxes:', error);
+                // Fallback para localStorage
+                checkboxes.forEach(checkbox => {
+                    if (checkbox.id) {
+                        const saved = localStorage.getItem(checkbox.id);
+                        if (saved === 'true') {
+                            checkbox.checked = true;
+                            toggleTaskCompletion(checkbox);
+                        }
+                    }
+                });
             }
-            
-            console.log(`✅ ${loaded} checkboxes restaurados`);
         }
         
         // ============================================
@@ -2587,22 +2624,53 @@
         }
         
         // Restaurar todos os campos de texto
+        // Restaurar campos de texto - OTIMIZADO (batch loading)
         async function restoreTextFields() {
             console.log('🔄 Restaurando campos de texto...');
             const textInputs = document.querySelectorAll('input[type="text"], textarea');
-            let loaded = 0;
             
-            for (const input of textInputs) {
-                if (input.id) {
-                    const value = await loadTextField(input.id);
-                    if (value) {
-                        input.value = value;
-                        loaded++;
+            if (!isConfigured || !supabase) {
+                // Modo offline: carregar do localStorage
+                textInputs.forEach(input => {
+                    if (input.id) {
+                        const saved = localStorage.getItem(input.id);
+                        if (saved) input.value = saved;
                     }
-                }
+                });
+                console.log('✅ Campos carregados do localStorage');
+                return;
             }
             
-            console.log(`✅ ${loaded} campos de texto restaurados`);
+            try {
+                // OTIMIZAÇÃO: Carregar TODOS de uma vez
+                const { data, error } = await supabase
+                    .from('text_fields')
+                    .select('id, value');
+                
+                if (error) throw error;
+                
+                // Map para lookup rápido
+                const valueMap = new Map(data.map(item => [item.id, item.value]));
+                
+                let loaded = 0;
+                textInputs.forEach(input => {
+                    if (input.id && valueMap.has(input.id)) {
+                        input.value = valueMap.get(input.id);
+                        loaded++;
+                    }
+                });
+                
+                console.log(`✅ ${loaded} campos de texto restaurados em batch`);
+            } catch (error) {
+                console.error('❌ Erro ao carregar campos:', error);
+                // Fallback localStorage
+                textInputs.forEach(input => {
+                    if (input.id) {
+                        const saved = localStorage.getItem(input.id);
+                        if (saved) input.value = saved;
+                    }
+                });
+            }
         }
         
         // ============================================
@@ -2669,17 +2737,58 @@
         }
         
         // Restaurar tamanhos de todos os campos
+        // Restaurar tamanhos dos campos - OTIMIZADO (batch loading)
         async function restoreFieldSizes() {
             const textareas = document.querySelectorAll('textarea');
             
-            for (const textarea of textareas) {
-                if (textarea.id) {
-                    const size = await loadFieldSize(textarea.id);
-                    if (size) {
+            if (!isConfigured || !supabase) {
+                // Modo offline: carregar do localStorage
+                textareas.forEach(textarea => {
+                    if (textarea.id) {
+                        const saved = localStorage.getItem(textarea.id + '-size');
+                        if (saved) {
+                            const size = JSON.parse(saved);
+                            textarea.style.width = size.width + 'px';
+                            textarea.style.height = size.height + 'px';
+                        }
+                    }
+                });
+                return;
+            }
+            
+            try {
+                // OTIMIZAÇÃO: Carregar TODOS de uma vez
+                const { data, error } = await supabase
+                    .from('field_sizes')
+                    .select('id, width, height');
+                
+                if (error) throw error;
+                
+                // Map para lookup rápido
+                const sizeMap = new Map(data.map(item => [item.id, { width: item.width, height: item.height }]));
+                
+                textareas.forEach(textarea => {
+                    if (textarea.id && sizeMap.has(textarea.id)) {
+                        const size = sizeMap.get(textarea.id);
                         textarea.style.width = size.width + 'px';
                         textarea.style.height = size.height + 'px';
                     }
-                }
+                });
+                
+                console.log(`✅ Tamanhos restaurados em batch`);
+            } catch (error) {
+                console.error('❌ Erro ao carregar tamanhos:', error);
+                // Fallback localStorage
+                textareas.forEach(textarea => {
+                    if (textarea.id) {
+                        const saved = localStorage.getItem(textarea.id + '-size');
+                        if (saved) {
+                            const size = JSON.parse(saved);
+                            textarea.style.width = size.width + 'px';
+                            textarea.style.height = size.height + 'px';
+                        }
+                    }
+                });
             }
         }
         
@@ -2913,26 +3022,60 @@
         }
         
         // Restaurar estados dos dropdowns
+        // Restaurar dropdowns de prioridade - OTIMIZADO (batch loading)
         async function restorePriorityDropdowns() {
             console.log('🔄 Restaurando prioridades...');
             const dropdowns = document.querySelectorAll('.priority-dropdown');
-            let loaded = 0;
             
-            for (const dropdown of dropdowns) {
-                if (dropdown.id) {
-                    const value = await loadPriorityDropdown(dropdown.id);
-                    if (value) {
-                        dropdown.value = value;
-                        
-                        // Aplicar classe CSS usando função auxiliar
-                        applyPriorityColor(dropdown);
-                        
-                        loaded++;
+            if (!isConfigured || !supabase) {
+                // Modo offline: carregar do localStorage
+                dropdowns.forEach(dropdown => {
+                    if (dropdown.id) {
+                        const saved = localStorage.getItem(dropdown.id);
+                        if (saved) {
+                            dropdown.value = saved;
+                            applyPriorityColor(dropdown);
+                        }
                     }
-                }
+                });
+                console.log('✅ Prioridades carregadas do localStorage');
+                return;
             }
             
-            console.log(`✅ ${loaded} prioridades restauradas`);
+            try {
+                // OTIMIZAÇÃO: Carregar TODOS de uma vez
+                const { data, error } = await supabase
+                    .from('priority_dropdowns')
+                    .select('id, value');
+                
+                if (error) throw error;
+                
+                // Map para lookup rápido
+                const valueMap = new Map(data.map(item => [item.id, item.value]));
+                
+                let loaded = 0;
+                dropdowns.forEach(dropdown => {
+                    if (dropdown.id && valueMap.has(dropdown.id)) {
+                        dropdown.value = valueMap.get(dropdown.id);
+                        applyPriorityColor(dropdown);
+                        loaded++;
+                    }
+                });
+                
+                console.log(`✅ ${loaded} prioridades restauradas em batch`);
+            } catch (error) {
+                console.error('❌ Erro ao carregar prioridades:', error);
+                // Fallback localStorage
+                dropdowns.forEach(dropdown => {
+                    if (dropdown.id) {
+                        const saved = localStorage.getItem(dropdown.id);
+                        if (saved) {
+                            dropdown.value = saved;
+                            applyPriorityColor(dropdown);
+                        }
+                    }
+                });
+            }
         }
         
         // Sincronização em tempo real (opcional)
@@ -3909,13 +4052,10 @@
             setupTextFieldListeners();
             setupResizeListeners();
             setupPriorityDropdownListeners();
-            setupRealtimeSync();
-            setupTextFieldRealtimeSync();
-            setupFieldSizeRealtimeSync();
             showStatus();
             addSyncButton();
             
-            // Novas funcionalidades
+            // Novas funcionalidades (críticas)
             setupSearch();
             setupThemeToggle();
             setupStatsUpdate();
@@ -3926,11 +4066,20 @@
             setupNotifications();
             setupOfflineDetection();
             
-            // Verificar tarefas urgentes após 2 segundos
+            // ⚡ OTIMIZAÇÃO: Adiar sincronização em tempo real para depois
+            // Isso reduz a carga inicial e melhora o tempo de carregamento
+            setTimeout(() => {
+                setupRealtimeSync();
+                setupTextFieldRealtimeSync();
+                setupFieldSizeRealtimeSync();
+                console.log('🔄 Sincronização em tempo real ativada (adiada)');
+            }, 5000); // Aguardar 5 segundos após carregamento
+            
+            // Verificar tarefas urgentes após o carregamento inicial
             setTimeout(() => {
                 checkUrgentTasks();
                 checkProgressMilestones();
-            }, 2000);
+            }, 3000); // Reduzido de 2s para 3s
             
             // Notificação de boas-vindas
             addNotification(
