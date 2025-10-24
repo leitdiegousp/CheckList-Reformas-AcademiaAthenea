@@ -1084,11 +1084,13 @@
         
         /* === SISTEMA DE FOTOS === */
         .photo-container {
-            margin: 10px 0;
-            padding: 10px;
-            background-color: #f8f9fa;
-            border-radius: 8px;
-            border: 2px dashed #ddd;
+            margin: 8px 0 0 0;
+            padding: 8px;
+            background-color: #f0f4ff;
+            border-radius: 6px;
+            border: 1px solid #d0deff;
+            width: 100%;
+            box-sizing: border-box;
         }
         
         .photo-upload-area {
@@ -1102,15 +1104,16 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
-            padding: 8px 16px;
-            border-radius: 6px;
+            padding: 6px 12px;
+            border-radius: 4px;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 12px;
             font-weight: 600;
             transition: all 0.3s ease;
-            display: flex;
+            display: inline-flex;
             align-items: center;
-            gap: 5px;
+            gap: 4px;
+            white-space: nowrap;
         }
         
         .photo-upload-btn:hover {
@@ -4375,28 +4378,45 @@
         // ============================================
         
         function initPhotoSystem() {
-            // Adicionar área de fotos em cada linha de tarefa
-            const taskRows = document.querySelectorAll('tbody tr');
+            console.log('🚀 Iniciando sistema de fotos...');
             
-            taskRows.forEach(row => {
+            // Adicionar área de fotos em cada linha de tarefa
+            const allRows = document.querySelectorAll('tbody tr');
+            console.log(`📋 Total de linhas encontradas: ${allRows.length}`);
+            
+            let containersAdded = 0;
+            
+            allRows.forEach((row, index) => {
                 const checkbox = row.querySelector('input[type="checkbox"][id]');
-                if (checkbox && !row.querySelector('.section-header') && !row.classList.contains('materials-section')) {
+                
+                if (checkbox) {
                     const taskId = checkbox.id;
                     
                     // Buscar a célula de observações (último td com class text-cell)
                     const textCells = row.querySelectorAll('td.text-cell');
-                    const observacoesCell = textCells[textCells.length - 1]; // Pega a última célula de texto
                     
-                    if (observacoesCell && !observacoesCell.querySelector('.photo-container')) {
-                        const photoContainer = createPhotoContainer(taskId);
-                        observacoesCell.appendChild(photoContainer);
-                        loadPhotosForTask(taskId);
-                        console.log(`✅ Container de fotos adicionado para: ${taskId}`);
+                    if (textCells.length > 0) {
+                        const observacoesCell = textCells[textCells.length - 1]; // Pega a última célula de texto
+                        
+                        // Verificar se já não tem container
+                        if (!observacoesCell.querySelector('.photo-container')) {
+                            const photoContainer = createPhotoContainer(taskId);
+                            observacoesCell.appendChild(photoContainer);
+                            containersAdded++;
+                            console.log(`✅ [${containersAdded}] Container adicionado: ${taskId}`);
+                            
+                            // Carregar fotos existentes
+                            loadPhotosForTask(taskId);
+                        } else {
+                            console.log(`⚠️ Container já existe: ${taskId}`);
+                        }
+                    } else {
+                        console.log(`❌ Sem células de texto: ${taskId}`);
                     }
                 }
             });
             
-            console.log(`📸 Sistema de fotos inicializado para ${document.querySelectorAll('.photo-container').length} tarefas`);
+            console.log(`📸 Sistema de fotos inicializado: ${containersAdded} containers criados`);
             
             // Criar modal para visualização de fotos
             createPhotoModal();
@@ -4410,7 +4430,7 @@
             container.innerHTML = `
                 <div class="photo-upload-area">
                     <button class="photo-upload-btn" onclick="document.getElementById('photo-input-${taskId}').click()">
-                        📷 Adicionar Fotos
+                        📷 Fotos
                     </button>
                     <input type="file" 
                            class="photo-input" 
