@@ -4382,15 +4382,21 @@
                 const checkbox = row.querySelector('input[type="checkbox"][id]');
                 if (checkbox && !row.querySelector('.section-header') && !row.classList.contains('materials-section')) {
                     const taskId = checkbox.id;
-                    const observacoesCell = row.querySelector('.text-cell:last-child');
                     
-                    if (observacoesCell) {
+                    // Buscar a célula de observações (último td com class text-cell)
+                    const textCells = row.querySelectorAll('td.text-cell');
+                    const observacoesCell = textCells[textCells.length - 1]; // Pega a última célula de texto
+                    
+                    if (observacoesCell && !observacoesCell.querySelector('.photo-container')) {
                         const photoContainer = createPhotoContainer(taskId);
                         observacoesCell.appendChild(photoContainer);
                         loadPhotosForTask(taskId);
+                        console.log(`✅ Container de fotos adicionado para: ${taskId}`);
                     }
                 }
             });
+            
+            console.log(`📸 Sistema de fotos inicializado para ${document.querySelectorAll('.photo-container').length} tarefas`);
             
             // Criar modal para visualização de fotos
             createPhotoModal();
@@ -4420,11 +4426,18 @@
         }
         
         async function handlePhotoUpload(taskId, files) {
-            if (!files || files.length === 0) return;
+            if (!files || files.length === 0) {
+                console.log('❌ Nenhum arquivo selecionado');
+                return;
+            }
+            
+            console.log(`📸 Iniciando upload de ${files.length} foto(s) para ${taskId}`);
             
             const photos = JSON.parse(localStorage.getItem(`photos-${taskId}`) || '[]');
             
             for (let file of files) {
+                console.log(`📤 Processando: ${file.name} (${(file.size / 1024).toFixed(2)} KB)`);
+                
                 // Converter para base64
                 const base64 = await fileToBase64(file);
                 
@@ -4438,6 +4451,7 @@
             
             // Salvar no localStorage
             localStorage.setItem(`photos-${taskId}`, JSON.stringify(photos));
+            console.log(`💾 ${photos.length} foto(s) salva(s) no localStorage para ${taskId}`);
             
             // Se Supabase configurado, salvar também lá
             if (isConfigured && supabase) {
