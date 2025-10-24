@@ -4453,7 +4453,21 @@
             
             console.log(`📸 Iniciando upload de ${files.length} foto(s) para ${taskId}`);
             
-            const photos = JSON.parse(localStorage.getItem(`photos-${taskId}`) || '[]');
+            // Carregar fotos existentes do Supabase (não do localStorage)
+            let photos = [];
+            try {
+                const { data } = await supabase
+                    .from('task_photos')
+                    .select('photos')
+                    .eq('task_id', taskId)
+                    .single();
+                
+                if (data && data.photos) {
+                    photos = JSON.parse(data.photos);
+                }
+            } catch (error) {
+                console.log(`📝 Criando nova entrada para ${taskId}`);
+            }
             
             for (let file of files) {
                 console.log(`📤 Processando: ${file.name} (${(file.size / 1024).toFixed(2)} KB)`);
@@ -4469,11 +4483,7 @@
                 });
             }
             
-            // Salvar no localStorage
-            localStorage.setItem(`photos-${taskId}`, JSON.stringify(photos));
-            console.log(`💾 ${photos.length} foto(s) salva(s) no localStorage para ${taskId}`);
-            
-            // Se Supabase configurado, salvar também lá
+            // Salvar SOMENTE no Supabase (não no localStorage para evitar QuotaExceeded)
             if (isConfigured && supabase) {
                 try {
                     await supabase
@@ -4529,14 +4539,7 @@
         }
         
         function loadPhotosForTask(taskId) {
-            // Carregar do localStorage primeiro
-            const photos = JSON.parse(localStorage.getItem(`photos-${taskId}`) || '[]');
-            
-            if (photos.length > 0) {
-                renderPhotos(taskId, photos);
-            }
-            
-            // Se Supabase configurado, tentar carregar de lá também
+            // Carregar SOMENTE do Supabase (não do localStorage)
             if (isConfigured && supabase) {
                 loadPhotosFromSupabase(taskId);
             }
@@ -4552,21 +4555,38 @@
                 
                 if (data && data.photos) {
                     const photos = JSON.parse(data.photos);
-                    localStorage.setItem(`photos-${taskId}`, JSON.stringify(photos));
                     renderPhotos(taskId, photos);
                 }
             } catch (error) {
-                console.error(`Erro ao carregar fotos de ${taskId}:`, error);
+                // Silenciar erro 406 (tabela não existe ainda)
+                if (error.code !== 'PGRST116') {
+                    console.error(`Erro ao carregar fotos de ${taskId}:`, error);
+                }
             }
         }
         
         async function deletePhoto(taskId, photoId) {
             if (!confirm('Tem certeza que deseja excluir esta foto?')) return;
             
-            let photos = JSON.parse(localStorage.getItem(`photos-${taskId}`) || '[]');
-            photos = photos.filter(p => p.id !== photoId);
+            // Carregar fotos do Supabase
+            let photos = [];
+            try {
+                const { data } = await supabase
+                    .from('task_photos')
+                    .select('photos')
+                    .eq('task_id', taskId)
+                    .single();
+                
+                if (data && data.photos) {
+                    photos = JSON.parse(data.photos);
+                }
+            } catch (error) {
+                console.error('Erro ao carregar fotos:', error);
+                return;
+            }
             
-            localStorage.setItem(`photos-${taskId}`, JSON.stringify(photos));
+            // Remover foto
+            photos = photos.filter(p => p.id !== photoId);
             
             // Salvar no Supabase
             if (isConfigured && supabase) {
