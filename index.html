@@ -1082,6 +1082,171 @@
             }
         }
         
+        /* === SISTEMA DE FOTOS === */
+        .photo-container {
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            border: 2px dashed #ddd;
+        }
+        
+        .photo-upload-area {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .photo-upload-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .photo-upload-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+        
+        .photo-input {
+            display: none;
+        }
+        
+        .photo-preview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .photo-item {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .photo-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+        }
+        
+        .photo-item img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            display: block;
+        }
+        
+        .photo-delete-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: rgba(231, 76, 60, 0.9);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+        
+        .photo-item:hover .photo-delete-btn {
+            opacity: 1;
+        }
+        
+        .photo-delete-btn:hover {
+            background: #c0392b;
+            transform: scale(1.1);
+        }
+        
+        /* Modal de visualização de foto */
+        .photo-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .photo-modal.active {
+            display: flex;
+        }
+        
+        .photo-modal-content {
+            position: relative;
+            max-width: 90%;
+            max-height: 90%;
+        }
+        
+        .photo-modal-content img {
+            max-width: 100%;
+            max-height: 90vh;
+            border-radius: 8px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        }
+        
+        .photo-modal-close {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            background: white;
+            color: #333;
+            border: none;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            font-size: 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .photo-modal-close:hover {
+            background: #e74c3c;
+            color: white;
+            transform: rotate(90deg);
+        }
+        
+        body.dark-theme .photo-container {
+            background-color: #1a1a2e;
+            border-color: #333;
+        }
+        
+        body.dark-theme .photo-item {
+            box-shadow: 0 2px 8px rgba(255, 255, 255, 0.1);
+        }
+        
+        body.dark-theme .photo-item:hover {
+            box-shadow: 0 4px 16px rgba(255, 255, 255, 0.2);
+        }
+        
     </style>
 </head>
 <body>
@@ -1305,6 +1470,21 @@
                     </td>
                     <td class="text-cell"><textarea id="eletrica2-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
                     <td class="text-cell"><textarea id="eletrica2-observacoes" placeholder="Observações" rows="1"></textarea></td>
+                </tr>
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="eletrica3"> 
+                        <label for="eletrica3">Instalar refletores estacionamento e Cristo</label>
+                    </td>
+                    <td>
+                        <select class="priority-dropdown nao-urgente" id="eletrica3-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente">Urgente</option>
+                            <option value="nao-urgente" selected>Não Urgente</option>
+                        </select>
+                    </td>
+                    <td class="text-cell"><textarea id="eletrica3-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
+                    <td class="text-cell"><textarea id="eletrica3-observacoes" placeholder="Observações" rows="1"></textarea></td>
                 </tr>
                 
                 <!-- Telhado banheiro -->
@@ -1740,6 +1920,21 @@
                     <td class="text-cell"><textarea id="limpeza3-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
                     <td class="text-cell"><textarea id="limpeza3-observacoes" placeholder="Observações" rows="1"></textarea></td>
                 </tr>
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="limpeza6"> 
+                        <label for="limpeza6">Limpar caixa d'água</label>
+                    </td>
+                    <td>
+                        <select class="priority-dropdown nao-urgente" id="limpeza6-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente">Urgente</option>
+                            <option value="nao-urgente" selected>Não Urgente</option>
+                        </select>
+                    </td>
+                    <td class="text-cell"><textarea id="limpeza6-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
+                    <td class="text-cell"><textarea id="limpeza6-observacoes" placeholder="Observações" rows="1"></textarea></td>
+                </tr>
 <!-- Varais áereos Lavanderia devido ao Curso (itens pertencem à seção Limpezas) -->
                 <tr>
                     <td class="action-cell">
@@ -2038,6 +2233,51 @@
                     </td>
                     <td class="text-cell"><textarea id="externa4-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
                     <td class="text-cell"><textarea id="externa4-observacoes" placeholder="Observações" rows="1"></textarea></td>
+                </tr>
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="externa5"> 
+                        <label for="externa5">Paisagismo Cristo e Athenea</label>
+                    </td>
+                    <td>
+                        <select class="priority-dropdown nao-urgente" id="externa5-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente">Urgente</option>
+                            <option value="nao-urgente" selected>Não Urgente</option>
+                        </select>
+                    </td>
+                    <td class="text-cell"><textarea id="externa5-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
+                    <td class="text-cell"><textarea id="externa5-observacoes" placeholder="Observações" rows="1"></textarea></td>
+                </tr>
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="externa6"> 
+                        <label for="externa6">Limpeza com a mão das bromélias e babosa (próximo casinha ferramentas)</label>
+                    </td>
+                    <td>
+                        <select class="priority-dropdown nao-urgente" id="externa6-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente">Urgente</option>
+                            <option value="nao-urgente" selected>Não Urgente</option>
+                        </select>
+                    </td>
+                    <td class="text-cell"><textarea id="externa6-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
+                    <td class="text-cell"><textarea id="externa6-observacoes" placeholder="Observações" rows="1"></textarea></td>
+                </tr>
+                <tr>
+                    <td class="action-cell">
+                        <input type="checkbox" id="externa7"> 
+                        <label for="externa7">Podar algumas folhas das palmeiras</label>
+                    </td>
+                    <td>
+                        <select class="priority-dropdown nao-urgente" id="externa7-prioridade">
+                            <option value="">Selecione...</option>
+                            <option value="urgente">Urgente</option>
+                            <option value="nao-urgente" selected>Não Urgente</option>
+                        </select>
+                    </td>
+                    <td class="text-cell"><textarea id="externa7-responsavel" placeholder="Nome do responsável" rows="1"></textarea></td>
+                    <td class="text-cell"><textarea id="externa7-observacoes" placeholder="Observações" rows="1"></textarea></td>
                 </tr>
 <!-- Cozinha -->
                 <tr>
@@ -4125,7 +4365,233 @@
             if (performance.memory) {
                 console.log(`💾 Memória usada: ${(performance.memory.usedJSHeapSize / 1048576).toFixed(2)} MB`);
             }
+            
+            // Inicializar sistema de fotos
+            initPhotoSystem();
         }); // Fecha addEventListener DOMContentLoaded
+        
+        // ============================================
+        // SISTEMA DE FOTOS
+        // ============================================
+        
+        function initPhotoSystem() {
+            // Adicionar área de fotos em cada linha de tarefa
+            const taskRows = document.querySelectorAll('tbody tr');
+            
+            taskRows.forEach(row => {
+                const checkbox = row.querySelector('input[type="checkbox"][id]');
+                if (checkbox && !row.querySelector('.section-header') && !row.classList.contains('materials-section')) {
+                    const taskId = checkbox.id;
+                    const observacoesCell = row.querySelector('.text-cell:last-child');
+                    
+                    if (observacoesCell) {
+                        const photoContainer = createPhotoContainer(taskId);
+                        observacoesCell.appendChild(photoContainer);
+                        loadPhotosForTask(taskId);
+                    }
+                }
+            });
+            
+            // Criar modal para visualização de fotos
+            createPhotoModal();
+        }
+        
+        function createPhotoContainer(taskId) {
+            const container = document.createElement('div');
+            container.className = 'photo-container';
+            container.id = `photo-container-${taskId}`;
+            
+            container.innerHTML = `
+                <div class="photo-upload-area">
+                    <button class="photo-upload-btn" onclick="document.getElementById('photo-input-${taskId}').click()">
+                        📷 Adicionar Fotos
+                    </button>
+                    <input type="file" 
+                           class="photo-input" 
+                           id="photo-input-${taskId}" 
+                           accept="image/*" 
+                           multiple 
+                           onchange="handlePhotoUpload('${taskId}', this.files)">
+                </div>
+                <div class="photo-preview-grid" id="photo-grid-${taskId}"></div>
+            `;
+            
+            return container;
+        }
+        
+        async function handlePhotoUpload(taskId, files) {
+            if (!files || files.length === 0) return;
+            
+            const photos = JSON.parse(localStorage.getItem(`photos-${taskId}`) || '[]');
+            
+            for (let file of files) {
+                // Converter para base64
+                const base64 = await fileToBase64(file);
+                
+                photos.push({
+                    id: Date.now() + Math.random(),
+                    data: base64,
+                    name: file.name,
+                    uploadDate: new Date().toISOString()
+                });
+            }
+            
+            // Salvar no localStorage
+            localStorage.setItem(`photos-${taskId}`, JSON.stringify(photos));
+            
+            // Se Supabase configurado, salvar também lá
+            if (isConfigured && supabase) {
+                try {
+                    await supabase
+                        .from('task_photos')
+                        .upsert({
+                            task_id: taskId,
+                            photos: JSON.stringify(photos),
+                            updated_at: new Date().toISOString()
+                        }, {
+                            onConflict: 'task_id'
+                        });
+                    console.log(`✅ Fotos salvas no Supabase para ${taskId}`);
+                } catch (error) {
+                    console.error('❌ Erro ao salvar fotos no Supabase:', error);
+                }
+            }
+            
+            // Atualizar visualização
+            renderPhotos(taskId, photos);
+            
+            // Mostrar notificação
+            addNotification(
+                '📷 Fotos Adicionadas',
+                `${files.length} foto(s) adicionada(s) com sucesso!`,
+                'success'
+            );
+        }
+        
+        function fileToBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+        }
+        
+        function renderPhotos(taskId, photos) {
+            const grid = document.getElementById(`photo-grid-${taskId}`);
+            if (!grid) return;
+            
+            grid.innerHTML = '';
+            
+            photos.forEach(photo => {
+                const photoItem = document.createElement('div');
+                photoItem.className = 'photo-item';
+                photoItem.innerHTML = `
+                    <img src="${photo.data}" alt="${photo.name}" onclick="openPhotoModal('${photo.data}')">
+                    <button class="photo-delete-btn" onclick="deletePhoto('${taskId}', ${photo.id})" title="Excluir foto">×</button>
+                `;
+                grid.appendChild(photoItem);
+            });
+        }
+        
+        function loadPhotosForTask(taskId) {
+            // Carregar do localStorage primeiro
+            const photos = JSON.parse(localStorage.getItem(`photos-${taskId}`) || '[]');
+            
+            if (photos.length > 0) {
+                renderPhotos(taskId, photos);
+            }
+            
+            // Se Supabase configurado, tentar carregar de lá também
+            if (isConfigured && supabase) {
+                loadPhotosFromSupabase(taskId);
+            }
+        }
+        
+        async function loadPhotosFromSupabase(taskId) {
+            try {
+                const { data, error } = await supabase
+                    .from('task_photos')
+                    .select('photos')
+                    .eq('task_id', taskId)
+                    .single();
+                
+                if (data && data.photos) {
+                    const photos = JSON.parse(data.photos);
+                    localStorage.setItem(`photos-${taskId}`, JSON.stringify(photos));
+                    renderPhotos(taskId, photos);
+                }
+            } catch (error) {
+                console.error(`Erro ao carregar fotos de ${taskId}:`, error);
+            }
+        }
+        
+        async function deletePhoto(taskId, photoId) {
+            if (!confirm('Tem certeza que deseja excluir esta foto?')) return;
+            
+            let photos = JSON.parse(localStorage.getItem(`photos-${taskId}`) || '[]');
+            photos = photos.filter(p => p.id !== photoId);
+            
+            localStorage.setItem(`photos-${taskId}`, JSON.stringify(photos));
+            
+            // Salvar no Supabase
+            if (isConfigured && supabase) {
+                try {
+                    await supabase
+                        .from('task_photos')
+                        .upsert({
+                            task_id: taskId,
+                            photos: JSON.stringify(photos),
+                            updated_at: new Date().toISOString()
+                        }, {
+                            onConflict: 'task_id'
+                        });
+                } catch (error) {
+                    console.error('Erro ao excluir foto do Supabase:', error);
+                }
+            }
+            
+            renderPhotos(taskId, photos);
+            
+            addNotification(
+                '🗑️ Foto Excluída',
+                'Foto removida com sucesso!',
+                'info'
+            );
+        }
+        
+        function createPhotoModal() {
+            const modal = document.createElement('div');
+            modal.className = 'photo-modal';
+            modal.id = 'photoModal';
+            modal.innerHTML = `
+                <div class="photo-modal-content">
+                    <button class="photo-modal-close" onclick="closePhotoModal()">×</button>
+                    <img id="modalPhoto" src="" alt="Foto ampliada">
+                </div>
+            `;
+            document.body.appendChild(modal);
+            
+            // Fechar ao clicar fora da imagem
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    closePhotoModal();
+                }
+            });
+        }
+        
+        function openPhotoModal(photoSrc) {
+            const modal = document.getElementById('photoModal');
+            const img = document.getElementById('modalPhoto');
+            img.src = photoSrc;
+            modal.classList.add('active');
+        }
+        
+        function closePhotoModal() {
+            const modal = document.getElementById('photoModal');
+            modal.classList.remove('active');
+        }
+        
     </script>
 </body>
 </html>
